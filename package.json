@@ -11,13 +11,15 @@
     "test": "         npm run build && jest --forceExit",
     "test:coverage": "npm run build && jest --forceExit --coverage",
     "test:watch": "   npm run build && jest --forceExit --watch",
-    "tslint": "    tslint -c tslint.json       'src/**/*.ts?(x)'",
-    "tslint:fix": "tslint -c tslint.json --fix 'src/**/*.ts?(x)'",
+    "tslint": "    tslint -c tslint.json       src/**/*.ts?(x)",
+    "tslint:fix": "tslint -c tslint.json --fix src/**/*.ts?(x)",
     "dev": " rm -rf dev/* && webpack --progress --colors --config webpack/webpack.dll.js &&  webpack-dev-server --config webpack/webpack.dev.js --devtool eval --progress --colors --content-base dev",
     "prod": "gulp prod",
     "webpack": "  webpack  --progress --colors --config webpack/webpack.dev.js",
     "webpack:prod": " rm -rf prod/* && webpack --progress --colors --config webpack/webpack.dll.prod.js && webpack    --progress --colors       --config webpack/webpack.prod.js && gulp build:prod",
-    "doc": " rm -rf lib/* && tsc && gulp doc"
+    "doc": " rm -rf lib/* && tsc && gulp doc",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "heartblood",
   "license": "ISC",
@@ -61,6 +63,7 @@
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.5.0",
     "webpack-merge": "^4.1.0",
-    "webpack-visualizer-plugin": "^0.1.11"
+    "webpack-visualizer-plugin": "^0.1.11",
+    "@storybook/react": "^3.2.4"
   }
 }
