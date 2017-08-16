@@ -1,13 +1,15 @@
 
-
+// 注入文件，按顺序执行
 window.manifest = [
     {
-        name: 'index.js',
-        res: '[host][hash].js'    
+        name: 'index.css',
+        res: 'https://h5test.ichangtou.com/edu/college/static/css/app.49b12ae0f2f1850d67c09fee5a0bda08.css',
+        type: 'css'
     },
     {
-        name: 'index.css',
-        res: '[host][hash].css'
+        name: 'index.js',
+        res: 'https://h5test.ichangtou.com/edu/college/static/js/vendor.babc2001c289b0010969.js',
+        type: 'js'    
     }
 ];
 
@@ -18,49 +20,76 @@ window.manifest = [
     if (window.localStorage) {
         var tasks = [];
         // 检测缓存版本是否与服务器一致
-        for (var i = 0; i < manifest.length; i ++) {
-            if (!checkVersion(manifest[i])) {
+        for (var i = 0; i < window.manifest.length; i ++) {
+            if (!checkVersion(window.manifest[i])) {
                 // 更新资源
-                tasks.push(upSertResource(manifest[i]));
-                executeXHRTasks(tasks).then(function() {
-
-                }).then
+                tasks.push(upSertResource(window.manifest[i]));
             }
         }
+        console.log(tasks);
+        executeXHRTasks(tasks).then(function() {
+            for (var i = 0; i < window.manifest.length; i ++) {
+                switch (window.manifest[i].type) {
+                    case 'js': 
+                        console.log('inJectJS');
+                        inJectJS(window.manifest[i]);
+                        break;
+                    case 'css':
+                        console.log('inJectCSS');
+                        inJectCSS(window.manifest[i]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
         
     } else {
         alert('您的微信版本号过低');
     }
-})(window.manifest);
+})(window);
 /**
  * 异步执行xhr队列
  * @func executeXHRTasks
- * @param {Array} xhrtasks -xhr任务队列
+ * @param {Array} XHRtasks - xhr任务队列
  * @return {undefined}
  */
-function executeXHRTasks(xhrtasks) {
+function executeXHRTasks(XHRtasks) {
+    
     var count = 0;
     return new function() {
         var tasks = [];
-        this.then = function (callback) {
+        this.then = function(callback) {
             tasks.push(callback);
+            return this;
         }
         var next = function() {
             var task = tasks.shift();
-            task();
+            task && task();
         }
-        for(var i=0; i < xhrtasks.length; i ++) {
-            xhrtasks[i].onreadystatechange = function () {
-                if (XHRHttp.readyState == 4 && XHRHttp.status == 200) {
-                    count ++;
-                    window.localStorage.setItem(targetItemManifest.name, XHRHttp.responseText);
-                    if (count === xhrtasks.length) {
-                        next();
+        var fn = function() {
+            for(var i = 0; i < XHRtasks.length; i ++) {
+                (function() {
+                    var XHRTask = XHRtasks[i];
+                    XHRTask.XHRHttp.onreadystatechange = function() {
+                        console.log(XHRTask);
+                        if (XHRTask.XHRHttp.readyState == 4 && XHRTask.XHRHttp.status == 200) {
+                            count ++;
+                            console.log('get', XHRTask.name);
+                            window.localStorage.setItem(XHRTask.name, XHRTask.XHRHttp.responseText);
+                            if (count === XHRtasks.length) {
+                                next();
+                            }
+                        }
                     }
-                }
+                    XHRTask.XHRHttp.send();
+                })(i);
             }
-            xhrtasks[i].send()
         }
+        tasks.push(fn);
+        setTimeout(function() {
+            next();
+        }, 0);        
     }
 }
 /**
@@ -77,25 +106,21 @@ function checkVersion(targetItemManifest) {
  * 更新或保存资源
  * @func upSertResource
  * @param {Object} targetItemManifest - 目标manifest
- * @return {undefined}
+ * @return {Object} - XHRHttp
  */
 function upSertResource(targetItemManifest) {
     //采用Http请求get方式;open()方法的第三个参数表示采用异步(true)还是同步(false)处理
-    var XHRHttp = getXHRHttp();
-    XHRHttp.open("GET", targetItemManifest.res, true);
-    return XHRHttp;
-}
-
-function getXHRHttp(){
-    var obj;
+    var XHRHttp;
     if (window.XMLHttpRequest)
-        obj = new XMLHttpRequest();
+        XHRHttp = new XMLHttpRequest();
     else
-        obj = new ActiveXObject("Microsoft.XMLHTTP");
-    return obj;
-}; 
-
-
+        XHRHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    XHRHttp.open("GET", targetItemManifest.res, true);
+    return {
+        XHRHttp: XHRHttp,
+        name: targetItemManifest.name
+    };
+}
 
 /**
  * 向页面注入css文件
@@ -103,8 +128,12 @@ function getXHRHttp(){
  * @param {Object} targetItemManifest - 目标manifest
  * @return {undefined}
  */
-function inJectCSS() {
-
+function inJectCSS(targetItemManifest) {
+    var body = document.getElementsByTagName('body').item(0);
+    var link = document.createElement("style");
+    link.type = "text/css";
+    link.innerHTML = localStorage.getItem(targetItemManifest.name);
+    body.appendChild(link);
 }
 /**
  * 向页面注入javascript文件
@@ -112,8 +141,12 @@ function inJectCSS() {
  * @param {Object} targetItemManifest - 目标manifest
  * @return {undefined}
  */
-function inJectJS() {
-
+function inJectJS(targetItemManifest) {
+    var body = document.getElementsByTagName('body').item(0);
+    var link = document.createElement("script");
+    link.type = "text/javascript";
+    link.innerHTML = localStorage.getItem(targetItemManifest.name);
+    body.appendChild(link); 
 }
 
 
