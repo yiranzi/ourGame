@@ -77,6 +77,7 @@ function executeXHRTasks(XHRtasks) {
                             count ++;
                             console.log('get', XHRTask.name);
                             window.localStorage.setItem(XHRTask.name, XHRTask.XHRHttp.responseText);
+                            window.localStorage.setItem('_vinda_' + XHRTask.name, XHRTask.res);
                             if (count === XHRtasks.length) {
                                 next();
                             }
@@ -99,7 +100,7 @@ function executeXHRTasks(XHRtasks) {
  * @return {boolean} - 如果版本一致，返回true
  */
 function checkVersion(targetItemManifest) {
-    return window.localStorage.getItem(targetItemManifest.name) === targetItemManifest.res;
+    return window.localStorage.getItem('_vinda_' + targetItemManifest.name) === targetItemManifest.res;
 }
 
 /**
@@ -118,7 +119,8 @@ function upSertResource(targetItemManifest) {
     XHRHttp.open("GET", targetItemManifest.res, true);
     return {
         XHRHttp: XHRHttp,
-        name: targetItemManifest.name
+        name: targetItemManifest.name,
+        res: targetItemManifest.res
     };
 }
 
