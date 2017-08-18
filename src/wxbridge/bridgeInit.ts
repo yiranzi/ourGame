@@ -5,19 +5,19 @@ import config from "./bridgeConfig";
 /***
  * dateTypes 类型声明
  */
-interface DateTypes {
+interface dateTypes {
     wechat_appid: string;
-    timestamp: number;
-    nonceStr: string;
-    signature: string;
-    jsApiList: Array<string>;
+    timestamp:number;
+    nonceStr:string;
+    signature:string;
+    jsApiList:Array<string>;
     userId: string;
     sessionId: string;
     openId: string;
     nickName: string;
     headImage: string;
     subscribe: boolean;
-    payOpenId: string;
+    payOpenId:string;
 }
 
 /**
@@ -25,11 +25,11 @@ interface DateTypes {
  * @func InitWxApi
  */
 const InitWxApi = () => {
-    _isWeiXin() && _signWxApi().then((response: any) => {
+    _isWeiXin() && _signWxApi().then((response:any) => {
 
         let date = response.json();
 
-        date.then(function (date: DateTypes) {
+        date.then(function (date:dateTypes) {
             (WxSdk as any).config({
                 appId: date.wechat_appid,
                 timestamp: date.timestamp,
@@ -40,34 +40,37 @@ const InitWxApi = () => {
     });
     });
 
-    _getUserInfoFromServer().catch(() => {
+    _getUserInfoFromServer().catch(()=>{
         _redirectToUserInfo();
-    }).then((response: any) => {
+    }).then((response:any)=>{
+            console.log('response2',response);
             let data = response.json();
-            data.then(function (data: DateTypes) {
-            if ( !data || !data.userId ) {
-                // 如果后台没有数据，代表没有授权过，去往snsapi_userinfo授权
+            data.then(function (data:dateTypes) {
+            console.log('data啦啦啦',data);
+            if( !data || !data.userId ) {
+                //如果后台没有数据，代表没有授权过，去往snsapi_userinfo授权
                 _redirectToUserInfo();
                 return true;
             }
-            // 保存用户信息
+            //保存用户信息
                 const userInfo = {
-                    userId: data.userId,
-                    sessionId: data.sessionId,
-                    openId: data.openId,
-                    nickName: data.nickName,
-                    headImage: data.headImage,
+                    userId:data.userId,
+                    sessionId : data.sessionId,
+                    openId : data.openId,
+                    nickName : data.nickName,
+                    headImage : data.headImage,
                     payOpenId: data.payOpenId,
-                    subscribe: data.subscribe, // 是否关注公众号
+                    subscribe : data.subscribe,//是否关注公众号
                 };
 
-            if ( userInfo.nickName && userInfo.nickName.length > 10 ) {
-                userInfo.nickName = userInfo.nickName.substr(0, userInfo.nickName.length - 6);
+            if( userInfo.nickName&& userInfo.nickName.length > 10 ){
+                userInfo.nickName = userInfo.nickName.substr(0, userInfo.nickName.length-6);
             }
-            localStorage.setItem("wx-user-info", JSON.stringify(userInfo));
+            console.log('userInfo333333',userInfo);
+            localStorage.setItem('wx-user-info',JSON.stringify(userInfo));
             shareConfig();
-        });
-    });
+        })
+    })
 };
 
 
@@ -78,16 +81,23 @@ const InitWxApi = () => {
  * @private
  */
 function _getUserInfoFromServer() {
-    // 携带在地址栏的code信息
-    let code = _getUrlPara("code");
-    console.log("code", code);
-    if ( !code ) {
-        // 地址栏里没有code 信息则重定向去微信静默授权
+    //携带在地址栏的code信息
+    let code = _getUrlPara('code');
+    console.log('code',code);
+    if( !code ) {
+        //地址栏里没有code 信息则重定向去微信静默授权
         _redirectToBaseInfo();
         // return true;
     }
-    let jsonData = JSON.stringify({"code": code});
-    return fetch(_getAPIUrl("base_login"), {
+    let jsonData = JSON.stringify({'code': code});
+    let APIUrl = _getAPIUrl('base_login');
+    if( _getUrlPara('isuserinfo') ) {
+        //如果主动授权，则发送注册请求
+        APIUrl = _getAPIUrl('userinfo_authorization');
+        //增加channel
+        jsonData =  JSON.stringify({'code': code , 'channel': '31'});
+    }
+    return fetch(APIUrl, {
         method: "POST",
         body: jsonData,
         headers: {
@@ -113,7 +123,7 @@ const _getAppId = () => {
  * @return {string}
  */
 const _getPoundSignUrl = () => {
-    return location.href.split("#")[1];
+    return location.href.split('#')[1];
 };
 /**
  * 获取html地址
@@ -131,7 +141,7 @@ const _getHtmlUrl = () => {
  * @private
  */
 const shareConfig = () => {
-    let USER_INFO = JSON.parse(localStorage.getItem("wx-user-info"));
+    let USER_INFO = JSON.parse(localStorage.getItem('wx-user-info'));
 
     let imgUrl = USER_INFO.headImage,
 
@@ -141,8 +151,8 @@ const shareConfig = () => {
 
     title = config.SHARE_TITLE;
 
-    if ( !imgUrl ) {
-        imgUrl =  "http://h5test.ichangtou.com.cn/minic/shareLogo.png";
+    if( !imgUrl ) {
+        imgUrl =  'http://h5test.ichangtou.com.cn/minic/shareLogo.png';
     }
 
     let timelineOpt = {
@@ -150,11 +160,11 @@ const shareConfig = () => {
         desc,
         link,
         imgUrl,
-        success: () => {
-            // '朋友圈'
+        success: ()=>{
+            //'朋友圈'
             _onShareSuccess();
         },
-        cancel: () => {
+        cancel: ()=>{
             _onShareFailure();
         }
     }, messageOpt = {
@@ -162,11 +172,11 @@ const shareConfig = () => {
         desc,
         link,
         imgUrl,
-        success: () => {
-            // '消息'
+        success: ()=>{
+            //'消息'
             _onShareSuccess();
         },
-        cancel: () => {
+        cancel: ()=>{
             _onShareFailure();
         }
     }, QQOpt = {
@@ -174,11 +184,11 @@ const shareConfig = () => {
         desc,
         link,
         imgUrl,
-        success: () => {
-            // 'QQ'
+        success: ()=>{
+            //'QQ'
             _onShareSuccess();
         },
-        cancel: () => {
+        cancel: ()=>{
             _onShareFailure();
         }
     }, weiboOpt = {
@@ -186,11 +196,11 @@ const shareConfig = () => {
         desc,
         link,
         imgUrl,
-        success: () => {
-            // 微博
+        success: ()=>{
+            //微博
             _onShareSuccess();
         },
-        cancel: () => {
+        cancel: ()=>{
             _onShareFailure();
         }
     };
@@ -209,7 +219,7 @@ const shareConfig = () => {
  * @private
  */
 const _onShareSuccess = () => {
-    console.log("分享成功");
+    console.log('分享成功');
     wechatPay();
 };
 /***
@@ -218,7 +228,7 @@ const _onShareSuccess = () => {
  * @private
  */
 const _onShareFailure = () => {
-    console.log("分享失败");
+    console.log('分享失败')
 };
 
 /***
@@ -229,9 +239,9 @@ const _onShareFailure = () => {
  */
 const _getShareUrl = () => {
 
-    let userInfo = JSON.parse(localStorage.getItem("wx-user-info"));
-    console.log("总分享时当前用户userId", userInfo.userId);
-    return _getHtmlUrl() + "?share=" + userInfo.userId + "#" + _getPoundSignUrl();
+    let userInfo = JSON.parse(localStorage.getItem('wx-user-info'));
+    console.log('总分享时当前用户userId',userInfo.userId);
+    return _getHtmlUrl() +"?share="+userInfo.userId+ "#" + _getPoundSignUrl();
 };
 
 /***
@@ -239,18 +249,18 @@ const _getShareUrl = () => {
  * @func wechatPay
  */
 const wechatPay = () => {
-    let userInfo = JSON.parse(localStorage.getItem("wx-user-info"));
-    if ( config.payPullingFlag ) {
-        // 如果正在拉取支付数据，阻止，避免重复请求
-        setTimeout(() => {
+    let userInfo = JSON.parse(localStorage.getItem('wx-user-info'));
+    if( config.payPullingFlag ) {
+        //如果正在拉取支付数据，阻止，避免重复请求
+        setTimeout(()=>{
             config.payPullingFlag = false;
         }, 3000);
     }
     let price = 1;
     if (price) {
-        _getOrder(userInfo.userId, price);
+        _getOrder(userInfo.userId,price);
     } else {
-        console.log("支付失败，获取成本价格为空");
+        console.log('支付失败，获取成本价格为空');
     }
 
 };
@@ -262,32 +272,34 @@ const wechatPay = () => {
  * @return {Promise<TResult|T>}
  * @private
  */
-const _getOrder = (userId: number, sum: number) => {
+const _getOrder = (userId, sum) => {
 
-    if ( config.payPullingFlag ) {
+    if( config.payPullingFlag ) {
         return;
     }
 
     if (!userId) {
-        console.log("没有用户信息");
+        console.log('没有用户信息');
         return;
     }
 
-    let userInfo = JSON.parse(localStorage.getItem("wx-user-info"));
+    let userInfo = JSON.parse(localStorage.getItem('wx-user-info'));
+    console.log('openId',userInfo);
+    console.log('openId',userInfo.openId);
     if (!sum) {
         sum = config.COURSE_SUM;
     }
 
     let jsonData = JSON.stringify(
         {
-            "body": "商品成本费" ,
+            "body":'商品成本费' ,
             "deal": {
                 "items": [
                     {
-                        dealType: 102, // 交易类型
+                        dealType: 102, //交易类型
                         itemId: 2,
-                        mchantType: 11, // 商品类型
-                        misc: "",
+                        mchantType: 11, //商品类型
+                        misc: '',
                         price: sum
                     }
                 ]
@@ -297,13 +309,15 @@ const _getOrder = (userId: number, sum: number) => {
         }
     );
 
-    // 扫码支付 和 公众号支付调用不同的接口
-    let apiUrl = _getAPIUrl("get_order");
+    console.log('jsonData'+jsonData);
 
-    // 标记正在拉取数据
+    //扫码支付 和 公众号支付调用不同的接口
+    let apiUrl = _getAPIUrl('get_order');
+
+    //标记正在拉取数据
     config.payPullingFlag = true;
-    // 显示loading界面
-    console.log("请求微信支付");
+    //显示loading界面
+    console.log('请求微信支付');
     return fetch(apiUrl, {
         method: "POST",
         body: jsonData,
@@ -315,18 +329,16 @@ const _getOrder = (userId: number, sum: number) => {
             "X-iChangTou-Json-Api-Session": userInfo.sessionId,
         },
     }).then((response) => {
-        let data = response.json();
-
-        data.then(function (data: dateTypes) {
-          console.log("付费数据", data);
-          localStorage.setItem("wx-user-pay", JSON.stringify(data));
+        response.json().then(function (data:dateTypes) {
+          console.log('付费数据',data);
+          localStorage.setItem('wx-user-pay',JSON.stringify(data));
             _pay();
           //获取订单数据成功后，调用支付控件
-        });
-}).catch((data) => {
-        console.log("请求微信支付失败", data);
+        })
+}).catch((data)=>{
+        console.log('请求微信支付失败',data);
 
-    });
+    })
 };
 
 /**
@@ -334,16 +346,16 @@ const _getOrder = (userId: number, sum: number) => {
  * @func _pay
  * @param data
  */
-const _pay = () => {
+const _pay = () =>{
 
-    let data = JSON.parse(localStorage.getItem("wx-user-pay"));
+    let data = JSON.parse(localStorage.getItem('wx-user-pay'));
 
-    if (typeof WeixinJSBridge === "undefined") {
-        if ( document.addEventListener ) {
-            document.addEventListener("WeixinJSBridgeReady", _pay, false);
-        }else if (document.attachEvent) {
-            document.attachEvent("WeixinJSBridgeReady", _pay);
-            document.attachEvent("onWeixinJSBridgeReady", _pay);
+    if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', _pay, false);
+        }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', _pay);
+            document.attachEvent('onWeixinJSBridgeReady', _pay);
         }
     }else{
         _onBridgeReady(data);
@@ -363,19 +375,20 @@ const _onBridgeReady = (data) => {
         "signType" : "MD5",
         "paySign" : data.paySign
     };
+console.log('WeixinJSBridge',WeixinJSBridge);
         WeixinJSBridge.invoke(
-            "getBrandWCPayRequest",
+            'getBrandWCPayRequest',
             param,
             (res) => {
-                // 标记请求支付完成
+                //标记请求支付完成
                 config.payPullingFlag = false;
 
-                if ( res.err_msg === "get_brand_wcpay_request:ok"  ) {
-                    // 支付成功
-                    console.log("支付成功");
+                if( res.err_msg == "get_brand_wcpay_request:ok"  ) {
+                    //支付成功
+                    console.log('支付成功')
                 }else {
-                    // 取消支付
-                    console.log("支付失败");
+                    //取消支付
+                    console.log('支付失败')
 
                 }
             }
@@ -388,7 +401,7 @@ const _onBridgeReady = (data) => {
  * @returns {string}
  * @private
  */
-const _getAPIUrl = (type): string => {
+const _getAPIUrl = (type):string => {
     return _getAPIDomain() + config.API_URL_GROUP[type];
 };
 
@@ -407,26 +420,26 @@ const _getAPIDomain = () => {
  */
 const _redirectToBaseInfo = () => {
 
-    console.log("config.debug", config.debug);
-    if ( config.debug || !_isWeiXin() ) {
+    console.log('config.debug',config.debug);
+    if( config.debug || !_isWeiXin() ) {
         return;
     }
-    let code = _getUrlPara("code");
-    console.log("code2", code);
+    let code = _getUrlPara('code');
+    console.log('code2',code);
     //不带code的话，强制去静默授权
     let redirectUri = _getRedirectUri(true),
-        scope = "snsapi_base"; //snsapi_userinfo;
+        scope = 'snsapi_base';//snsapi_userinfo;
 
-    console.log("redirectUri", redirectUri);
+    console.log('redirectUri',redirectUri);
     //清除重定向到UserInfo的记录次数
-    localStorage.removeItem("userInfoErrCounter");
+    localStorage.removeItem('userInfoErrCounter');
 
-    let url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + _getAppId() +
-        "&redirect_uri=" + redirectUri +
-        "&response_type=code" +
-        "&scope=" + scope +
-        "&state=new#wechat_redirect";
-    console.log("url1", url);
+    let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + _getAppId() +
+        '&redirect_uri=' + redirectUri +
+        '&response_type=code' +
+        '&scope=' + scope +
+        '&state=new#wechat_redirect';
+    console.log('url1',url);
     window.location.href = url;
 
 };
@@ -435,17 +448,17 @@ const _redirectToBaseInfo = () => {
  * 获取重定向的url
  * @returns {string}
  */
-const _getRedirectUri = (isUserInfo): string => {
+const _getRedirectUri = (isUserInfo):string => {
     let redirectUri = _getHtmlUrl(),
-        prefix = "?";
-    console.log("redirectUri", redirectUri);
-    if ( isUserInfo ) {
+        prefix = '?';
+    console.log('redirectUri',redirectUri);
+    if( isUserInfo ) {
         //区分baseInfo和userInfo
-        prefix = "?";
-        redirectUri = redirectUri  + prefix + "isuserinfo=1";
+        prefix = '?';
+        redirectUri = redirectUri  + prefix + 'isuserinfo=1';
     }
-    let code = _getUrlPara("code");
-    console.log("code", code);
+    let code = _getUrlPara('code');
+    console.log('code',code);
     return encodeURIComponent(redirectUri);
 };
 
@@ -453,32 +466,32 @@ const _getRedirectUri = (isUserInfo): string => {
  * 重定向到UserInfo
  */
 const _redirectToUserInfo = () => {
-    if ( !_isWeiXin() ){
+    if( !_isWeiXin() ){
         //QQ中打开不跳转
         return;
     }
 
     //不带code的话，强制去静默授权
     let redirectUri = _getRedirectUri(true),
-        scope = "snsapi_userinfo"; //snsapi_userinfo
+        scope = 'snsapi_userinfo';//snsapi_userinfo
 
     //记录请求次数，超过3次，则不再请求
     let errCounter = 0;
-    if ( localStorage.getItem("userInfoErrCounter") ){
-        errCounter = parseInt(localStorage.getItem("userInfoErrCounter"));
+    if( localStorage.getItem('userInfoErrCounter') ){
+        errCounter = parseInt(localStorage.getItem('userInfoErrCounter'));
     }
-    if ( errCounter > 3 ) {
-        localStorage.removeItem("userInfoErrCounter");
+    if( errCounter > 3 ) {
+        localStorage.removeItem('userInfoErrCounter');
         return;
     }else {
-        localStorage.setItem("userInfoErrCounter", (errCounter + 1).toString());
+        localStorage.setItem('userInfoErrCounter', (errCounter+1).toString());
     }
 
-    let url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + _getAppId() +
-        "&redirect_uri=" + redirectUri +
-        "&response_type=code" +
-        "&scope=" + scope +
-        "&state=minic#wechat_redirect";
+    let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + _getAppId() +
+        '&redirect_uri=' + redirectUri +
+        '&response_type=code' +
+        '&scope=' + scope +
+        '&state=minic#wechat_redirect';
 
     window.location.href = url;
 };
@@ -489,13 +502,13 @@ const _redirectToUserInfo = () => {
  * @returns {Array}
  */
 
-const _getUrlPara = (key): Array => {
+const _getUrlPara = (key):Array =>{
     let href = location.href,
-        res = href.split( key + "=" );
+        res = href.split( key + '=' );
     console.log(res[1]);
 
-    if ( res[1] ) {
-        res = decodeURIComponent(res[1].split("&")[0]);
+    if( res[1] ) {
+        res = decodeURIComponent(res[1].split('&')[0]);
     }else {
         res = null;
     }
@@ -511,7 +524,7 @@ const _getUrlPara = (key): Array => {
 // todo api token
 const _signWxApi = () => {
 
-    return fetch(_getAPIUrl("wx_sign"), {
+    return fetch(_getAPIUrl('wx_sign'), {
         method: "POST",
         body: JSON.stringify({ "url": location.href }),
         headers: {

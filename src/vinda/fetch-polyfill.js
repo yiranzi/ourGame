@@ -1,1 +1,357 @@
-!function(){"use strict";function t(t){if("string"!=typeof t&&(t=t.toString()),/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(t))throw new TypeError("Invalid character in header field name");return t.toLowerCase()}function e(t){return"string"!=typeof t&&(t=t.toString()),t}function r(t){this.map={};var e=this;t instanceof r?t.forEach(function(t,r){r.forEach(function(r){e.append(t,r)})}):t&&Object.getOwnPropertyNames(t).forEach(function(r){e.append(r,t[r])})}function o(t){if(t.bodyUsed)return fetch.Promise.reject(new TypeError("Already read"));t.bodyUsed=!0}function n(t){return new fetch.Promise(function(e,r){t.onload=function(){e(t.result)},t.onerror=function(){r(t.error)}})}function i(t){var e=new FileReader;return e.readAsArrayBuffer(t),n(e)}function s(t){var e=new FileReader;return e.readAsText(t),n(e)}function a(){return this.bodyUsed=!1,this._initBody=function(t){if(this._bodyInit=t,"string"==typeof t)this._bodyText=t;else if(l.blob&&Blob.prototype.isPrototypeOf(t))this._bodyBlob=t;else if(l.formData&&FormData.prototype.isPrototypeOf(t))this._bodyFormData=t;else{if(t)throw new Error("unsupported BodyInit type");this._bodyText=""}},l.blob?(this.blob=function(){var t=o(this);if(t)return t;if(this._bodyBlob)return fetch.Promise.resolve(this._bodyBlob);if(this._bodyFormData)throw new Error("could not read FormData body as blob");return fetch.Promise.resolve(new Blob([this._bodyText]))},this.arrayBuffer=function(){return this.blob().then(i)},this.text=function(){var t=o(this);if(t)return t;if(this._bodyBlob)return s(this._bodyBlob);if(this._bodyFormData)throw new Error("could not read FormData body as text");return fetch.Promise.resolve(this._bodyText)}):this.text=function(){var t=o(this);return t||fetch.Promise.resolve(this._bodyText)},l.formData&&(this.formData=function(){return this.text().then(h)}),this.json=function(){return this.text().then(function(t){return JSON.parse(t)})},this}function f(t){var e=t.toUpperCase();return y.indexOf(e)>-1?e:t}function u(t,e){if(e=e||{},this.url=t,this.credentials=e.credentials||"omit",this.headers=new r(e.headers),this.method=f(e.method||"GET"),this.mode=e.mode||null,this.referrer=null,("GET"===this.method||"HEAD"===this.method)&&e.body)throw new TypeError("Body not allowed for GET or HEAD requests");this._initBody(e.body)}function h(t){var e=new FormData;return t.trim().split("&").forEach(function(t){if(t){var r=t.split("="),o=r.shift().replace(/\+/g," "),n=r.join("=").replace(/\+/g," ");e.append(decodeURIComponent(o),decodeURIComponent(n))}}),e}function d(t){var e=new r;return t.getAllResponseHeaders().trim().split("\n").forEach(function(t){var r=t.trim().split(":"),o=r.shift().trim(),n=r.join(":").trim();e.append(o,n)}),e}function c(){return b&&!/^(get|post|head|put|delete|options)$/i.test(this.method)?(this.usingActiveXhr=!0,new ActiveXObject("Microsoft.XMLHTTP")):new XMLHttpRequest}function p(t,e){e||(e={}),this._initBody(t),this.type="default",this.url=null,this.status=e.status,this.ok=this.status>=200&&this.status<300,this.statusText=e.statusText,this.headers=e.headers instanceof r?e.headers:new r(e.headers),this.url=e.url||""}if(!self.fetch){r.prototype.append=function(r,o){r=t(r),o=e(o);var n=this.map[r];n||(n=[],this.map[r]=n),n.push(o)},r.prototype.delete=function(e){delete this.map[t(e)]},r.prototype.get=function(e){var r=this.map[t(e)];return r?r[0]:null},r.prototype.getAll=function(e){return this.map[t(e)]||[]},r.prototype.has=function(e){return this.map.hasOwnProperty(t(e))},r.prototype.set=function(r,o){this.map[t(r)]=[e(o)]},r.prototype.forEach=function(t){var e=this;Object.getOwnPropertyNames(this.map).forEach(function(r){t(r,e.map[r])})};var l={blob:"FileReader"in self&&"Blob"in self&&function(){try{return new Blob,!0}catch(t){return!1}}(),formData:"FormData"in self},y=["DELETE","GET","HEAD","OPTIONS","POST","PUT"],b=!("undefined"==typeof window||!window.ActiveXObject||window.XMLHttpRequest&&(new XMLHttpRequest).dispatchEvent);a.call(u.prototype),a.call(p.prototype),self.Headers=r,self.Request=u,self.Response=p,self.fetch=function(t,e){var r;return r=u.prototype.isPrototypeOf(t)&&!e?t:new u(t,e),new fetch.Promise(function(t,e){function o(){return"responseURL"in i?i.responseURL:/^X-Request-URL:/m.test(i.getAllResponseHeaders())?i.getResponseHeader("X-Request-URL"):void 0}function n(){if(4===i.readyState){var r=1223===i.status?204:i.status;if(r<100||r>599)e(new TypeError("Network request failed"));else{var n={status:r,statusText:i.statusText,headers:d(i),url:o()},s="response"in i?i.response:i.responseText;t(new p(s,n))}}}var i=c();"cors"===r.credentials&&(i.withCredentials=!0),i.onreadystatechange=n,self.usingActiveXhr||(i.onload=n,i.onerror=function(){e(new TypeError("Network request failed"))}),i.open(r.method,r.url,!0),"responseType"in i&&l.blob&&(i.responseType="blob"),r.headers.forEach(function(t,e){e.forEach(function(e){i.setRequestHeader(t,e)})}),i.send(void 0===r._bodyInit?null:r._bodyInit)})},fetch.Promise=self.Promise,self.fetch.polyfill=!0}}();
+(function() {
+    'use strict';
+  
+    if (self.fetch) {
+      return
+    }
+  
+    function normalizeName(name) {
+      if (typeof name !== 'string') {
+        name = name.toString();
+      }
+      if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+        throw new TypeError('Invalid character in header field name')
+      }
+      return name.toLowerCase()
+    }
+  
+    function normalizeValue(value) {
+      if (typeof value !== 'string') {
+        value = value.toString();
+      }
+      return value
+    }
+  
+    function Headers(headers) {
+      this.map = {}
+  
+      var self = this
+      if (headers instanceof Headers) {
+        headers.forEach(function(name, values) {
+          values.forEach(function(value) {
+            self.append(name, value)
+          })
+        })
+  
+      } else if (headers) {
+        Object.getOwnPropertyNames(headers).forEach(function(name) {
+          self.append(name, headers[name])
+        })
+      }
+    }
+  
+    Headers.prototype.append = function(name, value) {
+      name = normalizeName(name)
+      value = normalizeValue(value)
+      var list = this.map[name]
+      if (!list) {
+        list = []
+        this.map[name] = list
+      }
+      list.push(value)
+    }
+  
+    Headers.prototype['delete'] = function(name) {
+      delete this.map[normalizeName(name)]
+    }
+  
+    Headers.prototype.get = function(name) {
+      var values = this.map[normalizeName(name)]
+      return values ? values[0] : null
+    }
+  
+    Headers.prototype.getAll = function(name) {
+      return this.map[normalizeName(name)] || []
+    }
+  
+    Headers.prototype.has = function(name) {
+      return this.map.hasOwnProperty(normalizeName(name))
+    }
+  
+    Headers.prototype.set = function(name, value) {
+      this.map[normalizeName(name)] = [normalizeValue(value)]
+    }
+  
+    // Instead of iterable for now.
+    Headers.prototype.forEach = function(callback) {
+      var self = this
+      Object.getOwnPropertyNames(this.map).forEach(function(name) {
+        callback(name, self.map[name])
+      })
+    }
+  
+    function consumed(body) {
+      if (body.bodyUsed) {
+        return fetch.Promise.reject(new TypeError('Already read'))
+      }
+      body.bodyUsed = true
+    }
+  
+    function fileReaderReady(reader) {
+      return new fetch.Promise(function(resolve, reject) {
+        reader.onload = function() {
+          resolve(reader.result)
+        }
+        reader.onerror = function() {
+          reject(reader.error)
+        }
+      })
+    }
+  
+    function readBlobAsArrayBuffer(blob) {
+      var reader = new FileReader()
+      reader.readAsArrayBuffer(blob)
+      return fileReaderReady(reader)
+    }
+  
+    function readBlobAsText(blob) {
+      var reader = new FileReader()
+      reader.readAsText(blob)
+      return fileReaderReady(reader)
+    }
+  
+    var support = {
+      blob: 'FileReader' in self && 'Blob' in self && (function() {
+        try {
+          new Blob();
+          return true
+        } catch(e) {
+          return false
+        }
+      })(),
+      formData: 'FormData' in self
+    }
+  
+    function Body() {
+      this.bodyUsed = false
+  
+  
+      this._initBody = function(body) {
+        this._bodyInit = body
+        if (typeof body === 'string') {
+          this._bodyText = body
+        } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+          this._bodyBlob = body
+        } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+          this._bodyFormData = body
+        } else if (!body) {
+          this._bodyText = ''
+        } else {
+          throw new Error('unsupported BodyInit type')
+        }
+      }
+  
+      if (support.blob) {
+        this.blob = function() {
+          var rejected = consumed(this)
+          if (rejected) {
+            return rejected
+          }
+  
+          if (this._bodyBlob) {
+            return fetch.Promise.resolve(this._bodyBlob)
+          } else if (this._bodyFormData) {
+            throw new Error('could not read FormData body as blob')
+          } else {
+            return fetch.Promise.resolve(new Blob([this._bodyText]))
+          }
+        }
+  
+        this.arrayBuffer = function() {
+          return this.blob().then(readBlobAsArrayBuffer)
+        }
+  
+        this.text = function() {
+          var rejected = consumed(this)
+          if (rejected) {
+            return rejected
+          }
+  
+          if (this._bodyBlob) {
+            return readBlobAsText(this._bodyBlob)
+          } else if (this._bodyFormData) {
+            throw new Error('could not read FormData body as text')
+          } else {
+            return fetch.Promise.resolve(this._bodyText)
+          }
+        }
+      } else {
+        this.text = function() {
+          var rejected = consumed(this)
+          return rejected ? rejected : fetch.Promise.resolve(this._bodyText)
+        }
+      }
+  
+      if (support.formData) {
+        this.formData = function() {
+          return this.text().then(decode)
+        }
+      }
+  
+      this.json = function() {
+        return this.text().then(function (text) {
+            return JSON.parse(text);
+        });
+      }
+  
+      return this
+    }
+  
+    // HTTP methods whose capitalization should be normalized
+    var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+  
+    function normalizeMethod(method) {
+      var upcased = method.toUpperCase()
+      return (methods.indexOf(upcased) > -1) ? upcased : method
+    }
+  
+    function Request(url, options) {
+      options = options || {}
+      this.url = url
+  
+      this.credentials = options.credentials || 'omit'
+      this.headers = new Headers(options.headers)
+      this.method = normalizeMethod(options.method || 'GET')
+      this.mode = options.mode || null
+      this.referrer = null
+  
+      if ((this.method === 'GET' || this.method === 'HEAD') && options.body) {
+        throw new TypeError('Body not allowed for GET or HEAD requests')
+      }
+      this._initBody(options.body)
+    }
+  
+    function decode(body) {
+      var form = new FormData()
+      body.trim().split('&').forEach(function(bytes) {
+        if (bytes) {
+          var split = bytes.split('=')
+          var name = split.shift().replace(/\+/g, ' ')
+          var value = split.join('=').replace(/\+/g, ' ')
+          form.append(decodeURIComponent(name), decodeURIComponent(value))
+        }
+      })
+      return form
+    }
+  
+    function headers(xhr) {
+      var head = new Headers()
+      var pairs = xhr.getAllResponseHeaders().trim().split('\n')
+      pairs.forEach(function(header) {
+        var split = header.trim().split(':')
+        var key = split.shift().trim()
+        var value = split.join(':').trim()
+        head.append(key, value)
+      })
+      return head
+    }
+  
+    var noXhrPatch =
+      typeof window !== 'undefined' && !!window.ActiveXObject &&
+        !(window.XMLHttpRequest && (new XMLHttpRequest).dispatchEvent);
+  
+    function getXhr() {
+      // from backbone.js 1.1.2
+      // https://github.com/jashkenas/backbone/blob/1.1.2/backbone.js#L1181
+      if (noXhrPatch && !(/^(get|post|head|put|delete|options)$/i.test(this.method))) {
+        this.usingActiveXhr = true;
+        return new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      return new XMLHttpRequest();
+    }
+  
+    Body.call(Request.prototype)
+  
+    function Response(bodyInit, options) {
+      if (!options) {
+        options = {}
+      }
+  
+      this._initBody(bodyInit)
+      this.type = 'default'
+      this.url = null
+      this.status = options.status
+      this.ok = this.status >= 200 && this.status < 300
+      this.statusText = options.statusText
+      this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+      this.url = options.url || ''
+    }
+  
+    Body.call(Response.prototype)
+  
+    self.Headers = Headers;
+    self.Request = Request;
+    self.Response = Response;
+  
+    self.fetch = function(input, init) {
+      // TODO: Request constructor should accept input, init
+      var request
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input
+      } else {
+        request = new Request(input, init)
+      }
+  
+      return new fetch.Promise(function(resolve, reject) {
+        var xhr = getXhr();
+        if (request.credentials === 'cors') {
+          xhr.withCredentials = true;
+        }
+  
+        function responseURL() {
+          if ('responseURL' in xhr) {
+            return xhr.responseURL
+          }
+  
+          // Avoid security warnings on getResponseHeader when not allowed by CORS
+          if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+            return xhr.getResponseHeader('X-Request-URL')
+          }
+  
+          return;
+        }
+  
+        function onload() {
+          if (xhr.readyState !== 4) {
+            return
+          }
+          var status = (xhr.status === 1223) ? 204 : xhr.status
+          if (status < 100 || status > 599) {
+            reject(new TypeError('Network request failed'))
+            return
+          }
+          var options = {
+            status: status,
+            statusText: xhr.statusText,
+            headers: headers(xhr),
+            url: responseURL()
+          }
+          var body = 'response' in xhr ? xhr.response : xhr.responseText;
+          resolve(new Response(body, options))
+        }
+        xhr.onreadystatechange = onload;
+        if (!self.usingActiveXhr) {
+          xhr.onload = onload;
+          xhr.onerror = function() {
+            reject(new TypeError('Network request failed'))
+          }
+        }
+  
+        xhr.open(request.method, request.url, true)
+  
+        if ('responseType' in xhr && support.blob) {
+          xhr.responseType = 'blob'
+        }
+  
+        request.headers.forEach(function(name, values) {
+          values.forEach(function(value) {
+            xhr.setRequestHeader(name, value)
+          })
+        })
+  
+        xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+      })
+    }
+    fetch.Promise = self.Promise; // you could change it to your favorite alternative
+    self.fetch.polyfill = true
+  })();

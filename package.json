@@ -17,6 +17,7 @@
     "prod": "gulp prod",
     "webpack": "  webpack  --progress --colors --config webpack/webpack.dev.js",
     "webpack:prod": " rm -rf prod/* && webpack --progress --colors --config webpack/webpack.dll.prod.js && webpack    --progress --colors       --config webpack/webpack.prod.js && gulp build:prod",
+    "compress": "gulp build:prod",
     "doc": " rm -rf lib/* && tsc && gulp doc",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
