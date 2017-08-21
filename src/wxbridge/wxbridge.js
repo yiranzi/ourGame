@@ -1,5 +1,5 @@
-// defined wx global config
-window._WXGLOBAL_ = (function () {
+ // defined wx global config
+ window._WXGLOBAL_ = (function () {
     var _ENVIRONMENT = (function () {
         if (location.href.indexOf('h5.ichangtou.com') > -1) {
             return true;
@@ -59,54 +59,57 @@ Object.freeze(window._WXGLOBAL_);
 
 var WXSDK = {};
 WXSDK.InitWxApi = function () {
-    WXSDK._isWeiXin() && WXSDK._signWxApi().then(function (response) {
-        var date = response.json();
-        date.then(function (date) {
-            wx.config({
-                appid: date.wechat_appid,
-                timestamp: date.timestamp,
-                nonceStr: date.nonceStr,
-                signature: date.signature,
-                __JSAPILIST__: window._WXGLOBAL_.__JSAPILIST__,
-            });
-        });
-    });
-    WXSDK._getUserInfoFromServer().catch(function() {
-        WXSDK._redirectToUserInfo();
-    }).then(function (response) {
-        var data = response.json();
-        console.log(data);
-        data.then(function (data) {
-            if (!data || !data.userId) {
-                WXSDK._redirectToUserInfo();
-                return true;
-            }
-            var userInfo = {
-                userId: data.userId,
-                sessionId: data.sessionId,
-                openId: data.openId,
-                nickName: data.nickName,
-                headImage: data.headImage,
-                payOpenId: data.payOpenId,
-                subscribe: data.subscribe
-            };
-
-            if (userInfo.nickName && userInfo.nickName.length > 10) {
-                userInfo.nickName = userInfo.nickName.substr(0, userInfo.nickName.length -
-                    6);
-            }
-            console.log('userInfo333333', userInfo);
-            localStorage.setItem('wx-user-info', JSON.stringify(userInfo));
-            WXSDK.shareConfig();
+    if (!WXSDK._getUrlPara('code')) {
+        WXSDK._redirectToBaseInfo();
+    } else {
+        WXSDK._getUserInfoFromServer().then(function (response) {
+            var data = response.json();
+            console.log(data);
+            data.then(function (data) {
+                if (!data || !data.userId) {
+                    WXSDK._redirectToUserInfo();
+                    return true;
+                }
+                var userInfo = {
+                    userId: data.userId,
+                    sessionId: data.sessionId,
+                    openId: data.openId,
+                    nickName: data.nickName,
+                    headImage: data.headImage,
+                    payOpenId: data.payOpenId,
+                    subscribe: data.subscribe
+                };
+    
+                if (userInfo.nickName && userInfo.nickName.length > 10) {
+                    userInfo.nickName = userInfo.nickName.substr(0, userInfo.nickName.length - 6);
+                }
+                console.log('userInfo333333', userInfo);
+                alert(userInfo.nickName);
+                localStorage.setItem('wx-user-info', JSON.stringify(userInfo));
+                WXSDK._isWeiXin() && WXSDK._signWxApi().then(function (response) {
+                    var date = response.json();
+                    date.then(function (date) {
+                        wx.config({
+                            appid: date.wechat_appid,
+                            timestamp: date.timestamp,
+                            nonceStr: date.nonceStr,
+                            signature: date.signature,
+                            __JSAPILIST__: window._WXGLOBAL_.__JSAPILIST__,
+                        });
+                        WXSDK.shareConfig();
+                    });
+                });
+            })
+        }, function() {
+            WXSDK._redirectToUserInfo();
         })
-    })
+    }
 };
 
 WXSDK._getUserInfoFromServer = function () {
+    // inject vinda
+    _VINDA_.executeVinda();
     var code = WXSDK._getUrlPara('code');
-    if (!code) {
-        WXSDK._redirectToBaseInfo();
-    }
     var jsonData = JSON.stringify({
         'code': code
     });
@@ -118,8 +121,6 @@ WXSDK._getUserInfoFromServer = function () {
             'channel': '31'
         });
     }
-    // inject vinda
-    _VINDA_.executeVinda();
     return fetch(APIUrl, {
         method: "POST",
         body: jsonData,
@@ -350,7 +351,7 @@ WXSDK._redirectToBaseInfo = function () {
         return;
     }
     var code = WXSDK._getUrlPara('code');
-    var redirectUri = WXSDK._getRedirectUri(true),
+    var redirectUri = WXSDK._getRedirectUri(false),
         scope = 'snsapi_base'; //snsapi_userinfo;
     localStorage.removeItem('userInfoErrCounter');
     var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WXSDK._getAppId() +
@@ -363,7 +364,7 @@ WXSDK._redirectToBaseInfo = function () {
 WXSDK._getRedirectUri = function (isUserInfo) {
     var redirectUri = WXSDK._getHtmlUrl(),
         prefix = '?';
-    if (isUserInfo) {
+    if (!isUserInfo) {
         //区分baseInfo和userInfo
         prefix = '?';
         redirectUri = redirectUri + prefix + 'isuserinfo=1';
@@ -434,7 +435,6 @@ WXSDK._isWeiXin = function () {
 
 Object.freeze(WXSDK);
 window.onload = function () {
-    console.log('window.onload');
     if (!window.fetch) {
         _VINDA_.executeVindaByConfig([{
             name: 'fetch.js',
@@ -448,6 +448,5 @@ window.onload = function () {
         type: 'js'
     }]).then(function() {
         WXSDK.InitWxApi();
-        _VINDA_.executeVinda();
     });
 }
