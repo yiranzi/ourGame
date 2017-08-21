@@ -434,7 +434,6 @@ WXSDK._isWeiXin = function () {
 
 Object.freeze(WXSDK);
 window.onload = function () {
-    console.log('window.onload');
     if (!window.fetch) {
         _VINDA_.executeVindaByConfig([{
             name: 'fetch.js',
