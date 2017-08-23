@@ -102,7 +102,7 @@ WXSDK.InitWxApi = function () {
                                 WXSDK.shareConfig();
                             }
                             wx.error(function (res) {
-                                console.log(res);
+                                alert('服务器开小差啦~请刷新页面');
                             });
                         });
                     });
@@ -111,8 +111,7 @@ WXSDK.InitWxApi = function () {
                         cancelable: false,
                         detail: {
                             type: '_dove_CustomEvent',
-                            name: eventName,
-                            info: eventInfo
+                            info: 'success'
                         }
                     }));
                 })
