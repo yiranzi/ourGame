@@ -100,14 +100,14 @@
                         var date = response.json();
                         date.then(function (date) {
                             wx.config({
-                                appid: window._WXGLOBAL_.__APPID__,
+                                appId: window._WXGLOBAL_.__APPID__,
                                 timestamp: date.timestamp,
                                 nonceStr: date.nonceStr,
                                 signature: date.signature,
                                 jsApiList: window._WXGLOBAL_.__JSAPILIST__,
                             });
                             wx.ready = function() {
-                                WXSDK.shareConfig();
+                                
                             }
                             wx.error(function(res){
                                 console.log(res);
@@ -135,9 +135,17 @@
                             if (userInfo.nickName && userInfo.nickName.length > 10) {
                                 userInfo.nickName = userInfo.nickName.substr(0, userInfo.nickName.length - 6);
                             }
-                            console.log('userInfo333333', userInfo);
-                            alert(userInfo.nickName);
                             localStorage.setItem('wx-user-info', JSON.stringify(userInfo));
+                            WXSDK.shareConfig();
+                            dispatchEvent(new CustomEvent('_dove_CustomEvent', {
+        bubbles: true,
+        cancelable: false,
+        detail: {
+            type: '_dove_CustomEvent',
+            name: eventName,
+            info: eventInfo
+        }
+    }));
                         })
                     }, function() {
                         WXSDK._redirectToUserInfo();
