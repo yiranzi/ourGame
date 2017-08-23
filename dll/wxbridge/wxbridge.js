@@ -65,7 +65,7 @@ WXSDK.InitWxApi = function () {
     if (!WXSDK._getUrlPara('code')) {
         WXSDK._redirectToBaseInfo();
     } else {
-        
+
         WXSDK
             ._getUserInfoFromServer()
             .then(function (response) {
@@ -93,20 +93,20 @@ WXSDK.InitWxApi = function () {
                     }
                     localStorage.setItem('wx-user-info', JSON.stringify(userInfo));
                     WXSDK._isWeiXin() && WXSDK
-                    ._signWxApi()
-                    .then(function (response) {
-                        var date = response.json();
-                        date.then(function (date) {
-                            wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
-                            wx.ready = function () {
-                                WXSDK.shareConfig();
-                            }
-                            wx.error(function (res) {
-                                alert('服务器开小差啦~请刷新页面');
+                        ._signWxApi()
+                        .then(function (response) {
+                            var date = response.json();
+                            date.then(function (date) {
+                                wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
+                                wx.ready = function () {
+                                    WXSDK.shareConfig();
+                                }
+                                wx.error(function (res) {
+                                    alert('服务器开小差啦~请刷新页面');
+                                });
                             });
                         });
-                    });
-                    dispatchEvent(new CustomEvent('_dove_CustomEvent', {
+                    dispatchEvent(new CustomEvent('_dove_FetchUserInfoEvent', {
                         bubbles: true,
                         cancelable: false,
                         detail: {
