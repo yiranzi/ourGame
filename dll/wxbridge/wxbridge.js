@@ -65,18 +65,7 @@ WXSDK.InitWxApi = function () {
     if (!WXSDK._getUrlPara('code')) {
         WXSDK._redirectToBaseInfo();
     } else {
-        WXSDK._isWeiXin() && WXSDK
-            ._signWxApi()
-            .then(function (response) {
-                var date = response.json();
-                date.then(function (date) {
-                    wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
-                    wx.ready = function () {}
-                    wx.error(function (res) {
-                        console.log(res);
-                    });
-                });
-            });
+        
         WXSDK
             ._getUserInfoFromServer()
             .then(function (response) {
@@ -103,7 +92,20 @@ WXSDK.InitWxApi = function () {
                             .substr(0, userInfo.nickName.length - 6);
                     }
                     localStorage.setItem('wx-user-info', JSON.stringify(userInfo));
-                    WXSDK.shareConfig();
+                    WXSDK._isWeiXin() && WXSDK
+                    ._signWxApi()
+                    .then(function (response) {
+                        var date = response.json();
+                        date.then(function (date) {
+                            wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
+                            wx.ready = function () {
+                                WXSDK.shareConfig();
+                            }
+                            wx.error(function (res) {
+                                console.log(res);
+                            });
+                        });
+                    });
                     dispatchEvent(new CustomEvent('_dove_CustomEvent', {
                         bubbles: true,
                         cancelable: false,
