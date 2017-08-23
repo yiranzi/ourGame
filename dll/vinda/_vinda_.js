@@ -176,5 +176,4 @@ _VINDA_.inJectJS = function (targetItemManifest) {
     body.appendChild(link);
 }
 
-
 Object.freeze(_VINDA_);

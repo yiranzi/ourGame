@@ -22,19 +22,13 @@ module.exports = webpackMerge([
         },
         output: {
             path: path.join(__dirname, "..", "prod"),
-            filename: "[name].js",
+            filename: "[name].[hash:16].js",
         },
         plugins: [
             new webpack.DefinePlugin({
                 $$webpack_dev: JSON.stringify(true)
             }),
             new webpack.NamedModulesPlugin(),
-            new HtmlWebpackPlugin({
-                title: 'prod',
-                template: 'indexICT.html',
-                filename: 'indexICT.html',
-                hash: true
-            }),
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require(path.join(__dirname, "..", "prod/vendors-manifest.json")),
