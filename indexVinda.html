@@ -470,6 +470,13 @@
             Object.freeze(WXSDK);
             
             window.onload = function () {
+<<<<<<< HEAD
+                var body = document.getElementsByTagName('body').item(0);
+                var link = document.createElement('div');
+                link.innerText = '';
+                body.appendChild(link);
+=======
+>>>>>>> 854c3e351b81e3d7a7f656f1fa418dbb9988e128
                 if (!window.fetch) {
                     _VINDA_.executeVindaByConfig([{
                         name: 'fetch.js',
