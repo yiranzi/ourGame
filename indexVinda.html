@@ -47,7 +47,7 @@
                 var _TEST_API_DOMAIN = 'https://geek.ichangtou.com/';
                 var __API_URL_DOMAIN__ = _ENVIRONMENT ? _FORMAL_API_DOMAIN : _TEST_API_DOMAIN;
                 var __TEST_APPID__ = 'wx7cf8dd5d80048e42';
-                var __FORMA_APPID__ = 'wx8cc2299282e864f8';
+                var __FORMA_APPID__ = 'wxd6c823882698f217';
                 var __APPID__ = _ENVIRONMENT ? __FORMA_APPID__ : __TEST_APPID__;
                 var __API_URL_GROUP__ = {
                     'wx_sign': 'wx/signature',
@@ -96,6 +96,24 @@
                 if (!WXSDK._getUrlPara('code')) {
                     WXSDK._redirectToBaseInfo();
                 } else {
+                    WXSDK._isWeiXin() && WXSDK._signWxApi().then(function (response) {
+                        var date = response.json();
+                        date.then(function (date) {
+                            wx.config({
+                                appid: window._WXGLOBAL_.__APPID__,
+                                timestamp: date.timestamp,
+                                nonceStr: date.nonceStr,
+                                signature: date.signature,
+                                jsApiList: window._WXGLOBAL_.__JSAPILIST__,
+                            });
+                            wx.ready = function() {
+                                WXSDK.shareConfig();
+                            }
+                            wx.error(function(res){
+                                console.log(res);
+                            });
+                        });
+                    });
                     WXSDK._getUserInfoFromServer().then(function (response) {
                         var data = response.json();
                         console.log(data);
@@ -120,19 +138,6 @@
                             console.log('userInfo333333', userInfo);
                             alert(userInfo.nickName);
                             localStorage.setItem('wx-user-info', JSON.stringify(userInfo));
-                            WXSDK._isWeiXin() && WXSDK._signWxApi().then(function (response) {
-                                var date = response.json();
-                                date.then(function (date) {
-                                    wx.config({
-                                        appid: date.wechat_appid,
-                                        timestamp: date.timestamp,
-                                        nonceStr: date.nonceStr,
-                                        signature: date.signature,
-                                        __JSAPILIST__: window._WXGLOBAL_.__JSAPILIST__,
-                                    });
-                                    WXSDK.shareConfig();
-                                });
-                            });
                         })
                     }, function() {
                         WXSDK._redirectToUserInfo();

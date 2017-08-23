@@ -12,13 +12,13 @@ window._WXGLOBAL_ = (function () {
     var _FORMAL_API_DOMAIN = 'https://growth.ichangtou.com/';
     var _TEST_API_DOMAIN = 'https://geek.ichangtou.com/';
     var __API_URL_DOMAIN__ = _ENVIRONMENT ? _FORMAL_API_DOMAIN : _TEST_API_DOMAIN;
-    var __TEST_APPID__ = 'wxdd25f06df84b18ea';
+    var __TEST_APPID__ = 'wx7cf8dd5d80048e42';
     var __FORMA_APPID__ = 'wx8cc2299282e864f8';
     var __APPID__ = _ENVIRONMENT ? __FORMA_APPID__ : __TEST_APPID__;
     var __API_URL_GROUP__ = {
         'wx_sign': 'wx/signature',
-        'userinfo_authorization': 'wx/h5/authorization/user-info',
-        'base_login': 'wx/h5/base/authorization/user-info',
+        'userinfo_authorization': 'wx/h5/info/login/OA_CTW',
+        'base_login': 'wx/h5/base/login/OA_CTW',
         'get_order': 'payment/wx/jsapi/order',
     };
     Object.freeze(__API_URL_GROUP__);
@@ -94,7 +94,7 @@ WXSDK.InitWxApi = function () {
                             timestamp: date.timestamp,
                             nonceStr: date.nonceStr,
                             signature: date.signature,
-                            __JSAPILIST__: window._WXGLOBAL_.__JSAPILIST__,
+                            jsApiList: window._WXGLOBAL_.__JSAPILIST__,
                         });
                         WXSDK.shareConfig();
                     });
