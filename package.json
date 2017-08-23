@@ -20,7 +20,8 @@
     "compress": "gulp build:prod",
     "doc": " rm -rf lib/* && tsc && gulp doc",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "build-dove":"webpack --progress --colors --config dll/dove/webpack.js"
   },
   "author": "heartblood",
   "license": "ISC",

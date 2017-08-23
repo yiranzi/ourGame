@@ -1,5 +1,5 @@
- // defined wx global config
- window._WXGLOBAL_ = (function () {
+// defined wx global config
+window._WXGLOBAL_ = (function () {
     var _ENVIRONMENT = (function () {
         if (location.href.indexOf('h5.ichangtou.com') > -1) {
             return true;
@@ -434,6 +434,7 @@ WXSDK._isWeiXin = function () {
 };
 
 Object.freeze(WXSDK);
+
 window.onload = function () {
     if (!window.fetch) {
         _VINDA_.executeVindaByConfig([{
