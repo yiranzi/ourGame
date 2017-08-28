@@ -65,7 +65,6 @@ WXSDK.InitWxApi = function () {
     if (!WXSDK._getUrlPara('code')) {
         WXSDK._redirectToBaseInfo();
     } else {
-
         WXSDK
             ._getUserInfoFromServer()
             .then(function (response) {
@@ -97,7 +96,10 @@ WXSDK.InitWxApi = function () {
                         .then(function (response) {
                             var date = response.json();
                             date.then(function (date) {
-                                wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
+                                wx.config({
+                                    appId: window._WXGLOBAL_.__APPID__, 
+                                    timestamp: date.timestamp, 
+                                    nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
                                 wx.ready = function () {
                                     WXSDK.shareConfig();
                                 }

@@ -1,64 +1,61 @@
+// defined wx global config
+window._WXGLOBAL_ = (function () {
+    var _ENVIRONMENT = (function () {
+        if (location.href.indexOf('h5.ichangtou.com') > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    })();
+    var __debug__ = location
+        .href
+        .indexOf('localhost') > 0;
+    var __TEST_API_Token__ = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';
+    var _FORMAL_API_DOMAIN = 'https://growth.ichangtou.com/';
+    var _TEST_API_DOMAIN = 'https://geek.ichangtou.com/';
+    var __API_URL_DOMAIN__ = _ENVIRONMENT
+        ? _FORMAL_API_DOMAIN
+        : _TEST_API_DOMAIN;
+    var __TEST_APPID__ = 'wx7cf8dd5d80048e42';
+    var __FORMA_APPID__ = 'wxd6c823882698f217';
+    var __APPID__ = _ENVIRONMENT
+        ? __FORMA_APPID__
+        : __TEST_APPID__;
+    var __API_URL_GROUP__ = {
+        'wx_sign': 'wx/signature',
+        'userinfo_authorization': 'wx/h5/info/login/OA_CTW',
+        'base_login': 'wx/h5/base/login/OA_CTW',
+        'get_order': 'payment/wx/jsapi/order'
+    };
+    Object.freeze(__API_URL_GROUP__);
+    var __JSAPILIST__ = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo'];
 
-/**
- * 模块配置
- */
-let _ENVIRONMENT:boolean = (function () {
-    if( location.href.indexOf('h5.ichangtou.com') > -1 ){
-        //正式环境
-        return true;
-    }else {
-        //测试
-        return false;
-    }
-})();
-const __debug__:boolean = location.href.indexOf('localhost') > 0;
-const __TEST_API_Token__:string = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';//测试环境 API Token
-const _FORMAL_API_DOMAIN:string = 'https://growth.ichangtou.com/';//生产环境 API域名
-const _TEST_API_DOMAIN:string = 'https://geek.ichangtou.com/';//测试环境 API域名
-const __API_URL_DOMAIN__:string = _ENVIRONMENT ? _FORMAL_API_DOMAIN : _TEST_API_DOMAIN; //开发环境or生产环境
-//API请求url
-const __TEST_APPID__:string = 'wxdd25f06df84b18ea';  //测试环境APPID wx7cf8dd5d80048e42
-const __FORMA_APPID__:string = 'wx8cc2299282e864f8'; //正式环境APPI
-//登录APPID
-const __APPID__:string = _ENVIRONMENT ? __FORMA_APPID__ : __TEST_APPID__;
-//接口
-const __API_URL_GROUP__:Object = {
-    'wx_sign': 'wx/signature', //微信接口签名
-    'userinfo_authorization': 'wx/h5/authorization/user-info', //授权注册
-    'base_login': 'wx/h5/base/authorization/user-info',//静默登录
-    'get_order': 'payment/wx/jsapi/order',  //获取统一订单
-};
+    var __SHARE_DESC__ = '新版react~';
+    var __SHARE_TITLE__ = '我是标题';
 
-const __JSAPILIST__:Array<string> = [
-    'onMenuShareTimeline',
-    'onMenuShareAppMessage',
-    'onMenuShareQQ',
-    'onMenuShareWeibo'
-    ];
+    //支付AppID
+    var _TEST_PAID_APPID = 'wx7cf8dd5d80048e42';
+    var _FORMAL_PAID_APPID = 'wxd6c823882698f217';
 
-const __SHARE_DESC__:string = '新版react~';
-const __SHARE_TITLE__:string = '我是标题';
+    //支付APPID
+    var __PAID_APPID__ = _ENVIRONMENT
+        ? _FORMAL_PAID_APPID
+        : _TEST_PAID_APPID;
+    var __PAYPULLINGFLAG__ = false;
+    var __COURSE_SUM__ = 1;
+    return {
+        __debug__: __debug__,
+        __PAYPULLINGFLAG__: __PAYPULLINGFLAG__,
+        __API_URL_DOMAIN__: __API_URL_DOMAIN__,
+        __TEST_API_Token__: __TEST_API_Token__,
+        __API_URL_GROUP__: __API_URL_GROUP__,
+        __APPID__: __APPID__,
+        __JSAPILIST__: __JSAPILIST__,
+        __SHARE_DESC__: __SHARE_DESC__,
+        __SHARE_TITLE__: __SHARE_TITLE__,
+        __PAID_APPID__: __PAID_APPID__,
+        __COURSE_SUM__: __COURSE_SUM__
+    };
+})(window);
 
-//支付AppID
-const _TEST_PAID_APPID:string = 'wx7cf8dd5d80048e42'; //测试环境支付APPID
-const _FORMAL_PAID_APPID:string = 'wxd6c823882698f217'; //正式环境支付APPID
-
-//支付APPID
-let __PAID_APPID__:string =  _ENVIRONMENT ?_FORMAL_PAID_APPID : _TEST_PAID_APPID;
-let __payPullingFlag__:boolean = false;
-let __COURSE_SUM__:number = 1;
-
-export default  {
-    __debug__: __debug__,
-    __payPullingFlag__:__payPullingFlag__,
-    __API_URL_DOMAIN__:__API_URL_DOMAIN__,
-    __TEST_API_Token__:__TEST_API_Token__,
-    __API_URL_GROUP__:__API_URL_GROUP__,
-    __APPID__:__APPID__,
-    __JSAPILIST__:__JSAPILIST__,
-    __SHARE_DESC__:__SHARE_DESC__,
-    __SHARE_TITLE__:__SHARE_TITLE__,
-    __PAID_APPID__:__PAID_APPID__,
-    __COURSE_SUM__:__COURSE_SUM__
-};
-
+Object.freeze(window._WXGLOBAL_);
