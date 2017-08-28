@@ -36,8 +36,8 @@ module.exports = webpackMerge([
             new webpack.HotModuleReplacementPlugin(),
             new HtmlWebpackPlugin({
                 title: 'dev',
-                template: 'indexICT.html',
-                filename: 'indexICT.html',
+                template: 'index.html',
+                filename: 'index.html',
                 hash: true
 
             }),

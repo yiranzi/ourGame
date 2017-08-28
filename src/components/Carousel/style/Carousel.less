@@ -1,0 +1,67 @@
+.container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    .contentBody{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        box-sizing: border-box;
+        white-space: nowrap;
+        .contentPage {
+            display: inline-block;
+            box-sizing: border-box;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 1s;
+        }
+    }
+    .contentTop {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 10vh;
+    }
+    .contentBottom {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 10vh;
+    }
+    .contentLeft {
+        position: absolute;
+        left: 0;
+        top: 10%;
+        width: 20vw;
+        height: 80vh;
+    }
+    .contentRight {
+        position: absolute;
+        right: 0;
+        top: 10%;
+        width: 20vw;
+        height: 80vh;
+    }
+}
+html, body {
+    text-align: center;
+    overflow-y: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    touch-action:none;
+}
