@@ -21,6 +21,11 @@
         },
         "allowSyntheticDefaultImports": true
     },
+    "awesomeTypescriptLoaderOptions": {
+        "useBabel": true,
+        "useCache": false,
+        "emitRequireType": false
+    },
     "exclude": [
         "node_modules"
     ],

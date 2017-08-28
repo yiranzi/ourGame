@@ -1,8 +1,8 @@
 import * as React from "react";
-import Carousel from "@/components/Carousel/Carousel";
-import { Spin } from "antd";
+import { Spin, Slider, Carousel } from "antd";
 import className from "./style.less";
 
+import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
 
 interface StateTypes {
     Carouselindex: number;
@@ -24,9 +24,16 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
     }
     render() {
         return (
-            <div>
+            <div className={className.div}>
                 <Spin />
-                <div className={(className as any).div}>123123</div>
+                <Slider defaultValue={30}/>
+                <Carousel>
+                    <div><h3>1</h3></div>
+                    <div><h3>2</h3></div>
+                    <div><h3>3</h3></div>
+                    <div><h3>4</h3></div>
+                </Carousel>
+                <AudioPlayer controls/>
             </div>
         );
     }
