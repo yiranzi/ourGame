@@ -3,7 +3,7 @@
         "##module": "some old node version does not support ES6 import yet"
     },
     "compilerOptions": {
-        "target": "es2015",
+        "target": "es6",
         "noImplicitAny": true,
         "experimentalDecorators": true,
         "outDir": "lib",
@@ -12,14 +12,14 @@
         "moduleResolution": "node",
         "listEmittedFiles": false,
         "emitDecoratorMetadata": true,
-        "jsx": "react",
+        "jsx": "preserve",
         "pretty": true,
-        "module": "commonjs",
         "importHelpers": true,
         "baseUrl": "src/",
         "paths": {
             "@/*": ["./*"]
-        }
+        },
+        "allowSyntheticDefaultImports": true
     },
     "exclude": [
         "node_modules"

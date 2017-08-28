@@ -29,6 +29,9 @@ interface PropsTypes {
     rightNode?: JSX.Element;
     leftNode?: JSX.Element;
 }
+interface StateTypes {
+    delta: number;
+}
 
 /**
  * 滑动容器组件
@@ -51,7 +54,7 @@ interface PropsTypes {
  * @param {JSX.Element} leftNode - [可选] 左部slot
  * @param {JSX.Element} children - [可选] 最外部标签需要含有data-index参数，标明该标签的index
  */
-export default class Carousel extends React.PureComponent<PropsTypes> {
+export default class CarouselSwip extends React.PureComponent<PropsTypes, StateTypes> {
     name: "SliderView";
     private readonly touchDistance: number = 10;
     private readonly contentBody = this.getContentBody;
@@ -65,6 +68,9 @@ export default class Carousel extends React.PureComponent<PropsTypes> {
         super(props);
         this.swiping = this.swiping.bind(this);
         this.swiped = this.swiped.bind(this);
+        this.state = {
+            delta: this.props.index
+        };
     }
     /**
      * 获取显示列表元素
@@ -90,9 +96,12 @@ export default class Carousel extends React.PureComponent<PropsTypes> {
             }
         }
     }
+    componentWillReceiveProps(nextProps: Readonly<PropsTypes>) {
+
+    }
     style(index: number) {
         return {
-            transform: this.props.direction === "vertical" ? `translateY(-${100 * this.props.index}%)` : `translateX(-${100 * this.props.index}%)`,
+            transform: this.props.direction === "vertical" ? `translateY(-${100 * this.state.delta}%)` : `translateX(-${100 * this.state.delta}%)`,
             padding: this.props.contentPadding,
             paddingTop: this.props.contentPaddingTop,
             paddingBottom: this.props.contentPaddingBottom,
@@ -100,8 +109,7 @@ export default class Carousel extends React.PureComponent<PropsTypes> {
             paddingRight: this.props.contentPaddingRight,
             visibility: index === this.props.index || index + 1 === this.props.index || index - 1 === this.props.index ? "visible" : "hidden",
             display: this.props.direction === "vertical" ? "block" : "inline-block",
-            verticalAlign: "top",
-            transition: `transform ${this.props.animationDuration}s`
+            verticalAlign: "top"
         };
     }
     swiped() {
@@ -109,19 +117,35 @@ export default class Carousel extends React.PureComponent<PropsTypes> {
     }
     swiping(e: any, deltaX: number, deltaY: number, absX: number, absY: number, velocity: number) {
         if (this.props.direction === "horizontal") {
-
+            this.setState(function(prevState: StateTypes, props: PropsTypes) {
+                return {
+                    delta: props.index + deltaX / document.body.clientWidth
+                };
+            });
             if (deltaX > 80 && velocity > 1 && this.touchLock) {
                 this.touchLock = false;
                 this.props.handleIndexChangeCallback && this.props.handleIndexChangeCallback(1);
             } else if (deltaX < -80 && velocity > 1 && this.touchLock) {
+                this.setState({
+                    delta: 0
+                });
                 this.touchLock = false;
                 this.props.handleIndexChangeCallback && this.props.handleIndexChangeCallback(-1);
             }
         } else {
+            this.setState({
+                delta: deltaY / document.body.clientHeight
+            });
             if (deltaY > 150 && velocity > 1 && this.touchLock) {
+                this.setState({
+                    delta: 0
+                });
                 this.touchLock = false;
                 this.props.handleIndexChangeCallback && this.props.handleIndexChangeCallback(1);
             } else if (deltaY < -100 && velocity > 1 && this.touchLock) {
+                this.setState({
+                    delta: 0
+                });
                 this.touchLock = false;
                 this.props.handleIndexChangeCallback && this.props.handleIndexChangeCallback(-1);
             }

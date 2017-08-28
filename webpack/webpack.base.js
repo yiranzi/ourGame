@@ -5,6 +5,13 @@ const path = require("path");
 const webpack = require("webpack");
 const Visualizer = require("webpack-visualizer-plugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+
+const extractLess = new ExtractTextPlugin({
+    filename: "app.css",
+    allChunks: true
+});
+
 module.exports = {
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
@@ -27,16 +34,46 @@ module.exports = {
                         configFileName: process.env.NODE_ENV === "production" ? "tsconfig.webpack.prod.json" : "tsconfig.webpack.json",
                         // FIXME: needed for HMR but conflicts with `rootDir` in tsconfig.json
                         transpileOnly: true,
-                        isolatedModules: true
+                        isolatedModules: true,
+                        babelOptions: {
+                            "presets": ["react", "es2015"],
+                            "plugins": [
+                              ["import", { "libraryName": "antd", "style": true }]
+                            ]
+                        }
                     }
                 }
             },
             {
                 test: /\.less/,
                 exclude: /(node_modules|bower_components)/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader'
+                use: extractLess.extract({
+                    use: [
+                        {
+                            loader: "css-loader?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]"
+                        }, 
+                        {
+                            loader: "less-loader"
+                        }
+                    ],
+                    // use style-loader in development
+                    fallback: "style-loader"
+                })
+            },
+            {
+                test: /\.less/,
+                exclude: /(src)/,
+                use: extractLess.extract({
+                    use: [
+                        {
+                            loader: "css-loader"
+                        }, 
+                        {
+                            loader: "less-loader"
+                        }
+                    ],
+                    // use style-loader in development
+                    fallback: "style-loader"
                 })
             },
             {
@@ -61,10 +98,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new Visualizer(),
-        new ExtractTextPlugin({
-            filename: 'app.css',
-            allChunks: true
-        })
+        extractLess,
+        new Visualizer()
     ]
 };

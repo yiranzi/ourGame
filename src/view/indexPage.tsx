@@ -1,5 +1,7 @@
 import * as React from "react";
 import Carousel from "@/components/Carousel/Carousel";
+import { Spin } from "antd";
+import className from "./style.less";
 
 
 interface StateTypes {
@@ -22,34 +24,10 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
     }
     render() {
         return (
-            <Carousel
-                index={this.state.Carouselindex}
-                contentPaddingTop={"20%"}
-                handleIndexChangeCallback={this.handleIndexChangeCallback} 
-                direction={"horizontal"}
-                animationDuration={.5}>
-                <div data-index="1" style={{ height: "100%" }}>
-                    <h1 >1</h1>
-                </div>
-                <div data-index="2" style={{ height: "100%" }}>
-                    <h1 >2</h1>
-                </div>
-                <div data-index="3" style={{ height: "100%" }}>
-                    <h1 >3</h1>
-                </div>
-                <div data-index="4" style={{ height: "100%" }}>
-                    <h1>4</h1>
-                </div>
-                <div data-index="5" style={{ height: "100%" }}>
-                    <h1>5</h1>
-                </div>
-                <div data-index="6" style={{ height: "100%" }}>
-                    <h1 >6</h1>
-                </div>
-                <div data-index="7" style={{ height: "100%" }}>
-                    <h1>7</h1>
-                </div>
-            </Carousel>
+            <div>
+                <Spin />
+                <div className={(className as any).div}>123123</div>
+            </div>
         );
     }
 }

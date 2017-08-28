@@ -5,17 +5,22 @@
         "##module": "webpack 2 already supports ES6 import, just use it"
     },
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "noImplicitAny": true,
         "experimentalDecorators": true,
         "sourceMap": true,
         "moduleResolution": "node",
         "listEmittedFiles": false,
         "emitDecoratorMetadata": true,
-        "jsx": "react",
+        "jsx": "preserve",
         "pretty": true,
-        "module": "es6",
-        "importHelpers": true
+        "importHelpers": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "awesomeTypescriptLoaderOptions": {
+        "useBabel": true,
+        "useCache": false,
+        "emitRequireType": false
     },
     "exclude": [
         "node_modules"
