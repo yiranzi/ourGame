@@ -14,7 +14,7 @@ const extractLess = new ExtractTextPlugin({
 
 module.exports = {
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx"],
+        extensions: ['.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.json'],
         alias: {
             'src': path.resolve(__dirname, '../src'),
             'assets': path.resolve(__dirname, '../src/assets'),
@@ -38,11 +38,27 @@ module.exports = {
                         babelOptions: {
                             "presets": ["react", "es2015"],
                             "plugins": [
-                              ["import", { "libraryName": "antd", "style": true }]
+                              ["import", [{ "libraryName": "antd-mobile", "style": true }, { "libraryName": "antd", "style": true }]]
                             ]
                         }
                     }
                 }
+            },
+            {
+                test: /\.css/,
+                exclude: /(src)/,
+                use: extractLess.extract({
+                    use: [
+                        {
+                            loader: "css-loader"
+                        }, 
+                        {
+                            loader: "less-loader"
+                        }
+                    ],
+                    // use style-loader in development
+                    fallback: "style-loader"
+                })
             },
             {
                 test: /\.less/,

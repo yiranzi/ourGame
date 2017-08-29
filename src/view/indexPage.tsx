@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Spin, Slider, Carousel } from "antd";
+import { Spin, Slider, Carousel, Steps } from "antd";
 import className from "./style.less";
 
 import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
+import { Button, List } from "antd-mobile";
 
 interface StateTypes {
     Carouselindex: number;
@@ -25,15 +26,15 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
     render() {
         return (
             <div className={className.div}>
-                <Spin />
-                <Slider defaultValue={30}/>
-                <Carousel>
-                    <div><h3>1</h3></div>
-                    <div><h3>2</h3></div>
-                    <div><h3>3</h3></div>
-                    <div><h3>4</h3></div>
-                </Carousel>
-                <AudioPlayer controls/>
+                <Button type="primary" inline style={{ marginRight: "0.08rem" }}>inline</Button>
+                <Steps size="small" current={1}>
+                    <Steps.Step />
+                    <Steps.Step />
+                    <Steps.Step />
+                    <Steps.Step />
+                    <Steps.Step />
+                    <Steps.Step />
+                </Steps>
             </div>
         );
     }
