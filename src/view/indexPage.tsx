@@ -2,9 +2,12 @@ import * as React from "react";
 import { Button as Antdbutton, Spin, Slider, Carousel, Steps } from "antd";
 import { Button, List } from "antd-mobile";
 
+import Card from "@/components/Card";
+
 import className from "./style.less";
 
-import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
+import { AudioPlayerWithoutTime } from "@/components/AudioPlayer";
+
 
 interface StateTypes {
     Carouselindex: number;
@@ -27,16 +30,7 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
     render() {
         return (
             <div className={className.div}>
-                <Button type="primary" inline style={{ marginRight: "0.08rem" }}>inline</Button>
-                <Antdbutton type="primary" style={{ marginRight: "0.08rem" }}>inline</Antdbutton>
-                <Steps size="small" current={1}>
-                    <Steps.Step />
-                    <Steps.Step />
-                    <Steps.Step />
-                    <Steps.Step />
-                    <Steps.Step />
-                    <Steps.Step />
-                </Steps>
+                <AudioPlayerWithoutTime src={"https://source.ichangtou.com/file/sound/d9a3e3f2/13/Sp3i0B9lfjjj_01_01.mp3"}></AudioPlayerWithoutTime>
             </div>
         );
     }

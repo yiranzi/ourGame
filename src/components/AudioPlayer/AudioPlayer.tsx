@@ -25,7 +25,7 @@ interface PropsTypes {
 }
 
 class ReactAudioPlayer extends React.Component<PropsTypes> {
-    private audioEl: HTMLAudioElement = undefined;
+    public audioEl: HTMLAudioElement = undefined;
     private listenTracker: NodeJS.Timer = undefined;
     public static defaultProps: Partial<PropsTypes> = {
         autoPlay: false,
@@ -70,7 +70,7 @@ class ReactAudioPlayer extends React.Component<PropsTypes> {
         });
 
         // When audio play starts
-        audio.addEventListener("play", (e) => {
+        audio.addEventListener("play", (e: any) => {
             this.setListenTrack();
             this.props.onPlay(e);
         });
