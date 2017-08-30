@@ -36,9 +36,9 @@ if ($$webpack_dev && (module as HMRModule).hot) {
 }
 
 import IndexPage from "./view/indexPage";
-
+import AppRouter from "./router/AppRouter";
 ReactDOM.render(
-    <IndexPage />,
+    <AppRouter />,
     document.getElementById("app")
 );
 
