@@ -93,7 +93,7 @@ module.exports = {
                 })
             },
             {
-                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                test: /\.(png|jpe?g|gif|svg|eot|woff|woff2|ttf)(\?.*)?$/,
                 use: {
                     loader: 'url-loader',
                     query: {
