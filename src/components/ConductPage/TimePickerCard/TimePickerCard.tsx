@@ -7,7 +7,7 @@ export default function TimePickerCard() {
         <Card>
             <div className={className.wrapper}>
                 <Picker data={seasons} cols={1}>
-                    <List.Item arrow="horizontal">选择地区（单列）</List.Item>
+                    <List.Item arrow="horizontal">选择期数</List.Item>
                 </Picker>
             </div>
         </Card>
@@ -16,7 +16,7 @@ export default function TimePickerCard() {
 
 const seasons = [
     {
-        label: "2015",
+        label: "8 月 31 日",
       },
       {
         label: "2014",

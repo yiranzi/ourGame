@@ -39,9 +39,3 @@ ReactDOM.render(
     <AppRouter />,
     document.getElementById("app")
 );
-
-import WxSdk from "@/assets/js/jweixin";
-
-
-
-console.log(WxSdk);

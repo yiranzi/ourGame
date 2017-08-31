@@ -8,6 +8,7 @@ import {
 
 import NoMatchPage from "@/view/NoMatchPage";
 import IndexPage from "@/view/IndexPage/IndexPage";
+
 export default function AppRouter() {
     return (
         <Router>
