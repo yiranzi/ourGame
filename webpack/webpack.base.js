@@ -25,7 +25,7 @@ module.exports = {
     },
     module: {
         rules: [
-            // load ts/tsx with ts-loader
+            // load ts/tsx with awesome-typescript-loader
             {
                 test: /\.tsx?$/,
                 use: {
@@ -38,7 +38,7 @@ module.exports = {
                         babelOptions: {
                             "presets": ["react", "es2015"],
                             "plugins": [
-                              ["import", [{ "libraryName": "antd-mobile", "style": true }, { "libraryName": "antd", "style": true }]]
+                                ["import", [{ "libraryName": "antd-mobile", "style": true }, { "libraryName": "antd", "style": true }]]
                             ]
                         }
                     }
@@ -51,7 +51,7 @@ module.exports = {
                     use: [
                         {
                             loader: "css-loader"
-                        }, 
+                        },
                         {
                             loader: "less-loader"
                         }
@@ -67,7 +67,7 @@ module.exports = {
                     use: [
                         {
                             loader: "css-loader?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]"
-                        }, 
+                        },
                         {
                             loader: "less-loader"
                         }
@@ -83,7 +83,7 @@ module.exports = {
                     use: [
                         {
                             loader: "css-loader"
-                        }, 
+                        },
                         {
                             loader: "less-loader"
                         }
@@ -93,7 +93,7 @@ module.exports = {
                 })
             },
             {
-                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                test: /\.(png|jpe?g|gif|svg|eot|woff|woff2|ttf)(\?.*)?$/,
                 use: {
                     loader: 'url-loader',
                     query: {
