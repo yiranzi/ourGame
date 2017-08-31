@@ -4,6 +4,7 @@
 
 import * as React from "react";
 import * as className from "./style/ChooseBar.less";
+import Card from "@/components/Card/Card";
 
 interface ChooseBarPropsTypes {
     chooseStatus: string;//选择题的答题状态
@@ -12,7 +13,9 @@ interface ChooseBarPropsTypes {
     answerList: Array;//问题选项
     selectIndex: number;//选中的选项
     cbfClick: Function;//点击回调
-    cbfPost: Function//提交回调
+    cbfPost: Function;//提交回调
+    cbfNext: Function;//提交回调
+    lastQuestion: Boolean;
 }
 
 export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
@@ -30,7 +33,7 @@ export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
 
     renderChooseDiv() {
         let arr = [];
-        arr.push(this.renderFirst());
+        arr.push(<Card>{this.renderFirst()}</Card>);
         arr.push(this.renderSecond());
         return arr;
 
@@ -59,10 +62,25 @@ export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
 
     //反馈/提示
     renderSecond() {
+        let style = {
+            backgroundColor: 'blue';
+        }
         let arr = [];
-        arr.push(<div key = {3}>{this.renderAnswer()}</div>);
-        arr.push(<div key = {4}>{this.renderTips()}</div>);
+        arr.push(<div key = {1}>{this.renderAnswer()}</div>);
+        arr.push(<Card key = {2}>{this.renderTips()}</Card>);
+        arr.push(<Card styleDefault = {style}  onClick = {this.props.cbfNext} key = {3}>{this.renderReady()}</Card>);
         return arr;
+    }
+
+    renderReady() {
+        if ( this.props.chooseStatus !== 'notChoose' ) {
+            if(this.props.lastQuestion) {
+                return(<div>我准备好啦~开始学习下一节</div>)
+            } else {
+                return(<div>都完成了!</div>)
+            }
+
+        }
     }
 
     renderAnswer() {

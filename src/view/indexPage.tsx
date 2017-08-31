@@ -18,6 +18,7 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
         super();
         this.cbfChooseBarClick = this.cbfChooseBarClick.bind(this);
         this.cbfPostAnswer = this.cbfPostAnswer.bind(this);
+        this.cbfNextLesson = this.cbfNextLesson.bind(this);
         this.cbfOnEnter = this.cbfOnEnter.bind(this);
         this.cbfOnClickReward = this.cbfOnClickReward.bind(this);
         this.handleIndexChangeCallback = this.handleIndexChangeCallback.bind(this);
@@ -62,6 +63,12 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
         }
     }
 
+    //下一节/完成
+    cbfNextLesson() {
+        //上报父节点 切换下一节.
+        console.log('cbfNext');
+    }
+
     render() {
         return (
             <div className={className.div}>
@@ -91,11 +98,13 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
                 <ChooseBar
                     cbfClick = {this.cbfChooseBarClick}
                     cbfPost = {this.cbfPostAnswer}
+                    cbfNext = {this.cbfNextLesson}
                     chooseStatus = { this.state.chooseStatus }
                     introduce = {"题目内容"}
                     tips = {"题目提示"}
                     answerList = {[0, 1, 2, 3]}
                     selectIndex = { this.state.selectIndex }
+                    lastQuestion = {false}
                 />
 
                 {/*<Button className="btn" type="primary">primary 按钮</Button>*/}
