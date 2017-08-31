@@ -13,7 +13,6 @@ export default function AppRouter() {
     return (
         <Router>
             <Switch>
-                <Route path="/" component={IndexPage} />
                 <Route path="/index" component={IndexPage} />
                 <Route component={NoMatchPage} />
             </Switch>

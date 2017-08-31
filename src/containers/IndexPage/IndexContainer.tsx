@@ -10,19 +10,28 @@ import {
     Steps
     } from "antd";
 import { Button, List } from "antd-mobile";
+import { observer } from "mobx-react";
 import { CourseCatalogCard, SummaryCard, CourseStartTimeCard, TimePickerCard } from "@/components/ConductPage";
 import ImageCard from "@/components/ImageCard";
 
 interface StateTypes {
     Carouselindex: number;
 }
-export default class IndexContainer extends React.Component<{}, StateTypes> {
+
+interface PropsTypes {
+    DALState: any;
+}
+
+@observer
+class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     constructor() {
         super();
         this.handleIndexChangeCallback = this.handleIndexChangeCallback.bind(this);
         this.state = {
             Carouselindex: 0,
         };
+    }
+    componentWillMount() {
     }
     handleIndexChangeCallback(index: number) {
         if (this.state.Carouselindex + index > -1 && this.state.Carouselindex + index < 7) {
@@ -33,44 +42,32 @@ export default class IndexContainer extends React.Component<{}, StateTypes> {
     }
     render() {
         return (
-            <div className={className.div}>
+            <div className={className.div} onClick={this.props.DALState.fetchIndexPageState}>
                 <div style={{paddingLeft: 0, paddingRight: 0}}>
-                    <ImageCard src={require("@/assets/image/IMG_1508.jpg")}></ImageCard>
+                    <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
                 </div>
                 <div>
-                    <AudioPlayerPPTCard>
-                        <div><h3>1</h3></div>
-                        <div><h3>2</h3></div>
-                        <div><h3>3</h3></div>
-                        <div><h3>4</h3></div>
-                        <div><h3>5</h3></div>
-                        <div><h3>6</h3></div>
-                    </AudioPlayerPPTCard>
+                    <TimePickerCard data={this.props.DALState.timePicker}></TimePickerCard>
                 </div>
                 <div>
-                    <TimePickerCard></TimePickerCard>
-                </div>
-                <div>
-                    <CourseStartTimeCard mouth={"8"} day={"30"}></CourseStartTimeCard>
-                </div>
-                <div>
-                    <AudioPlayerWithoutTime src={"https://source.ichangtou.com/file/sound/d9a3e3f2/13/Sp3i0B9lfjjj_01_01.mp3"} preload={"auto"}></AudioPlayerWithoutTime>
+                    <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
                 </div>
                 <div>
                     <SummaryCard>
-                        课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍课程介绍
+                        {this.props.DALState.summary}
                     </SummaryCard>
                 </div>
                 <div>
                     <CourseCatalogCard>
-                        {["基金指数", "基金定投", "定投场内外", "策略", "温度指数", "简投法"]}
+                        {this.props.DALState.catalog}
                     </CourseCatalogCard>
                 </div>
                 <br />
                 <div className={className.submitButton}>
-                    XXX 元，立即学习
+                    {this.props.DALState.price} 元，立即学习
                 </div>
             </div>
         );
     }
 }
+export default IndexContainer;

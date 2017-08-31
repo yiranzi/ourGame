@@ -10,10 +10,7 @@ export default function NoMatchPage() {
             paddingTop: "6rem",
             backgroundColor: "#FAEBD7"
         }}>
-            <Card>
-                <ICTCube />
-                <h1 style={{ marginTop: "4rem", marginBottom: "4rem" }}>不要搞事情</h1>
-            </Card>
+            <ICTCube />
         </div>
     );
 }
