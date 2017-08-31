@@ -98,7 +98,7 @@ module.exports = {
                     loader: 'url-loader',
                     query: {
                         limit: 10000,
-                        name: path.resolve(__dirname, '../dev/img/[name].[hash:7].[ext]')
+                        name: 'assets/img/[name].[hash:7].[ext]'
                     }
                 }
             },
@@ -107,7 +107,8 @@ module.exports = {
                 use: {
                     loader: 'url-loader',
                     query: {
-                        name: path.resolve(__dirname, '../dev/audio/[name].[hash:7].[ext]')
+                        limit: 10000,
+                        name: 'assets/audio/[name].[hash:7].[ext]'
                     }
                 }
             }

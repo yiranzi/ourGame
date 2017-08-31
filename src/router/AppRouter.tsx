@@ -1,18 +1,19 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Route,
     Link,
     Switch
 } from "react-router-dom";
 
-import indexPage from "@/view/indexPage";
 import NoMatchPage from "@/view/NoMatchPage";
+import IndexPage from "@/view/IndexPage/IndexPage";
 export default function AppRouter() {
     return (
         <Router>
             <Switch>
-                <Route path="/index" component={indexPage} />
+                <Route path="/" component={IndexPage} />
+                <Route path="/index" component={IndexPage} />
                 <Route component={NoMatchPage} />
             </Switch>
         </Router>
