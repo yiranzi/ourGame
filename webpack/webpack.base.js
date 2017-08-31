@@ -6,12 +6,10 @@ const webpack = require("webpack");
 const Visualizer = require("webpack-visualizer-plugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-
 const extractLess = new ExtractTextPlugin({
     filename: "app.css",
     allChunks: true
 });
-
 module.exports = {
     resolve: {
         extensions: ['.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.json'],
@@ -62,6 +60,33 @@ module.exports = {
             },
             {
                 test: /\.less/,
+                include: /(antd-mobile)/,
+                use: extractLess.extract({
+                    use: [
+                        {
+                            loader: "css-loader"
+                        }, 
+                        {
+                            loader: "postcss-loader",
+                            options: { 
+                                plugins: (loader) => [
+                                    require("postcss-pxtorem")({
+                                        rootValue: 40,
+                                        propWhiteList: []
+                                    })
+                                ]
+                            } 
+                        },
+                        {
+                            loader: "less-loader"
+                        }
+                    ],
+                    // use style-loader in development
+                    fallback: "style-loader"
+                })
+            },
+            {
+                test: /\.less/,
                 exclude: /(node_modules|bower_components)/,
                 use: extractLess.extract({
                     use: [
@@ -78,7 +103,7 @@ module.exports = {
             },
             {
                 test: /\.less/,
-                exclude: /(src)/,
+                exclude: /(src|antd-mobile)/,
                 use: extractLess.extract({
                     use: [
                         {

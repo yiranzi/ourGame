@@ -10,7 +10,7 @@ import {
     Steps
     } from "antd";
 import { Button, List } from "antd-mobile";
-import { CourseCatalogCard, SummaryCard, CourseStartTimeCard } from "@/components/ConductPage";
+import { CourseCatalogCard, SummaryCard, CourseStartTimeCard, TimePickerCard } from "@/components/ConductPage";
 import ImageCard from "@/components/ImageCard";
 
 interface StateTypes {
@@ -46,6 +46,9 @@ export default class IndexContainer extends React.Component<{}, StateTypes> {
                         <div><h3>5</h3></div>
                         <div><h3>6</h3></div>
                     </AudioPlayerPPTCard>
+                </div>
+                <div>
+                    <TimePickerCard></TimePickerCard>
                 </div>
                 <div>
                     <CourseStartTimeCard mouth={"8"} day={"30"}></CourseStartTimeCard>

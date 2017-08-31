@@ -7,8 +7,6 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-
 declare const $$webpack_dev: boolean;
 
 type HMRModule = typeof module & {
