@@ -70,6 +70,9 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
     }
 
     render() {
+        let gapStyle = {
+            padding: '1rem';
+        }
         return (
             <div className={className.div}>
                 <TeacherIntro
@@ -77,15 +80,18 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
                     headImage = {"https://github.com/bebraw.png?v=3&s=150"}
                     introTxt = {`123123`}
                 />
-                <LessonBar
-                    dayId = {1}
-                    dayTitle = {"导师介绍"}
-                    subTitle = {"导师介绍"}
-                    ifEnter = {true}
-                    cbfOnEnter = {this.cbfOnEnter}
-                    cbfOnClickReward = {this.cbfOnClickReward}
-                    rewardIcon = {"https://github.com/bebraw.png?v=3&s=150"}
-                />
+                <div style = {gapStyle}>
+                    <LessonBar
+                        dayId = {1}
+                        dayTitle = {"导师介绍"}
+                        subTitle = {"导师介绍"}
+                        ifEnter = {true}
+                        cbfOnEnter = {this.cbfOnEnter}
+                        cbfOnClickReward = {this.cbfOnClickReward}
+                        rewardIcon = {"https://github.com/bebraw.png?v=3&s=150"}
+                    />
+                </div>
+                <div style = {gapStyle}>
                 <LessonBar
                     dayId = {2}
                     dayTitle = {"导师介绍"}
@@ -95,13 +101,14 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
                     cbfOnClickReward = {this.cbfOnClickReward}
                     rewardIcon = {"https://github.com/bebraw.png?v=3&s=150"}
                 />
+                </div>
                 <ChooseBar
                     cbfClick = {this.cbfChooseBarClick}
                     cbfPost = {this.cbfPostAnswer}
                     cbfNext = {this.cbfNextLesson}
                     chooseStatus = { this.state.chooseStatus }
-                    introduce = {"题目内容"}
-                    tips = {"题目提示"}
+                    introduce = {"题目内容题目内容题目内容题目内容题目内容题目内容题目内容"}
+                    tips = {"题目提示题目提示题目提示题目提示题目提示题目提示题目提示题目提示题目提示题目提示"}
                     answerList = {[0, 1, 2, 3]}
                     selectIndex = { this.state.selectIndex }
                     lastQuestion = {false}

@@ -5,6 +5,7 @@
 import * as React from "react";
 import * as className from "./style/ChooseBar.less";
 import Card from "@/components/Card/Card";
+import { Alert } from 'antd';
 
 interface ChooseBarPropsTypes {
     chooseStatus: string;//选择题的答题状态
@@ -27,13 +28,16 @@ export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
     }
     render() {
         return(
+
             <div className={(className as any).container}>{this.renderChooseDiv()}</div>
         );
     }
 
     renderChooseDiv() {
         let arr = [];
-        arr.push(<Card>{this.renderFirst()}</Card>);
+
+
+        arr.push(<Card><div className={(className as any).answerPart}>{this.renderFirst()}</div></Card>);
         arr.push(this.renderSecond());
         return arr;
 
@@ -63,21 +67,22 @@ export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
     //反馈/提示
     renderSecond() {
         let style = {
-            backgroundColor: 'blue';
-        }
+            backgroundColor: '#108ee9';
+            color: 'white';
+        };
         let arr = [];
-        arr.push(<div key = {1}>{this.renderAnswer()}</div>);
+        arr.push(<Card key = {1}>{this.renderAnswer()}</Card>);
         arr.push(<Card key = {2}>{this.renderTips()}</Card>);
-        arr.push(<Card styleDefault = {style}  onClick = {this.props.cbfNext} key = {3}>{this.renderReady()}</Card>);
+        arr.push(<Card styleDefault = {style}  key = {3}>{this.renderReady()}</Card>);
         return arr;
     }
 
     renderReady() {
         if ( this.props.chooseStatus !== 'notChoose' ) {
-            if(this.props.lastQuestion) {
-                return(<div>我准备好啦~开始学习下一节</div>)
+            if ( this.props.lastQuestion ) {
+                return(<div onClick = {this.props.cbfNext}>我准备好啦~开始学习下一节</div>);
             } else {
-                return(<div>都完成了!</div>)
+                return(<div onClick = {this.props.cbfNext}>都完成了!</div>);
             }
 
         }
@@ -85,9 +90,19 @@ export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
 
     renderAnswer() {
         if ( this.props.chooseStatus === 'true' ) {
-            return(<div>正确</div>)
+            return(<Alert
+                message="恭喜你回答正确"
+                description="Detailed description and advices about successful copywriting."
+                type="success"
+                showIcon
+            />);
         } else if ( this.props.chooseStatus === 'false' ) {
-            return(<div>错误</div>)
+            return(<Alert
+                message="哎呀答错了"
+                description="Detailed description and advices about successful copywriting."
+                type="error"
+                showIcon
+            />);
         }
     }
 
@@ -112,8 +127,8 @@ export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
         let style = {};
         let styleActive = {
             color: 'white';
-            backgroundColor: 'blue';
-        };
+        backgroundColor: '#108ee9';
+    };
         let styleUnActive = {};
         if ( this.props.selectIndex === index ) {
             style = styleActive;

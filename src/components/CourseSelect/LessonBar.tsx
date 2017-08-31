@@ -4,6 +4,7 @@
 
 import * as React from "react";
 import * as className from "./style/LessonBar.less";
+import Card from "@/components/Card/Card";
 
 interface LessonBarPropsTypes {
     dayId: number;
@@ -23,9 +24,11 @@ export default class LessonBar extends React.Component<LessonBarPropsTypes> {
     }
     render() {
         return(
+        <Card>
             <div className={(className as any).container}>
                 {this.renderContain()}
             </div>
+        </Card>
         );
     }
     renderContain() {
