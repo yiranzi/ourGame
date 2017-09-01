@@ -20,6 +20,7 @@ interface StateTypes {
 
 interface PropsTypes {
     DALState: any;
+    DALUserInfoState: any;
 }
 
 @observer
@@ -42,9 +43,12 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     }
     render() {
         return (
-            <div className={className.div} onClick={this.props.DALState.fetchIndexPageState}>
+            <div className={className.div} onClick={() => console.log(this.props.DALUserInfoState)}>
                 <div style={{paddingLeft: 0, paddingRight: 0}}>
                     <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
+                </div>
+                <div>
+                    <h1>{this.props.DALUserInfoState.nickName}</h1>
                 </div>
                 <div>
                     <TimePickerCard data={this.props.DALState.timePicker}></TimePickerCard>
@@ -54,7 +58,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                 </div>
                 <div>
                     <SummaryCard>
-                        {this.props.DALState.summary}
+                        {this.props.DALUserInfoState.summary}
                     </SummaryCard>
                 </div>
                 <div>

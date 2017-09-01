@@ -13,7 +13,8 @@ class DALIndexPage {
         this.fetchIndexPageState = this.fetchIndexPageState.bind(this);
     }
 
-    @action fetchIndexPageState () {
+    @action
+    fetchIndexPageState () {
         this.price = 100;
         this.summary = "这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介v";
         this.catalog = ["基金指数", "基金定投", "定投场内外", "策略", "温度指数", "简投法"];
