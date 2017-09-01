@@ -10,9 +10,29 @@ class DALUserInfo {
     @observable payOpenId: string = null;
     @observable subscribe: string = null;
     @observable sessionId: string = null;
+
+    @observable userSignState: string = "pending";
+
     constructor() {
         this.fetchDALUserInfo = this.fetchDALUserInfo.bind(this);
+        this.fetchDALUserSignState = this.fetchDALUserSignState.bind(this);
     }
+    /**
+     * 获取用户登陆状态，判断是否报名，是否开课
+     * @memberof DALUserInfo
+     */
+    @action
+    fetchDALUserSignState() {
+        setTimeout(() => {
+            runInAction(() => {
+                this.userSignState = "indexPage";
+            });
+        }, 5000);
+    }
+    /**
+     * 获取用户数据（授权）
+     * @memberof DALUserInfo
+     */
     @action
     fetchDALUserInfo() {
         let tempUserInfo = JSON.parse(window.sessionStorage.getItem("wx-user-info"));

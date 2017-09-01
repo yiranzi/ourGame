@@ -5,6 +5,7 @@ import className from "./style/TimePickerCard.less";
 
 interface PropsTypes {
     data: any;
+    handleOKButton: Function;
 }
 interface StateTypes {
     extra: string;
@@ -18,9 +19,10 @@ export default class TimePickerCard extends React.PureComponent<PropsTypes, Stat
         };
     }
     handleOKButton(val: string) {
-        console.log(arguments);
         this.setState({
             extra: val
+        }, () => {
+            this.props.handleOKButton && this.props.handleOKButton();
         });
     }
     render() {

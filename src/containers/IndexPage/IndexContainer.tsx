@@ -25,46 +25,36 @@ interface PropsTypes {
 
 @observer
 class IndexContainer extends React.Component<PropsTypes, StateTypes> {
-    constructor() {
-        super();
-        this.handleIndexChangeCallback = this.handleIndexChangeCallback.bind(this);
+    constructor(props: PropsTypes) {
+        super(props);
         this.state = {
             Carouselindex: 0,
         };
     }
     componentWillMount() {
-    }
-    handleIndexChangeCallback(index: number) {
-        if (this.state.Carouselindex + index > -1 && this.state.Carouselindex + index < 7) {
-            this.setState((prevState, props) => ({
-                Carouselindex: prevState.Carouselindex + index
-            }));
-        }
+        this.props.DALState.fetchIndexPageState();
     }
     render() {
         return (
-            <div className={className.div} onClick={() => console.log(this.props.DALUserInfoState)}>
+            <div className={className.div}>
                 <div style={{paddingLeft: 0, paddingRight: 0}}>
                     <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
-                </div>
-                <div>
-                    <h1>{this.props.DALUserInfoState.nickName}</h1>
-                </div>
-                <div>
-                    <TimePickerCard data={this.props.DALState.timePicker}></TimePickerCard>
                 </div>
                 <div>
                     <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
                 </div>
                 <div>
                     <SummaryCard>
-                        {this.props.DALUserInfoState.summary}
+                        {this.props.DALState.summary}
                     </SummaryCard>
                 </div>
                 <div>
                     <CourseCatalogCard>
                         {this.props.DALState.catalog}
                     </CourseCatalogCard>
+                </div>
+                <div>
+                    <TimePickerCard data={this.props.DALState.timePicker}></TimePickerCard>
                 </div>
                 <br />
                 <div className={className.submitButton}>
