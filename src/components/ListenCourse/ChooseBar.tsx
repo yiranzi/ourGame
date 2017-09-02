@@ -8,14 +8,14 @@ import Card from "@/components/Card/Card";
 import { Alert } from 'antd';
 
 interface ChooseBarPropsTypes {
-    chooseStatus: string;//选择题的答题状态
-    introduce: string;//问题描述
-    tips: string;//问题提示
-    answerList: Array;//问题选项
-    selectIndex: number;//选中的选项
-    cbfClick: Function;//点击回调
-    cbfPost: Function;//提交回调
-    cbfNext: Function;//提交回调
+    chooseStatus: string; // 选择题的答题状态
+    introduce: string; // 问题描述
+    tips: string; // 问题提示
+    answerList: Array; // 问题选项
+    selectIndex: number; // 选中的选项
+    cbfClick: Function; // 点击回调
+    cbfPost: Function; // 提交回调
+    cbfNext: Function;// 提交回调
     lastQuestion: Boolean;
 }
 

@@ -16,7 +16,7 @@ class DALCourseApp {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 runInAction(() => {
-                    this.userSignState = "haspay";
+                    this.userSignState = "index";
                 });
                 resolve();
             }, 500);

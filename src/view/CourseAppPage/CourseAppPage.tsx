@@ -6,9 +6,13 @@ import {
     Switch
 } from "react-router-dom";
 
+
+// url页面
 import NoMatchPage from "@/view/NoMatchPage";
 import IndexPage from "./IndexPage/IndexPage";
 import WaitPage from "./WaitPage/WaitPage";
+import CourseListenPage from "./CourseListenPage/CourseListenPage";
+
 
 import DALUserInfoState from "@/dal/Global";
 import DALCourse from "@/dal/courseApp";
@@ -22,6 +26,7 @@ interface PropsTypes {
 
 @observer
 class CourseAppPage extends React.Component<PropsTypes> {
+    // 实例化 state
     private DALCourseState: DALCourse = new DALCourse();
     constructor(props: any) {
         super(props);
@@ -37,6 +42,11 @@ class CourseAppPage extends React.Component<PropsTypes> {
                 <Route path={`${this.props.match.url}/wait`}
                     render={props => (
                         <WaitPage {...props} DALUserInfoState={DALUserInfoState} DALCourseState={this.DALCourseState} propsPath={this.props.match.url}/>
+                    )}
+                />
+                <Route path={`${this.props.match.url}/listen`}
+                    render={props => (
+                        <CourseListenPage {...props}  propsPath={this.props.match.url}/>
                     )}
                 />
             </Switch>

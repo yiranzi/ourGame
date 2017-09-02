@@ -24,7 +24,7 @@ if ($$webpack_dev && (module as HMRModule).hot) {
 
     console.info("configuring webpack HMR");
     console.info("m=", m);
-    (module as HMRModule).hot.accept(["./m", "./view/indexPage"], function () {
+    (module as HMRModule).hot.accept(["./m", "./view/AppRouter"], function () {
         console.log("accept handler get called", [].slice.call(arguments));
         console.info("m=", m);
     });

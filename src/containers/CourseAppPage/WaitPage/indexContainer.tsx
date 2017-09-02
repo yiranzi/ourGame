@@ -29,7 +29,7 @@ export default class WaitPage extends React.Component<PropsTypes, StateTypes> {
     render() {
         return (
             <div className={className.wrapper}>
-                <div>
+                <div className={className.time}>
                     <CourseStartTimeCard mouth={"8"} day={"30"}></CourseStartTimeCard>
                 </div>
                 <div className={className.btn_wrapper}>
