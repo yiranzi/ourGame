@@ -14,6 +14,13 @@ import { observer } from "mobx-react";
 import { CourseCatalogCard, SummaryCard, CourseStartTimeCard, TimePickerCard } from "@/components/ConductPage";
 import ImageCard from "@/components/ImageCard";
 import Loading from "@/components/LoadingSpinner/Loading/Loading";
+
+import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
+
+
 interface StateTypes {
     Carouselindex: number;
 }
@@ -37,8 +44,10 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     render() {
         // 判断是否已购买课程
         if (!this.props.DALState.hasFetchData) {
-            return <Loading />;
+            mountGlobalLoading();
+            return null;
         } else {
+            unMountGlobalLoading();
             return (
                 <div className={className.div}>
                     <div style={{paddingLeft: 0, paddingRight: 0}}>

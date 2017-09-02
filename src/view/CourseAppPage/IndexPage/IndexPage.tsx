@@ -2,9 +2,14 @@ import * as React from "react";
 import className from "./style/IndexPage.less";
 import IndexContainer from "@/containers/IndexPage/IndexContainer";
 import DALIndexPage from "@/dal/indexPage";
-import Loading from "@/components/LoadingSpinner/Loading/Loading";
 import { Route } from "react-router-dom";
 import { observer } from "mobx-react";
+
+import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
+
 interface PropsTypes {
     DALUserInfoState: any;
     DALCourseState: any;
@@ -17,6 +22,7 @@ export default class IndexPage extends React.Component<PropsTypes> {
     constructor(props: PropsTypes) {
         super(props);
         // 获取当前页面需要的数据
+        mountGlobalLoading();
         this.props.DALUserInfoState.fetchDALUserInfo().then(() => {
             this.props.DALCourseState.fetchDALUserSignState();
         });
@@ -25,10 +31,12 @@ export default class IndexPage extends React.Component<PropsTypes> {
         // 判断是否已购买课程
         switch (this.props.DALCourseState.userSignState) {
             case "pending":
-                return <Loading />;
+                return null;
             case "haspay":
                 this.props.history.push(`${this.props.propsPath}/wait`);
-                break;
+                return null;
+            default:
+                unMountGlobalLoading();
         }
         return (
             <div className={className.wrapper}>

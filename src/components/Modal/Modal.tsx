@@ -5,7 +5,7 @@ import { Modal as AntdModal, Button, WhiteSpace, WingBlank } from "antd-mobile";
 interface PropsTypes {
     show?: boolean;
     title?: string;
-    bodyText?: string;
+    bodyText?: string|JSX.Element;
     cancelText?: string;
     cancelFunction?: Function;
     sureText?: string;
@@ -24,7 +24,9 @@ function showModal({show, cancelFunction, sureFunction, cancelText, sureText, ti
     ]);
 }
 
-let Modal = {};
+let Modal: {
+    showModal: Function
+} = {};
 
 Object.defineProperty(Modal, "showModal", {
     value: showModal,

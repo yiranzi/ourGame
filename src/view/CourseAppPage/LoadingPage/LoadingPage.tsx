@@ -2,6 +2,11 @@ import React from "react";
 import DALUserInfoState from "@/dal/Global";
 import { observer } from "mobx-react";
 import { autorun } from "mobx";
+import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
+
 
 interface PropsTypes {
     history: any;
@@ -18,17 +23,16 @@ class LoadingPage extends React.PureComponent<PropsTypes> {
     render() {
         switch (DALUserInfoState.userSignState) {
             case "pending":
-                return (<div>等待 pending</div>);
+                mountGlobalLoading();
+                return null;
             case "indexPage":
                 this.props.history.push("/index");
-                break;
+                return null;
             case "pendingPage":
                 this.props.history.push("/pending");
-                break;
+                return null;
             default:
-                return (
-                    <div></div>
-                );
+                unMountGlobalLoading();
         }
         // 不写会报react错误，虽然根本不会走到这里
         return (

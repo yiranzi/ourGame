@@ -18,7 +18,12 @@ export default class WaitPage extends React.Component<PropsTypes, StateTypes> {
     }
     handleButtonClick() {
         Modal.showModal({
-            title: 
+            title: "速速加群啦",
+            bodyText: <div>本课程包含QQ社群管理:<br />请加入QQ群: 41322222<br />暗号: 栀子花</div>,
+            sureText: "立即加群",
+            cancelText: "就是不加",
+            sureFunction: () => {},
+            cancelFunction: () => {}
         });
     }
     render() {
@@ -27,9 +32,9 @@ export default class WaitPage extends React.Component<PropsTypes, StateTypes> {
                 <div>
                     <CourseStartTimeCard mouth={"8"} day={"30"}></CourseStartTimeCard>
                 </div>
-                <div>
+                <div className={className.btn_wrapper}>
                     <Card>
-                        <Button className="btn" type="primary" onClick={this.handleButtonClick}>点击 加入 QQ 群</Button>
+                        <Button className={className.btn} type="primary" onClick={this.handleButtonClick}>点击 加入 QQ 群</Button>
                     </Card>
                 </div>
             </div>
