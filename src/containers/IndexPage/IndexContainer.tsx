@@ -13,7 +13,7 @@ import { Button, List } from "antd-mobile";
 import { observer } from "mobx-react";
 import { CourseCatalogCard, SummaryCard, CourseStartTimeCard, TimePickerCard } from "@/components/ConductPage";
 import ImageCard from "@/components/ImageCard";
-
+import Loading from "@/components/LoadingSpinner/Loading/Loading";
 interface StateTypes {
     Carouselindex: number;
 }
@@ -35,33 +35,38 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         this.props.DALState.fetchIndexPageState();
     }
     render() {
-        return (
-            <div className={className.div}>
-                <div style={{paddingLeft: 0, paddingRight: 0}}>
-                    <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
+        // 判断是否已购买课程
+        if (!this.props.DALState.hasFetchData) {
+            return <Loading />;
+        } else {
+            return (
+                <div className={className.div}>
+                    <div style={{paddingLeft: 0, paddingRight: 0}}>
+                        <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
+                    </div>
+                    <div>
+                        <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
+                    </div>
+                    <div>
+                        <SummaryCard>
+                            {this.props.DALState.summary}
+                        </SummaryCard>
+                    </div>
+                    <div>
+                        <CourseCatalogCard>
+                            {this.props.DALState.catalog}
+                        </CourseCatalogCard>
+                    </div>
+                    <div>
+                        <TimePickerCard data={this.props.DALState.timePicker} ></TimePickerCard>
+                    </div>
+                    <br />
+                    <div className={className.submitButton}>
+                        {this.props.DALState.price} 元，立即学习
+                    </div>
                 </div>
-                <div>
-                    <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
-                </div>
-                <div>
-                    <SummaryCard>
-                        {this.props.DALState.summary}
-                    </SummaryCard>
-                </div>
-                <div>
-                    <CourseCatalogCard>
-                        {this.props.DALState.catalog}
-                    </CourseCatalogCard>
-                </div>
-                <div>
-                    <TimePickerCard data={this.props.DALState.timePicker}></TimePickerCard>
-                </div>
-                <br />
-                <div className={className.submitButton}>
-                    {this.props.DALState.price} 元，立即学习
-                </div>
-            </div>
-        );
+            );
+        }
     }
 }
 export default IndexContainer;

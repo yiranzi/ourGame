@@ -5,7 +5,7 @@ import className from "./style/TimePickerCard.less";
 
 interface PropsTypes {
     data: any;
-    handleOKButton: Function;
+    handleOKButton?: Function;
 }
 interface StateTypes {
     extra: string;

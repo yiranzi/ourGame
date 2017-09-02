@@ -24,4 +24,11 @@ function showModal({show, cancelFunction, sureFunction, cancelText, sureText, ti
     ]);
 }
 
-export default showModal;
+let Modal = {};
+
+Object.defineProperty(Modal, "showModal", {
+    value: showModal,
+    writable: false
+});
+
+export default Modal;

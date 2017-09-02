@@ -33,8 +33,7 @@ if ($$webpack_dev && (module as HMRModule).hot) {
     console.info("webpack HMR not available");
 }
 
-import IndexPage from "./view/indexPage";
-import AppRouter from "./router/AppRouter";
+import AppRouter from "./view/AppRouter";
 ReactDOM.render(
     <AppRouter />,
     document.getElementById("app")

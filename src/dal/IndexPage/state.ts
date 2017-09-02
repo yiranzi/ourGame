@@ -8,6 +8,7 @@ class DALIndexPage {
     @observable catalog: Array<string> = null;
     @observable audioSrc: string = null;
     @observable timePicker: Array<{label: string, value: string|number}> = null;
+    @observable hasFetchData: boolean = false;
     constructor() {
         this.fetchIndexPageState = this.fetchIndexPageState.bind(this);
     }
@@ -28,8 +29,9 @@ class DALIndexPage {
                         value: "9 月 31 日"
                       },
                   ];
+                this.hasFetchData = true;
             });
-        }, 5000);
+        }, 500);
     }
 }
 

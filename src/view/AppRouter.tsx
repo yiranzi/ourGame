@@ -8,11 +8,8 @@ import {
 } from "react-router-dom";
 
 import NoMatchPage from "@/view/NoMatchPage";
-import CourseAppPage from "@/view/CourseAppPage/CourseAppPage";
-import DALUserInfoState from "@/dal/Global";
+import CourseAppPage from "./CourseAppPage/CourseAppPage";
 
-
-DALUserInfoState.fetchDALUserInfo();
 
 export default function AppRouter() {
     return (

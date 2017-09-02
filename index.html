@@ -27,14 +27,14 @@ window._WXGLOBAL_ = (function () {
     var __API_TOKEN__ = _ENVIRONMENT ? __FORMA_API_TOKEN__ : __TEST_API_TOKEN__;
     var _FORMAL_API_DOMAIN = 'https://growth.ichangtou.com/';
     var _TEST_API_DOMAIN = 'https://geek.ichangtou.com/';
-    var __API_URL_DOMAIN__ = _ENVIRONMENT
-        ? _FORMAL_API_DOMAIN
-        : _TEST_API_DOMAIN;
+    var __API_URL_DOMAIN__ = _ENVIRONMENT ?
+        _FORMAL_API_DOMAIN :
+        _TEST_API_DOMAIN;
     var __TEST_APPID__ = 'wx7cf8dd5d80048e42';
     var __FORMA_APPID__ = 'wxd6c823882698f217';
-    var __APPID__ = _ENVIRONMENT
-        ? __FORMA_APPID__
-        : __TEST_APPID__;
+    var __APPID__ = _ENVIRONMENT ?
+        __FORMA_APPID__ :
+        __TEST_APPID__;
     var __API_URL_GROUP__ = {
         'wx_sign': 'wx/signature',
         'userinfo_authorization': 'wx/h5/info/login/OA_CTW',
@@ -52,9 +52,9 @@ window._WXGLOBAL_ = (function () {
     var _FORMAL_PAID_APPID = 'wxd6c823882698f217';
 
     //支付APPID
-    var __PAID_APPID__ = _ENVIRONMENT
-        ? _FORMAL_PAID_APPID
-        : _TEST_PAID_APPID;
+    var __PAID_APPID__ = _ENVIRONMENT ?
+        _FORMAL_PAID_APPID :
+        _TEST_PAID_APPID;
     var __PAYPULLINGFLAG__ = false;
     var __COURSE_SUM__ = 1;
     return {
@@ -81,7 +81,7 @@ WXSDK.InitWxApi = function () {
     if (!WXSDK._getUrlPara('code')) {
         WXSDK._redirectToBaseInfo();
     } else {
-        
+
         WXSDK
             ._getUserInfoFromServer()
             .then(function (response) {
@@ -90,7 +90,7 @@ WXSDK.InitWxApi = function () {
                     if (!resdata || !JSON.parse(resdata).userId) {
                         WXSDK._redirectToUserInfo();
                         return true;
-                    } 
+                    }
                     var data = JSON.parse(resdata)
                     var userInfo = {
                         userId: data.userId,
@@ -109,28 +109,34 @@ WXSDK.InitWxApi = function () {
                     }
                     sessionStorage.setItem('wx-user-info', JSON.stringify(userInfo));
                     WXSDK._isWeiXin() && WXSDK
-                    ._signWxApi()
-                    .then(function (response) {
-                        var date = response.json();
-                        date.then(function (date) {
-                            wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
-                            wx.ready(function () {
-                                // WXSDK.shareConfig();
-                                window.sessionStorage.setItem('wx-share-ready', 'true');
-                                dispatchEvent(new CustomEvent('_dove_FetchEvent', {
-                                    bubbles: true,
-                                    cancelable: false,
-                                    detail: {
-                                        type: '_dove_CustomEvent',
-                                        info: 'hahaha'
-                                    }
-                                }));
-                            })
-                            wx.error(function (res) {
-                                console.log(res);
+                        ._signWxApi()
+                        .then(function (response) {
+                            var date = response.json();
+                            date.then(function (date) {
+                                wx.config({
+                                    appId: window._WXGLOBAL_.__APPID__,
+                                    timestamp: date.timestamp,
+                                    nonceStr: date.nonceStr,
+                                    signature: date.signature,
+                                    jsApiList: window._WXGLOBAL_.__JSAPILIST__
+                                });
+                                wx.ready(function () {
+                                    // WXSDK.shareConfig();
+                                    window.sessionStorage.setItem('wx-share-ready', 'true');
+                                    dispatchEvent(new CustomEvent('_dove_FetchEvent', {
+                                        bubbles: true,
+                                        cancelable: false,
+                                        detail: {
+                                            type: '_dove_CustomEvent',
+                                            info: 'hahaha'
+                                        }
+                                    }));
+                                })
+                                wx.error(function (res) {
+                                    console.log(res);
+                                });
                             });
                         });
-                    });
                 })
             }, function () {
                 WXSDK._redirectToUserInfo();
@@ -141,11 +147,16 @@ WXSDK.InitWxApi = function () {
 WXSDK._getUserInfoFromServer = function () {
     // inject vinda
     var code = WXSDK._getUrlPara('code');
-    var jsonData = JSON.stringify({'code': code});
+    var jsonData = JSON.stringify({
+        'code': code
+    });
     var APIUrl = WXSDK._getAPIUrl('base_login');
     if (WXSDK._getUrlPara('isuserinfo')) {
         APIUrl = WXSDK._getAPIUrl('userinfo_authorization');
-        jsonData = JSON.stringify({'code': code, 'channel': '31'});
+        jsonData = JSON.stringify({
+            'code': code,
+            'channel': '31'
+        });
     }
     return fetch(APIUrl, {
         method: "POST",
@@ -250,8 +261,7 @@ WXSDK.shareConfig = function () {
 
 };
 
-WXSDK._onShareSuccess = function () {
-};
+WXSDK._onShareSuccess = function () {};
 
 WXSDK._onShareFailure = function () {
     console.log('分享失败')
@@ -294,15 +304,13 @@ WXSDK._getOrder = function (userId, sum) {
     var jsonData = JSON.stringify({
         "body": '商品成本费',
         "deal": {
-            "items": [
-                {
-                    dealType: 102, //交易类型
-                    itemId: 2,
-                    mchantType: 11, //商品类型
-                    misc: '',
-                    price: sum
-                }
-            ]
+            "items": [{
+                dealType: 102, //交易类型
+                itemId: 2,
+                mchantType: 11, //商品类型
+                misc: '',
+                price: sum
+            }]
         },
         "openId": userInfo.payOpenId && userInfo
             .payOpenId
@@ -322,13 +330,13 @@ WXSDK._getOrder = function (userId, sum) {
                 "X-iChangTou-Json-Api-Session": userInfo.sessionId
             }
         }).then(function (response) {
-        response
-            .json()
-            .then(function (data) {
-                sessionStorage.setItem('wx-user-pay', JSON.stringify(data));
-                WXSDK._pay();
-            })
-    })
+            response
+                .json()
+                .then(function (data) {
+                    sessionStorage.setItem('wx-user-pay', JSON.stringify(data));
+                    WXSDK._pay();
+                })
+        })
         .catch(function (data) {
             console.log('请求微信支付失败', data);
         })
@@ -349,7 +357,7 @@ WXSDK._pay = function () {
     }
 };
 
-WXSDK._onBridgeReady = function () {
+WXSDK._onBridgeReady = function (data) {
     var param = {
         "appid": window._WXGLOBAL_.__PAID_APPID__,
         "timeStamp": data
@@ -443,7 +451,9 @@ WXSDK._getUrlPara = function (key) {
 WXSDK._signWxApi = function () {
     return fetch(WXSDK._getAPIUrl('wx_sign'), {
         method: "POST",
-        body: JSON.stringify({"url": location.href.split('#')[0]}),
+        body: JSON.stringify({
+            "url": location.href.split('#')[0]
+        }),
         headers: {
             "Accept": "application/json",
             "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
