@@ -18,6 +18,11 @@ import DALUserInfoState from "@/dal/Global";
 import DALCourse from "@/dal/courseApp";
 
 
+import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
+
 interface PropsTypes {
     history: any;
     match: any;
@@ -31,25 +36,31 @@ class CourseAppPage extends React.Component<PropsTypes> {
         super(props);
     }
     render() {
-        return (
-            <Switch>
-                <Route path={`${this.props.match.url}/index`}
-                    render={props => (
-                        <IndexPage {...props} DALUserInfoState={DALUserInfoState} DALCourseState={this.DALCourseState} propsPath={this.props.match.url}/>
-                    )}
-                />
-                <Route path={`${this.props.match.url}/wait`}
-                    render={props => (
-                        <WaitPage {...props} DALUserInfoState={DALUserInfoState} DALCourseState={this.DALCourseState} propsPath={this.props.match.url}/>
-                    )}
-                />
-                <Route path={`${this.props.match.url}/listen`}
-                    render={props => (
-                        <CourseListenPage {...props}  propsPath={this.props.match.url}/>
-                    )}
-                />
-            </Switch>
-        );
+        if (DALUserInfoState.hasFetchData) {
+            mountGlobalLoading();
+            DALUserInfoState.fetchDALUserInfo();
+            return null;
+        } else {
+            return (
+                <Switch>
+                    <Route path={`${this.props.match.url}/index`}
+                        render={props => (
+                            <IndexPage {...props} DALUserInfoState={DALUserInfoState} DALCourseState={this.DALCourseState} propsPath={this.props.match.url}/>
+                        )}
+                    />
+                    <Route path={`${this.props.match.url}/wait`}
+                        render={props => (
+                            <WaitPage {...props} DALUserInfoState={DALUserInfoState} DALCourseState={this.DALCourseState} propsPath={this.props.match.url}/>
+                        )}
+                    />
+                    <Route path={`${this.props.match.url}/listen`}
+                        render={props => (
+                            <CourseListenPage {...props}  propsPath={this.props.match.url}/>
+                        )}
+                    />
+                </Switch>
+            );
+        }
     }
 }
 

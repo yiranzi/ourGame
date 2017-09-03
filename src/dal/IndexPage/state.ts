@@ -33,7 +33,7 @@ class DALIndexPage {
                   ];
                 this.hasFetchData = true;
             });
-        }, 500);
+        }, 2000);
     }
 }
 

@@ -23,10 +23,7 @@ export default class IndexPage extends React.Component<PropsTypes> {
     constructor(props: PropsTypes) {
         super(props);
         // 获取当前页面需要的数据
-        mountGlobalLoading();
-        this.props.DALUserInfoState.fetchDALUserInfo().then(() => {
-            this.props.DALCourseState.fetchDALUserSignState();
-        });
+        this.props.DALCourseState.fetchDALUserSignState();
     }
     render() {
         // 判断是否已购买课程

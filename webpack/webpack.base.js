@@ -36,7 +36,15 @@ module.exports = {
                         babelOptions: {
                             "presets": ["react", "es2015"],
                             "plugins": [
-                                ["import", [{ "libraryName": "antd-mobile", "style": true }, { "libraryName": "antd", "style": true }]]
+                                ["import", [{ "libraryName": "antd-mobile", "style": true }, { "libraryName": "antd", "style": true }]],
+                                ["transform-runtime",
+                                    {
+                                        "helpers": false,
+                                        "polyfill": false,
+                                        "regenerator": true,
+                                        "moduleName": "babel-runtime"
+                                    }
+                                ]
                             ]
                         }
                     }

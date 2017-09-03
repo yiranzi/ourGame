@@ -19,7 +19,7 @@ class DALCourseApp {
                     this.userSignState = "index";
                 });
                 resolve();
-            }, 500);
+            }, 2000);
         });
     }
 }
