@@ -64,9 +64,10 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                 sureFunction: () => {},
                 cancelFunction: () => {}
             });
+        } else {
+            // todo 提交报名唤起支付
+            this.props.history.push(`${this.props.propsPath}/wait`);
         }
-        // todo 提交报名唤起支付
-        this.props.history.push(`${this.props.propsPath}/wait`);
     }
     render() {
         return (

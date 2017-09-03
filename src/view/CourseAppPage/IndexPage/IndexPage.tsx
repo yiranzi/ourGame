@@ -30,7 +30,7 @@ export default class IndexPage extends React.Component<PropsTypes> {
             <div className={className.wrapper}>
                 <Route path={`${this.props.match.url}/`}
                     render={props => (
-                        <IndexContainer {...props} DALState={this.DALIndexPageState} DALUserInfoState={this.props.DALUserInfoState} propsPath={this.props.match.url}/>
+                        <IndexContainer {...props} DALState={this.DALIndexPageState} DALUserInfoState={this.props.DALUserInfoState} propsPath={this.props.propsPath}/>
                     )}
                 />
             </div>
