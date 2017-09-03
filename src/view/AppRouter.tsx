@@ -9,6 +9,7 @@ import {
 
 import NoMatchPage from "@/view/NoMatchPage";
 import CourseAppPage from "./CourseAppPage/CourseAppPage";
+import CourseListPage from "./CourseAppPage/CourseListPage/CourseListPage";
 
 
 export default function AppRouter() {
@@ -16,7 +17,7 @@ export default function AppRouter() {
         <Router>
             <Switch>
                 <Route path="/course/:id" component={CourseAppPage} />
-                <Route component={NoMatchPage} />
+                <Route component={CourseListPage} />
             </Switch>
         </Router>
     );

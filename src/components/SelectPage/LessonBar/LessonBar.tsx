@@ -58,7 +58,7 @@ export default class LessonBar extends React.Component<LessonBarPropsTypes> {
         let arr = [];
         if ( this.props.cbfOnClickReward ) {
             arr.push(<div onClick = {this.cbfOnClickReward} className={(className as any).left}>
-                <img className={(className as any).rewardIcon} key = {0} src={this.props.rewardIcon ? this.props.rewardIcon : ''} />
+                <img className={(className as any).rewardIcon} key = {0} src={this.props.rewardIcon ? this.props.rewardIcon : "./src/assets/image/getReward_icon.png"} />
             </div>)
         } else {
             arr.push(<div className={(className as any).left}></div>)

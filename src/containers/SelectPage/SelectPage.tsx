@@ -75,7 +75,7 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
             isEnter: false,
             cbfOnEnter: null,
             cbfOnClickReward: null,
-            rewardIcon: 'https://github.com/bebraw.png?v=3&s=150',
+            rewardIcon: null,
         };
         switch ( courseDay.status ) {
             case -1:
