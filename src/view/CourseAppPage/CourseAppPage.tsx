@@ -18,7 +18,6 @@ import DALUserInfoState from "@/dal/Global";
 import DALCourse from "@/dal/courseApp";
 
 
-
 interface PropsTypes {
     history: any;
     match: any;

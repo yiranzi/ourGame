@@ -14,6 +14,7 @@ interface PropsTypes {
     DALUserInfoState: any;
     DALCourseState: any;
     history?: any;
+    match?: any;
     propsPath?: string;
 }
 @observer
@@ -40,7 +41,11 @@ export default class IndexPage extends React.Component<PropsTypes> {
         }
         return (
             <div className={className.wrapper}>
-                <IndexContainer DALState={this.DALIndexPageState} DALUserInfoState={this.props.DALUserInfoState}/>
+                <Route path={`${this.props.match.url}/`}
+                    render={props => (
+                        <IndexContainer {...props} DALState={this.DALIndexPageState} DALUserInfoState={this.props.DALUserInfoState} propsPath={this.props.match.url}/>
+                    )}
+                />
             </div>
         );
     }

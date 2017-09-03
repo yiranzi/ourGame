@@ -1,7 +1,7 @@
 import * as React from "react";
 import Card from "@/components/Card";
 import className from "./style/IndexContainer.less";
-import { AudioPlayerWithoutTime, AudioPlayerPPTCard } from "@/components/AudioPlayer";
+import { AudioPlayerWithoutTime } from "@/components/AudioPlayer";
 import {
     Button as Antdbutton,
     Carousel,
@@ -11,10 +11,10 @@ import {
     } from "antd";
 import { Button, List } from "antd-mobile";
 import { observer } from "mobx-react";
-import { CourseCatalogCard, SummaryCard, CourseStartTimeCard, TimePickerCard } from "@/components/ConductPage";
+import { CourseCatalogCard, SummaryCard, CourseStartTimeCard, TimePickerCard, TeacherIntro } from "@/components/ConductPage";
 import ImageCard from "@/components/ImageCard";
 import Loading from "@/components/LoadingSpinner/Loading/Loading";
-
+import Modal from "@/components/Modal/Modal";
 import {
     mountGlobalLoading,
     unMountGlobalLoading
@@ -22,12 +22,14 @@ import {
 
 
 interface StateTypes {
-    Carouselindex: number;
+    dateIndex: number;
 }
 
 interface PropsTypes {
     DALState: any;
     DALUserInfoState: any;
+    propsPath: string;
+    history: any;
 }
 
 @observer
@@ -35,8 +37,29 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
         super(props);
         this.state = {
-            Carouselindex: 0,
+            dateIndex: -1,
         };
+        this.handleOKButton = this.handleOKButton.bind(this);
+        this.handleSubmitButton = this.handleSubmitButton.bind(this);
+    }
+    handleOKButton(val: number) {
+        this.setState({
+            dateIndex: val
+        });
+    }
+    handleSubmitButton() {
+        if (this.state.dateIndex === -1) {
+            Modal.showModal({
+                title: "注意啦!!",
+                bodyText: <div>快选择报名期数</div>,
+                sureText: "马上去选",
+                cancelText: "就是不加",
+                sureFunction: () => {},
+                cancelFunction: () => {}
+            });
+        }
+        // todo 提交报名唤起支付
+        this.props.history.push(`${this.props.propsPath}/wait`);
     }
     componentWillMount() {
         this.props.DALState.fetchIndexPageState();
@@ -67,10 +90,17 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                         </CourseCatalogCard>
                     </div>
                     <div>
-                        <TimePickerCard data={this.props.DALState.timePicker} ></TimePickerCard>
+                        <TeacherIntro
+                            title = {"导师介绍"}
+                            headImage = {"https://github.com/bebraw.png?v=3&s=150"}
+                            introTxt = {`123123`}
+                        />
+                    </div>
+                    <div>
+                        <TimePickerCard data={this.props.DALState.timePicker} handleOKButton={this.handleOKButton}></TimePickerCard>
                     </div>
                     <br />
-                    <div className={className.submitButton}>
+                    <div className={className.submitButton} onClick={this.handleSubmitButton}>
                         {this.props.DALState.price} 元，立即学习
                     </div>
                 </div>

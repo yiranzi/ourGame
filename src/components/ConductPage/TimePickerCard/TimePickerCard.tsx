@@ -18,11 +18,11 @@ export default class TimePickerCard extends React.PureComponent<PropsTypes, Stat
             extra: "请选择期数"
         };
     }
-    handleOKButton(val: string) {
+    handleOKButton(val: number) {
         this.setState({
-            extra: val
+            extra: this.props.data[val - 1].label
         }, () => {
-            this.props.handleOKButton && this.props.handleOKButton();
+            this.props.handleOKButton && this.props.handleOKButton(val);
         });
     }
     render() {
