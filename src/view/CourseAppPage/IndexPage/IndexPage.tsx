@@ -22,20 +22,8 @@ export default class IndexPage extends React.Component<PropsTypes> {
     private DALIndexPageState: DALIndexPage = new DALIndexPage();
     constructor(props: PropsTypes) {
         super(props);
-        // 获取当前页面需要的数据
-        this.props.DALCourseState.fetchDALUserSignState();
     }
     render() {
-        // 判断是否已购买课程
-        switch (this.props.DALCourseState.userSignState) {
-            case "pending":
-                return null;
-            case "haspay":
-                this.props.history.push(`${this.props.propsPath}/wait`);
-                return null;
-            default:
-                unMountGlobalLoading();
-        }
         return (
             <div className={className.wrapper}>
                 <Route path={`${this.props.match.url}/`}

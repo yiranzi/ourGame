@@ -10,7 +10,7 @@ class DALUserInfo {
     @observable payOpenId: string = null;
     @observable subscribe: string = null;
     @observable sessionId: string = null;
-
+    @observable hasFetchData: boolean = false;
     constructor() {
         this.fetchDALUserInfo = this.fetchDALUserInfo.bind(this);
     }
@@ -33,6 +33,7 @@ class DALUserInfo {
                         this.payOpenId = tempUserInfo.payOpenId;
                         this.subscribe = tempUserInfo.subscribe;
                         this.openId = tempUserInfo.subscribe;
+                        this.hasFetchData = true;
                     });
                     resolve();
                 });
@@ -44,6 +45,7 @@ class DALUserInfo {
                 this.payOpenId = tempUserInfo.payOpenId;
                 this.subscribe = tempUserInfo.subscribe;
                 this.openId = tempUserInfo.subscribe;
+                this.hasFetchData = true;
                 resolve();
             }
         });

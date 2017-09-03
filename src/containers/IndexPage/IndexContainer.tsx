@@ -19,7 +19,7 @@ import {
     mountGlobalLoading,
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
-
+import { resolve } from "@/utils/resolver";
 
 interface StateTypes {
     dateIndex: number;
@@ -33,6 +33,13 @@ interface PropsTypes {
 }
 
 @observer
+@resolve("fetchDALUserSignState", function(props) {
+    // 获取当前页面需要的数据
+    return props.DALState.fetchIndexPageState().then(() => {
+        unMountGlobalLoading();
+        resolve();
+    });
+})
 class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
         super(props);
@@ -60,9 +67,6 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         }
         // todo 提交报名唤起支付
         this.props.history.push(`${this.props.propsPath}/wait`);
-    }
-    componentWillMount() {
-        this.props.DALState.fetchIndexPageState();
     }
     render() {
         return (
