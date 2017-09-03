@@ -1,0 +1,114 @@
+import * as React from "react";
+
+import ImageCard from "@/components/ImageCard";
+import LessonBar from "@/components/SelectPage/LessonBar/LessonBar";
+
+import className from "./style/SelectPage.less";
+
+
+interface StateTypes {
+    Carouselindex: number;
+}
+export default class IndexPage extends React.Component<{}, StateTypes> {
+    constructor() {
+        super();
+        this.cbfOnEnter = this.cbfOnEnter.bind(this);
+        this.cbfOnClickReward = this.cbfOnClickReward.bind(this);
+        this.state = {
+            courseList: []
+        };
+    }
+
+    render() {
+        console.log('render');
+        return(
+            <div className={(className as any).container}>
+                {this.renderTopBanner()}
+                {this.renderQQGroup()}
+                {this.renderCourseList()}
+            </div>
+        );
+    }
+
+    renderCourseList() {
+        console.log('renderCourseList');
+        let gapStyle = {
+            padding: "1rem",
+        };
+        let arr = [];
+        let homeWorkCount = 0;
+        for (let i = 0; i < this.props.dayCourseList.length; i++) {
+            //计算出来状态,并赋值.
+            let courseStatus = this.calcCourseStatus(i);
+            //如果上一个能看.这个还可以渲染.
+            if ( i === 0 || this.props.dayCourseList[i - 1].status !== -1 ) {
+                console.log(i);
+                arr.push(
+                    <div className={(className as any).gap}>
+                        <LessonBar {...courseStatus}/>
+                    </div>
+                );
+            }
+        }
+        return arr;
+    }
+
+    cbfOnEnter(type, dayId) {
+        if ( type ) {
+            alert( "进入" + dayId );
+        } else {
+            alert( "无法进入" + dayId );
+        }
+    }
+
+    cbfOnClickReward(dayId) {
+        alert( "成就卡" + dayId );
+    }
+
+    calcCourseStatus(index) {
+        //制作一个用来解析day状态的json.根据具体的赋值 并保存.为了渲染使用.
+        let courseDay = this.props.dayCourseList[index];
+        let courseStatus = {
+            dayId: courseDay.id,
+            dayTitle: `第${index}天`,
+            subTitle: courseDay.title,
+            isEnter: false,
+            cbfOnEnter: null,
+            cbfOnClickReward: null,
+            rewardIcon: 'https://github.com/bebraw.png?v=3&s=150',
+        };
+        switch ( courseDay.status ) {
+            case -1:
+                courseStatus.isEnter = false;
+                courseStatus.cbfOnEnter = this.cbfOnEnter;
+                break;
+            case 1:
+                courseStatus.isEnter = true;
+                courseStatus.cbfOnEnter = this.cbfOnEnter;
+                break;
+            case 2:
+                courseStatus.isEnter = true;
+                courseStatus.cbfOnEnter = this.cbfOnEnter;
+                courseStatus.cbfOnClickReward = this.cbfOnClickReward;
+                break;
+            default:
+                break;
+        }
+        return courseStatus;
+    }
+
+    renderQQGroup() {
+
+    }
+
+    renderTopBanner() {
+        let style = {
+            padding: '0',
+        };
+        return(<div style = {style} className={(className as any).gap}>
+            <ImageCard src={this.props.DALState ? this.props.DALState.bannerSrc : "https://github.com/bebraw.png?v=3&s=150"}></ImageCard>
+        </div>);
+    }
+
+
+}
