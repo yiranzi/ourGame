@@ -1,9 +1,23 @@
-const FORMAL_API_DOMAIN = "https://growth.ichangtou.com/"; // 生产环境 API域名
+const _FORMAL_API_DOMAIN_ = "https://growth.ichangtou.com"; // 生产环境 API域名
 // const TEST_API_DOMAIN = "http://devh5.ichangtou.com.cn/";//测试环境 API域名
-const TEST_API_DOMAIN = "https://geek.ichangtou.com/"; // 测试环境 API域名
+const _TEST_API_DOMAIN_ = "https://geek.ichangtou.com"; // 测试环境 API域名
 // API TOKEN
-const FORMAL_API_Token = "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e"; // 生产环境 API Token
-const TEST_API_Token = "XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e"; // 测试环境 API Token
+const _FORMAL_API_Token_ = "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e"; // 生产环境 API Token
+const _TEST_API_Token_ = "XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e"; // 测试环境 API Token
+
+const _API_TOKEN_ = process.env.NODE_ENV === "production" ? _FORMAL_API_Token_ : _TEST_API_Token_;
+const _API_DOMAIN_ = process.env.NODE_ENV === "production" ? _FORMAL_API_DOMAIN_ : _TEST_API_DOMAIN_;
+
+
+const _FETCH_HEADER_ = {
+    "Accept": "application/json",
+    "X-iChangTou-Json-Api-Token": _API_TOKEN_,
+    "Content-Type": "application/json;charset=utf-8",
+    "X-iChangTou-Json-Api-User": "userInfo.userId",
+    "X-iChangTou-Json-Api-Session": "userInfo.sessionId"
+};
+
+
 
 /**
 基金课接口
@@ -13,10 +27,8 @@ const TEST_API_Token = "XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcK
 4)是否报名?		'get_judge_signup': 'ctplus/WhetherSignUp/{courseId}', //判断用户是否购买
 **/
 
-
 export {
-    FORMAL_API_DOMAIN,
-    TEST_API_DOMAIN,
-    FORMAL_API_Token,
-    TEST_API_Token
+    _FETCH_HEADER_,
+    _API_DOMAIN_,
+    _API_TOKEN_
 };

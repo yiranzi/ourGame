@@ -6,7 +6,7 @@ import Card from "../Card";
 
 import { Slider } from "antd";
 
-import className from "./style/AudioPlayerWithOutTime.less";
+import className from "./style/AudioPlayerWithTime.less";
 
 import IconFont from "@/assets/iconFont/iconfont.less";
 
@@ -40,6 +40,7 @@ interface StateTypes {
     isPlay: boolean;
     length: number;
     sliderValue: number;
+    current_time: number;
 }
 /**
  * @class AudioPlayerWithOutTime
@@ -54,7 +55,8 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
         this.state = {
             isPlay: this.props.isPlay || false,
             length: 0,
-            sliderValue: 0
+            sliderValue: 0,
+            current_time: 0
         };
         this.handleTipFormatter = this.handleTipFormatter.bind(this);
         this.handlePlayButton = this.handlePlayButton.bind(this);
@@ -100,7 +102,8 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
     handleOnChange(value: number) {
         this.sliderChangeFlag = true;
         this.setState({
-            sliderValue: value
+            sliderValue: value,
+            current_time: value
         });
     }
     handleOnListen(value: number) {
@@ -125,7 +128,7 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
                         onAfterChange={this.handleOnAfterChange}
                         onChange={this.handleOnChange}
                     />
-                    <i className={this.playButtonIcon + " " + className.icon_left} onClick={this.handlePlayButton}></i>
+                    <i className={className.icon_right} onClick={this.handlePlayButton}>{this.handleTipFormatter(this.state.current_time)}/{this.handleTipFormatter(this.state.length)}</i>
                 </div>
                 <AudioPlayer
                     src={this.props.src}
