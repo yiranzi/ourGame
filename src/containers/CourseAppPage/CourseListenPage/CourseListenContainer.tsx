@@ -51,15 +51,28 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         };
     }
 
+    initChoose() {
+        this.setState({
+            selectIndex: -1,//当前选择
+            chooseStatus: "notChoose",//选择状态
+            rightIndex: 1,//正确选项
+        });
+    }
+
     processInit() {
         let courseListenState = this.props.courseListenState;
         let fmProcess = false;
+        let questionProcess = false;
         for ( let i = 0 ; i < courseListenState.length; i++) {
             if ( courseListenState[i].process ) {
                 fmProcess = true;
-
+                if ( courseListenState[i].subs[0].process ) {
+                    questionProcess = true;
+                } else {
+                    questionProcess = false;
+                }
             }
-        };
+        }
     }
 
     componentWillMount() {
@@ -184,13 +197,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
     }
 
 
-    initChoose() {
-        this.setState({
-            selectIndex: -1,//当前选择
-            chooseStatus: "notChoose",//选择状态
-            rightIndex: 1,//正确选项
-        });
-    }
+
 
     // 选择选项
     cbfChooseBarClick(index) {
