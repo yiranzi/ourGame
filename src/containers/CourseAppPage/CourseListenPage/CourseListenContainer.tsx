@@ -1,7 +1,7 @@
 import React from "react";
 import ChooseBar from "@/components/ListenCourse/ChooseBar";
 import {Steps} from "antd-mobile";
-import {AudioPlayerWithTime} from "@/components/AudioPlayer";
+import {AudioPlayerWithTime, AudioPlayerPPTCard} from "@/components/AudioPlayer";
 import Card from "@/components/Card";
 import className from "./style/CourseListenContainer.less";
 
@@ -199,23 +199,51 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         // 上报父节点 切换下一节.
     }
 
+    renderProcess() {
+        let arr = [];
+        for ( let i = 0; i < this.state.totalElement.length; i++ ) {
+            arr.push(<Steps.Step />);
+        }
+        return arr;
+    }
+
+    rederPPT() {
+        let arr = [];
+        for ( let i = 0; i < this.props.courseListenState[this.state.lessonIndex].pptUrl.length; i++ ) {
+            arr.push(<img src = {this.props.courseListenState[this.state.lessonIndex].pptUrl[i]}/>);
+        }
+        return arr;
+    }
+
     render() {
         return (
             <div className={className.container}>
                 <Card>
-                    <Steps direction="horizontal" current={1}>
-                        <Steps.Step />
-                        <Steps.Step />
-                        <Steps.Step />
-                    </Steps>
+                    <div>
+                        <Steps direction="horizontal" current={this.state.totalElement}>
+                            {this.renderProcess()}
+                        </Steps>
+                    </div>
                 </Card>
+                <AudioPlayerPPTCard>
+                    {this.rederPPT()}
+                </AudioPlayerPPTCard>
                 <div>
-                    <AudioPlayerWithTime />
+                    <AudioPlayerWithTime src = {this.props.courseListenState[this.state.lessonIndex].audio} onEnded = {this.finishAudio}/>
                 </div>
 
                 {this.renderNextButton()}
             </div>
         );
+    }
+
+    finishAudio() {
+        // 完成音频
+        this.setState({
+            fmProcess: true,
+        });
+
+        // post完成
     }
 
     // 渲染选择题列表
