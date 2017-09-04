@@ -12,18 +12,16 @@ process.env.NODE_ENV = "dev"
 module.exports = webpackMerge([
     require("./webpack.base"),
     {
-        entry: {
-            "bundle": path.join(
-                __dirname,
-                "..",
-                "src",
-                "entrypoint.tsx"
-            )
-        },
+        entry: path.join(
+            __dirname,
+            "..",
+            "src",
+            "entrypoint.tsx"
+        ),
         output: {
             path: path.join(__dirname, "..", "prod", "vinda"),
-            filename: "[name].js",
-            chunkFilename: "[chunkhash].js"
+            filename: "[hash].js",
+            chunkFilename: "[hash].js"
         },
         plugins: [
             new webpack.optimize.AggressiveSplittingPlugin({
