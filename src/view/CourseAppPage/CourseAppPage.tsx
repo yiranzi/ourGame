@@ -16,7 +16,12 @@ import CourseListenPage from "./CourseListenPage/CourseListenPage";
 
 import DALUserInfoState from "@/dal/Global";
 import DALCourse from "@/dal/courseApp";
+import { resolve } from "@/utils/resolver";
 
+import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
 
 interface PropsTypes {
     history: any;
@@ -24,6 +29,11 @@ interface PropsTypes {
 }
 
 @observer
+@resolve("fetchDALUserSignState", function(props: PropsTypes) {
+    mountGlobalLoading();
+    // 获取当前页面需要的数据
+    return DALUserInfoState.fetchDALUserInfo();
+})
 class CourseAppPage extends React.Component<PropsTypes> {
     // 实例化 state
     private DALCourseState: DALCourse = new DALCourse();

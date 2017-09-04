@@ -19,7 +19,7 @@ import {
     mountGlobalLoading,
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
-
+import { resolve } from "@/utils/resolver";
 
 interface StateTypes {
     dateIndex: number;
@@ -33,6 +33,13 @@ interface PropsTypes {
 }
 
 @observer
+@resolve("fetchDALUserSignState", function(props) {
+    // 获取当前页面需要的数据
+    return props.DALState.fetchIndexPageState().then(() => {
+        unMountGlobalLoading();
+        resolve();
+    });
+})
 class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
         super(props);
@@ -57,55 +64,46 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                 sureFunction: () => {},
                 cancelFunction: () => {}
             });
+        } else {
+            // todo 提交报名唤起支付
+            this.props.history.push(`${this.props.propsPath}/wait`);
         }
-        // todo 提交报名唤起支付
-        this.props.history.push(`${this.props.propsPath}/wait`);
-    }
-    componentWillMount() {
-        this.props.DALState.fetchIndexPageState();
     }
     render() {
-        // 判断是否已购买课程
-        if (!this.props.DALState.hasFetchData) {
-            mountGlobalLoading();
-            return null;
-        } else {
-            unMountGlobalLoading();
-            return (
-                <div className={className.div}>
-                    <div style={{paddingLeft: 0, paddingRight: 0}}>
-                        <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
-                    </div>
-                    <div>
-                        <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
-                    </div>
-                    <div>
-                        <SummaryCard>
-                            {this.props.DALState.summary}
-                        </SummaryCard>
-                    </div>
-                    <div>
-                        <CourseCatalogCard>
-                            {this.props.DALState.catalog}
-                        </CourseCatalogCard>
-                    </div>
-                    <div>
-                        <TeacherIntro
-                            title = {"导师介绍"}
-                            headImage = {"https://github.com/bebraw.png?v=3&s=150"}
-                            introTxt = {`123123`}
-                        />
-                    </div>
-                    <div>
-                        <TimePickerCard data={this.props.DALState.timePicker} handleOKButton={this.handleOKButton}></TimePickerCard>
-                    </div>
-                    <br />
-                    <div className={className.submitButton} onClick={this.handleSubmitButton}>
-                        {this.props.DALState.price} 元，立即学习
-                    </div>
+        return (
+            <div className={className.div}>
+                <div style={{paddingLeft: 0, paddingRight: 0}}>
+                    <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
                 </div>
-            );
-        }
+                <div>
+                    <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
+                </div>
+                <div>
+                    <SummaryCard>
+                        {this.props.DALState.summary}
+                    </SummaryCard>
+                </div>
+                <div>
+                    <CourseCatalogCard>
+                        {this.props.DALState.catalog}
+                    </CourseCatalogCard>
+                </div>
+                <div>
+                    <TeacherIntro
+                        title = {"导师介绍"}
+                        headImage = {"https://github.com/bebraw.png?v=3&s=150"}
+                        introTxt = {`123123`}
+                    />
+                </div>
+                <div>
+                    <TimePickerCard data={this.props.DALState.timePicker} handleOKButton={this.handleOKButton}></TimePickerCard>
+                </div>
+                <br />
+                <div className={className.submitButton} onClick={this.handleSubmitButton}>
+                    {this.props.DALState.price} 元，立即学习
+                </div>
+            </div>
+        );
     }
 }
 export default IndexContainer;
