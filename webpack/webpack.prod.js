@@ -7,7 +7,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsConfigPathsPlugin  = require('awesome-typescript-loader');
 
-process.env.NODE_ENV = "production"
+process.env.NODE_ENV = "dev"
 
 module.exports = webpackMerge([
     require("./webpack.base"),
