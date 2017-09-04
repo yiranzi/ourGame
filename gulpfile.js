@@ -53,9 +53,9 @@ gulp.task('html', function () {
 //压缩css
 var cssnano = require('gulp-cssnano');
 gulp.task('style', function () {
-    gulp.src(['./prod/*.css'])
+    gulp.src(['prod/vinda/*.css'])
         .pipe(cssnano())
-        .pipe(gulp.dest('prod/'));
+        .pipe(gulp.dest('prod/vinda'));
 });
 
 //压缩js
@@ -66,9 +66,9 @@ var pump = require('pump');
 
 gulp.task('compress', function (cb) {
     pump([
-            gulp.src('prod/*.js'),
+            gulp.src('prod/vinda/*.js'),
             uglify(),
-            gulp.dest('prod')
+            gulp.dest('prod/vinda')
         ],
         cb
     );

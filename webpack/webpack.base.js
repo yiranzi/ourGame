@@ -7,7 +7,7 @@ const Visualizer = require("webpack-visualizer-plugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractLess = new ExtractTextPlugin({
-    filename: "app.css",
+    filename: "vinda/app.css",
     allChunks: true
 });
 module.exports = {

@@ -19,7 +19,35 @@ class DALcourseListen {
     constructor() {
         this.fetchListenItem = this.fetchListenItem.bind(this);
     }
-
+    /**
+     * 提交作业
+     * @param {(string|number)} type
+     * @param {(string|number)} id
+     * @returns
+     * @memberof DALcourseListen
+     */
+    @action
+    postWorkFinish(type: string|number, id: string|number) {
+        return new Promise((resolve, reject) => {
+            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/complete/${type}/${id}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
+                    "Content-Type": "application/json;charset=utf-8",
+                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
+                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
+                }
+            }).then((res: any) => {
+                resolve();
+                res
+                .json()
+                .then((data: any) => {
+                    resolve();
+                });
+            });
+        });
+    }
     /**
      * <Promise> 获取听课列表
      * @param {number} courseId 课程id号

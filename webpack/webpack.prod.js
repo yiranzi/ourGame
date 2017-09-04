@@ -21,8 +21,8 @@ module.exports = webpackMerge([
             )
         },
         output: {
-            path: path.join(__dirname, "..", "prod", "vinda"),
-            filename: "[name].js",
+            path: path.join(__dirname, "..", "prod"),
+            filename: "vinda/[name].js",
         },
         plugins: [
             new webpack.DefinePlugin({
