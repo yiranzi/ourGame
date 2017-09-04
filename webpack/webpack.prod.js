@@ -21,7 +21,7 @@ module.exports = webpackMerge([
         output: {
             path: path.join(__dirname, "..", "prod", "vinda"),
             filename: "[chunkhash].[hash]js",
-            chunkFilename: "[chunkhash].[hash].s"
+            chunkFilename: "[chunkhash].[hash].js"
         },
         plugins: [
             new webpack.optimize.AggressiveSplittingPlugin({
