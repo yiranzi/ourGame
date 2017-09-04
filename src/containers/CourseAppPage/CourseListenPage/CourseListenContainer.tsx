@@ -7,7 +7,8 @@ import Card from "@/components/Card";
 import className from "./style/CourseListenContainer.less";
 
 interface PropsTypes {
-    courseArray: Array<any>;
+    DALCourseListenState: any;
+    propsPath: string;
 }
 class CourseListenContainer extends React.Component<PropsTypes> {
     constructor(props: PropsTypes) {

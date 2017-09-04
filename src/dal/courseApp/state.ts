@@ -15,6 +15,12 @@ class DALCourseApp {
     constructor() {
         this.fetchIsUerBuy = this.fetchIsUerBuy.bind(this);
     }
+    /**
+     * <Promise> 是否已经开课，若开课返回true
+     * @param {number} courseId
+     * @returns
+     * @memberof DALCourseApp
+     */
     @action
     fetchIsCourseStart(courseId: number) {
         return new Promise((resolve, reject) => {
@@ -23,27 +29,33 @@ class DALCourseApp {
             if (this.isUserBuy && this.courseId === courseId) {
                 resolve(true);
             } else {
-                fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/WhetherSignUp/${courseId}`, {
-                    method: "PUT",
-                    mode: "cors",
-                    headers: {
-                        "Accept": "application/json",
-                        "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
-                        "Content-Type": "application/json;charset=utf-8",
-                        "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
-                        "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
-                    }
-                }).then((res: any) => {
-                    res
-                    .json()
-                    .then((data: any) => {
-                        runInAction(() => {
-                            this.courseId = courseId;
-                            this.isUserBuy = data;
-                        });
-                        resolve(data);
+                setTimeout(function() {
+                    runInAction(() => {
+                        this.isCourseStart = true;
                     });
-                });
+                    resolve();
+                }, 1000);
+                // fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/WhetherSignUp/${courseId}`, {
+                //     method: "PUT",
+                //     mode: "cors",
+                //     headers: {
+                //         "Accept": "application/json",
+                //         "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
+                //         "Content-Type": "application/json;charset=utf-8",
+                //         "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
+                //         "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
+                //     }
+                // }).then((res: any) => {
+                //     res
+                //     .json()
+                //     .then((data: any) => {
+                //         runInAction(() => {
+                //             this.courseId = courseId;
+                //             this.isUserBuy = data;
+                //         });
+                //         resolve(data);
+                //     });
+                // });
             }
         });
     }
