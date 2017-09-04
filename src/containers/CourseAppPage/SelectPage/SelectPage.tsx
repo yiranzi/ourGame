@@ -5,11 +5,15 @@ import LessonBar from "@/components/SelectPage/LessonBar/LessonBar";
 
 import className from "./style/SelectPage.less";
 
+interface PropsTypes {
+    dayCourseList: any;
+    propsPath: string;
+}
 
 interface StateTypes {
     Carouselindex: number;
 }
-export default class IndexPage extends React.Component<{}, StateTypes> {
+export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     constructor() {
         super();
         this.cbfOnEnter = this.cbfOnEnter.bind(this);
@@ -38,9 +42,9 @@ export default class IndexPage extends React.Component<{}, StateTypes> {
         let arr = [];
         let homeWorkCount = 0;
         for (let i = 0; i < this.props.dayCourseList.length; i++) {
-            //计算出来状态,并赋值.
+            // 计算出来状态,并赋值.
             let courseStatus = this.calcCourseStatus(i);
-            //如果上一个能看.这个还可以渲染.
+            // 如果上一个能看.这个还可以渲染.
             if ( i === 0 || this.props.dayCourseList[i - 1].status !== -1 ) {
                 console.log(i);
                 arr.push(

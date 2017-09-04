@@ -1,6 +1,10 @@
 import {observable, useStrict, action, computed, runInAction} from "mobx";
-import fetch from "@/isomorphic/fetch";
 
+
+import DALUserInfoState from "@/dal/Global";
+
+import fetch from "@/isomorphic/fetch";
+import * as _GLOBAL_CONFIG_ from "@/global/global.config";
 class DALIndexPage {
     @observable bannerSrc: string = null;
     @observable price: string|number = null;
@@ -9,34 +13,113 @@ class DALIndexPage {
     @observable audioSrc: string = null;
     @observable timePicker: Array<{label: string, value: string|number}> = null;
     @observable hasFetchData: boolean = false;
+    @observable teacherImg: string = null;
+    @observable teacherIntro: string = null;
+    @observable isUserCanBuy: boolean = null;
     constructor() {
         this.fetchIndexPageState = this.fetchIndexPageState.bind(this);
+        this.fetchSignUpNumber = this.fetchSignUpNumber.bind(this);
+        this.fetchStartTime = this.fetchStartTime.bind(this);
+        this.fetchCourseInfo = this.fetchCourseInfo.bind(this);
     }
+    // 查询课程人数是否已满
     @action
-    fetchIndexPageState () {
+    fetchSignUpNumber(courseId: number) {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                runInAction(() => {
-                    this.bannerSrc = require("@/assets/image/IMG_1508.jpg");
-                    this.audioSrc = "https://source.ichangtou.com/file/sound/d9a3e3f2/30/0/1.mp3";
-                    this.price = 100;
-                    this.summary = "这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介这是简介v";
-                    this.catalog = ["基金指数", "基金定投", "定投场内外", "策略", "温度指数", "简投法"];
+            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/signUpNumber/${courseId}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
+                    "Content-Type": "application/json;charset=utf-8",
+                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
+                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
+                }
+            }).then((res: any) => {
+                res
+                .json()
+                .then((data: any) => {
+                    runInAction(() => {
+                        this.isUserCanBuy = data.time;
+                    });
+                    resolve();
+                });
+            });
+        });
+    }
+    // 查询开课时间
+    @action
+    fetchStartTime(courseId: number) {
+        return new Promise((resolve, reject) => {
+            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/getstarttime/${courseId}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
+                    "Content-Type": "application/json;charset=utf-8",
+                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
+                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
+                }
+            }).then((res: any) => {
+                res
+                .json()
+                .then((data: any) => {
+                    console.log(data);
+                     // todo 时间选择
                     this.timePicker = [
                         {
                             label: "8 月 31 日",
                             value: 1
-                          },
-                          {
+                        }, {
                             label: "9 月 31 日",
                             value: 2
-                          },
-                      ];
-                    this.hasFetchData = true;
+                        }
+                    ];
+                    resolve();
                 });
-                resolve();
-            }, 2000);
+            });
         });
+    }
+    // 查询课程信息
+    @action
+    fetchCourseInfo(courseId: number) {
+        return new Promise((resolve, reject) => {
+            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/course/info/${courseId}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
+                    "Content-Type": "application/json;charset=utf-8",
+                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
+                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
+                }
+            }).then((res: any) => {
+                res
+                .json()
+                .then((data: any) => {
+                    runInAction(() => {
+                        this.bannerSrc = data.bannerSrc;
+                        this.audioSrc = data.audioSrc;
+                        this.price = data.price;
+                        this.summary = data.summary;
+                        this.catalog = data.catalog;
+                        this.teacherImg = data.teacherImg;
+                        this.teacherIntro = data.teacherIntro;
+                        this.hasFetchData = true;
+                    });
+                    resolve();
+                });
+            });
+        });
+    }
+    // 获取所有页面数据
+    @action
+    fetchIndexPageState (courseId: number) {
+        return Promise.all([
+            this.fetchSignUpNumber(courseId),
+            this.fetchStartTime(courseId),
+            this.fetchCourseInfo(courseId)
+        ]);
     }
 }
 

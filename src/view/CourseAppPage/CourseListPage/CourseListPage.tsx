@@ -1,5 +1,3 @@
-//导入
-import React from "react";
 
 import React from "react";
 import className from "./style/CourseListPage.less";
@@ -9,33 +7,39 @@ import { observer } from "mobx-react";
 import SelectPage from "@/containers/CourseAppPage/SelectPage/SelectPage";
 import DALGetCourseList from "@/dal/SelectPage/GetCourseList";
 
-//接口
+
+import { resolve } from "@/utils/resolver";
+import {
+    Route,
+    Link,
+    Switch
+} from "react-router-dom";
+
 interface PropsTypes {
-
+    propsPath: string;
+    DALCourseListState: any;
+    match: any;
 }
-
-//类
+@observer
+@resolve("fetchDayItem", function(props: PropsTypes) {
+    return props.DALCourseListState.fetchDayItem();
+})
 class CourseListPage extends React.Component<PropsTypes> {
     constructor() {
-        DALGetCourseList.fetchDayCourseList();
         super();
     }
-
-    @observer
     render() {
-        if ( DALGetCourseList.dayCourseList ) {
-            let dayCourseList = DALGetCourseList.dayCourseList;
-            return (
-                <div className={className.view}>
-                    <SelectPage dayCourseList={dayCourseList}/>
-                </div>
-            );
-        } else {
-            return(<div>empty before get courseSelect</div>);
-        }
-
+        return (
+            <div className={className.view}>
+                <Route path={`${this.props.match.url}/`}
+                    render={props => (
+                        <SelectPage {...props} dayCourseList={this.props.DALCourseListState} propsPath={this.props.match.url}/>
+                    )}
+                />
+            </div>
+        );
     }
 }
 
-//导出
+// 导出
 export default CourseListPage;

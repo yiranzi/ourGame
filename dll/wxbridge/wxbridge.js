@@ -260,7 +260,7 @@ WXSDK._getShareUrl = function () {
     return WXSDK._getHtmlUrl() + "?share=" + userInfo.userId + "#" + WXSDK._getPoundSignUrl();
 };
 
-WXSDK.wechatPay = function () {
+WXSDK.wechatPay = function (data) {
     var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
     if (window._WXGLOBAL_.__PAYPULLINGFLAG__) {
         //如果正在拉取支付数据，阻止，避免重复请求
@@ -270,14 +270,14 @@ WXSDK.wechatPay = function () {
     }
     var price = 1;
     if (price) {
-        WXSDK._getOrder(userInfo.userId, price);
+        return WXSDK._getOrder(data.userId, data.price, data.order);
     } else {
         console.log('支付失败，获取成本价格为空');
+        return Promise.reject();
     }
-
 };
 
-WXSDK._getOrder = function (userId, sum) {
+WXSDK._getOrder = function (userId, sum, order) {
     if (window._WXGLOBAL_.__PAYPULLINGFLAG__) {
         return;
     }
@@ -289,7 +289,7 @@ WXSDK._getOrder = function (userId, sum) {
     if (!sum) {
         sum = window._WXGLOBAL_.__COURSE_SUM__;
     }
-    var jsonData = JSON.stringify({
+    var jsonData = order || JSON.stringify({
         "body": '商品成本费',
         "deal": {
             "items": [{
@@ -327,7 +327,7 @@ WXSDK._getOrder = function (userId, sum) {
         })
         .catch(function (data) {
             console.log('请求微信支付失败', data);
-        })
+        });
 };
 
 WXSDK._pay = function () {
@@ -347,7 +347,7 @@ WXSDK._pay = function () {
 
 WXSDK._onBridgeReady = function (data) {
     var param = {
-        "appid": window._WXGLOBAL_.__PAID_APPID__,
+        "appId": window._WXGLOBAL_.__PAID_APPID__,
         "timeStamp": data
             .timeStamp
             .toString(),

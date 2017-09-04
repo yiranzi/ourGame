@@ -12,7 +12,6 @@ import CourseAppPage from "./CourseAppPage/CourseAppPage";
 import CourseListPage from "./CourseAppPage/CourseListPage/CourseListPage";
 import CourseListenPage from "./CourseAppPage/CourseListenPage/CourseListenPage";
 
-
 export default function AppRouter() {
     return (
         <Router>

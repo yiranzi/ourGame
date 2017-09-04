@@ -22,31 +22,35 @@ class DALUserInfo {
     fetchDALUserInfo() {
         return new Promise((resolve, reject) => {
             let tempUserInfo = JSON.parse(window.sessionStorage.getItem("wx-user-info"));
-            if (tempUserInfo === null) {
-                window.addEventListener("_dove_FetchEvent", event => {
-                    runInAction(() => {
-                        let tempUserInfo = JSON.parse(window.sessionStorage.getItem("wx-user-info"));
-                        this.userId = tempUserInfo.userId;
-                        this.sessionId = tempUserInfo.sessionId;
-                        this.nickName = tempUserInfo.nickName;
-                        this.headImage = tempUserInfo.headImage;
-                        this.payOpenId = tempUserInfo.payOpenId;
-                        this.subscribe = tempUserInfo.subscribe;
-                        this.openId = tempUserInfo.subscribe;
-                        this.hasFetchData = true;
-                    });
-                    resolve();
-                });
-            } else {
-                this.userId = tempUserInfo.userId;
-                this.sessionId = tempUserInfo.sessionId;
-                this.nickName = tempUserInfo.nickName;
-                this.headImage = tempUserInfo.headImage;
-                this.payOpenId = tempUserInfo.payOpenId;
-                this.subscribe = tempUserInfo.subscribe;
-                this.openId = tempUserInfo.subscribe;
-                this.hasFetchData = true;
+            if (this.hasFetchData) {
                 resolve();
+            } else {
+                if (tempUserInfo === null) {
+                    window.addEventListener("_dove_FetchEvent", event => {
+                        runInAction(() => {
+                            let tempUserInfo = JSON.parse(window.sessionStorage.getItem("wx-user-info"));
+                            this.userId = tempUserInfo.userId;
+                            this.sessionId = tempUserInfo.sessionId;
+                            this.nickName = tempUserInfo.nickName;
+                            this.headImage = tempUserInfo.headImage;
+                            this.payOpenId = tempUserInfo.payOpenId;
+                            this.subscribe = tempUserInfo.subscribe;
+                            this.openId = tempUserInfo.subscribe;
+                            this.hasFetchData = true;
+                        });
+                        resolve();
+                    });
+                } else {
+                    this.userId = tempUserInfo.userId;
+                    this.sessionId = tempUserInfo.sessionId;
+                    this.nickName = tempUserInfo.nickName;
+                    this.headImage = tempUserInfo.headImage;
+                    this.payOpenId = tempUserInfo.payOpenId;
+                    this.subscribe = tempUserInfo.subscribe;
+                    this.openId = tempUserInfo.subscribe;
+                    this.hasFetchData = true;
+                    resolve();
+                }
             }
         });
     }
