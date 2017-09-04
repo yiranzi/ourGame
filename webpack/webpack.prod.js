@@ -23,17 +23,25 @@ module.exports = webpackMerge([
         output: {
             path: path.join(__dirname, "..", "prod"),
             filename: "[name].js",
+            chunkFilename: "[chunkhash].js"
         },
         plugins: [
+            new webpack.optimize.AggressiveSplittingPlugin({
+                minSize: 5000,
+                maxSize: 10000
+            }),
             new webpack.DefinePlugin({
-                $$webpack_dev: JSON.stringify(true)
+                $$webpack_dev: JSON.stringify(true),
+                "process.env.NODE_ENV": JSON.stringify("production")
             }),
             new webpack.NamedModulesPlugin(),
             new HtmlWebpackPlugin({
                 title: 'prod',
                 template: 'index.html',
                 filename: 'index.html',
-                hash: true
+                hash: false,
+                inject: "head",
+                showErrors: true
             }),
             new webpack.DllReferencePlugin({
                 context: __dirname,
@@ -41,6 +49,7 @@ module.exports = webpackMerge([
                 name: 'dll'
             })
         ],
+        recordsOutputPath: path.join(__dirname, "..", "prod", "records.json"),
         devtool: false
     }
 ]);
