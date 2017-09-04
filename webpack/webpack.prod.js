@@ -22,7 +22,7 @@ module.exports = webpackMerge([
         },
         output: {
             path: path.join(__dirname, "..", "prod", "vinda"),
-            filename: "[name].js",
+            filename: "[chunkhash].js",
             chunkFilename: "[chunkhash].js"
         },
         plugins: [
