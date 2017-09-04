@@ -12,16 +12,18 @@ process.env.NODE_ENV = "dev"
 module.exports = webpackMerge([
     require("./webpack.base"),
     {
-        entry: path.join(
-            __dirname,
-            "..",
-            "src",
-            "entrypoint.tsx"
-        ),
+        entry: {
+            "bundle": path.join(
+                __dirname,
+                "..",
+                "src",
+                "entrypoint.tsx"
+            )
+        },
         output: {
             path: path.join(__dirname, "..", "prod", "vinda"),
-            filename: "[chunkhash].[hash]js",
-            chunkFilename: "[chunkhash].[hash].js"
+            filename: "[name].js",
+            chunkFilename: "[chunkhash].js"
         },
         plugins: [
             new webpack.optimize.AggressiveSplittingPlugin({
@@ -37,9 +39,7 @@ module.exports = webpackMerge([
                 title: 'prod',
                 template: 'index.html',
                 filename: 'index.html',
-                hash: false,
-                inject: "head",
-                showErrors: true
+                hash: true,
             }),
             new webpack.DllReferencePlugin({
                 context: __dirname,
