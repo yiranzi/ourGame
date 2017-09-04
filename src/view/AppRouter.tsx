@@ -10,7 +10,6 @@ import {
 import NoMatchPage from "@/view/NoMatchPage";
 import CourseAppPage from "./CourseAppPage/CourseAppPage";
 
-
 export default function AppRouter() {
     return (
         <Router>

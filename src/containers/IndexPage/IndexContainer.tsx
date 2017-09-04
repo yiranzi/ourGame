@@ -66,6 +66,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
             });
         } else {
             // todo 提交报名唤起支付
+            // window.WXSDK.wechatPay();
             this.props.history.push(`${this.props.propsPath}/wait`);
         }
     }

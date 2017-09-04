@@ -21,7 +21,7 @@ module.exports = webpackMerge([
             )
         },
         output: {
-            path: path.join(__dirname, "..", "prod"),
+            path: path.join(__dirname, "..", "prod", "vinda"),
             filename: "[name].js",
         },
         plugins: [
@@ -37,7 +37,7 @@ module.exports = webpackMerge([
             }),
             new webpack.DllReferencePlugin({
                 context: __dirname,
-                manifest: require(path.join(__dirname, "..", "prod/vendors-manifest.json")),
+                manifest: require(path.join(__dirname, "..", "prod", "vinda/vendors-manifest.json")),
                 name: 'dll'
             })
         ],

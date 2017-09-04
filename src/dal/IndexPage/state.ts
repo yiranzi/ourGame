@@ -15,6 +15,19 @@ class DALIndexPage {
     @action
     fetchIndexPageState () {
         return new Promise((resolve, reject) => {
+
+            fetch("", {
+                method: "POST",
+                body: jsonData,
+                headers: {
+                    "Accept": "application/json",
+                    "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
+                    "Content-Type": "application/json;charset=utf-8",
+                    "X-iChangTou-Json-Api-User": userInfo.userId,
+                    "X-iChangTou-Json-Api-Session": userInfo.sessionId
+                }
+            });
+            // /ctplus/course/info/{courseId}
             setTimeout(() => {
                 runInAction(() => {
                     this.bannerSrc = require("@/assets/image/IMG_1508.jpg");
