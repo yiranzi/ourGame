@@ -6,7 +6,7 @@ import className from "./style/CourseListPage.less";
 
 import { observer } from "mobx-react";
 
-import SelectPage from "@/containers/SelectPage/SelectPage";
+import SelectPage from "@/containers/CourseAppPage/SelectPage/SelectPage";
 import DALGetCourseList from "@/dal/SelectPage/GetCourseList";
 
 //接口
