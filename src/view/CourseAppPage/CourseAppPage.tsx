@@ -73,7 +73,6 @@ class CourseAppPage extends React.Component<PropsTypes> {
         super(props);
     }
     render() {
-        console.log('456');
         return (
             <Switch>
                 <Route path={`${this.props.match.url}/index`}

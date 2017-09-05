@@ -27,9 +27,9 @@ interface PropsTypes {
     DALCourseListState: any;
     DALUserInfoState: any;
     DALWaitPageState: any;
-    match: any;
-    location: any;
-    history: any;
+    match?: any;
+    location?: any;
+    history?: any;
 }
 @observer
 @resolve("fetchDayItem", function(props: PropsTypes) {
