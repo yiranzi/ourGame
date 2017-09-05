@@ -15,6 +15,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         this.cbfChooseBarClick = this.cbfChooseBarClick.bind(this);
         this.cbfPostAnswer = this.cbfPostAnswer.bind(this);
         this.cbfNextLesson = this.cbfNextLesson.bind(this);
+        this.finishAudio = this.finishAudio.bind(this);
         this.state = {
             // 当前小节
             lessonIndex: 0, // 当前的题目
