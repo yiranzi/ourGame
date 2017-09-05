@@ -1,7 +1,7 @@
 import * as React from "react";
 import Card from "@/components/Card";
 import className from "./style/IndexContainer.less";
-import { AudioPlayerWithoutTime } from "@/components/AudioPlayer";
+import { AudioPlayerWithoutTime, AudioPlayerWithTime } from "@/components/AudioPlayer";
 import {
     Button as Antdbutton,
     Carousel,
@@ -21,7 +21,7 @@ import {
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 
 interface StateTypes {
-    dateIndex: number;
+    period: number;
 }
 
 interface PropsTypes {
@@ -36,14 +36,14 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
         super(props);
         this.state = {
-            dateIndex: -1,
+            period: -1,
         };
         this.handleOKButton = this.handleOKButton.bind(this);
         this.handleSubmitButton = this.handleSubmitButton.bind(this);
     }
     handleOKButton(val: number) {
         this.setState({
-            dateIndex: val
+            period: val
         });
     }
     handleSubmitButton() {
@@ -57,7 +57,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                 cancelFunction: () => {}
             });
         } else {
-            if (this.state.dateIndex === -1) {
+            if (this.state.period === -1) {
                 Modal.showModal({
                     title: "注意啦!!",
                     bodyText: <div>快选择报名期数</div>,
@@ -69,7 +69,10 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
             } else {
                 // todo 提交报名唤起支付
                 // window.WXSDK.wechatPay();
-                this.props.history.push(`${this.props.propsPath}/wait`);
+                this.props.DALState.fetchPayOrder(1, this.state.period).then(() => {
+                    mountGlobalLoading();
+                    setTimeout(this.props.history.push(`${this.props.propsPath}/wait`), 1000);
+                });
             }
         }
     }
@@ -80,7 +83,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                     <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
                 </div>
                 <div>
-                    <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
+                    <AudioPlayerWithTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithTime>
                 </div>
                 <div>
                     <SummaryCard>

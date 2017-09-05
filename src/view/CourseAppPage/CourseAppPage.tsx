@@ -61,7 +61,11 @@ let DALCourseListenState = new DALCourseListen();
                 // todo 查询是否已经开课，现在没有这个接口
                 props.history.push(`${props.match.url}/courselist`);
             }
+        }).catch(() => {
+            props.history.push(`${props.match.url}/error`);
         });
+    }).catch(() => {
+        props.history.push(`${props.match.url}/error`);
     });
 })
 class CourseAppPage extends React.Component<PropsTypes> {

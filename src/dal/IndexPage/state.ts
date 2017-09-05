@@ -1,10 +1,16 @@
-import {observable, useStrict, action, computed, runInAction} from "mobx";
+import * as _GLOBAL_CONFIG_ from '@/global/global.config';
+import DALUserInfoState from '@/dal/Global';
+import fetch from '@/isomorphic/fetch';
+import {
+    action,
+    computed,
+    observable,
+    runInAction,
+    useStrict
+    } from 'mobx';
 
 
-import DALUserInfoState from "@/dal/Global";
 
-import fetch from "@/isomorphic/fetch";
-import * as _GLOBAL_CONFIG_ from "@/global/global.config";
 class DALIndexPage {
     @observable bannerSrc: string = null;
     @observable price: string|number = null;
@@ -16,6 +22,7 @@ class DALIndexPage {
     @observable teacherImg: string = null;
     @observable teacherIntro: string = null;
     @observable isUserCanBuy: boolean = null;
+    @observable misc: boolean = null;
     constructor() {
         this.fetchIndexPageState = this.fetchIndexPageState.bind(this);
         this.fetchSignUpNumber = this.fetchSignUpNumber.bind(this);
@@ -24,24 +31,32 @@ class DALIndexPage {
         this.fetchPayOrder = this.fetchPayOrder.bind(this);
     }
     @action
-    fetchPayOrder(courseId: number) {
+    fetchPayOrder(courseId: number, period: number) {
         return new Promise((resolve, reject) => {
-            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `payment/wx/jsapi/order`, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
-                    "Content-Type": "application/json;charset=utf-8",
-                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
-                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
-                }
-            }).then((res: any) => {
-                res
-                .json()
-                .then((data: any) => {
-                    console.log(data);
+            (window as any).WXSDK.wechatPay(JSON.stringify({
+                "body": "商品成本费",
+                "deal": {
+                    "items": [
+                        {
+                            dealType: 103, // 交易类型
+                            itemId: 1, // 基金课,应该改成全局
+                            mchantType: 11, // 商品类型 21days
+                            misc: period,
+                            price: 1
+                        }
+                    ]
+                },
+                "openId": DALUserInfoState.payOpenId && DALUserInfoState
+                    .payOpenId
+                    .toString(),
+                "sum": 1
+            }));
+            window.addEventListener("_dove_WxPay", (event) => {
+                if (event.detail.success) {
                     resolve();
-                });
+                } else {
+                    reject();
+                }
             });
         });
     }
@@ -88,16 +103,17 @@ class DALIndexPage {
                 .json()
                 .then((data: any) => {
                     console.log(data);
+                    let count = 0;
                      // todo 时间选择
-                    this.timePicker = [
-                        {
-                            label: "8 月 31 日",
-                            value: 1
-                        }, {
-                            label: "9 月 31 日",
-                            value: 2
+                    this.timePicker = data.map((value, index) => {
+                        if (value.valid === false) {
+                            return {
+                                label: value.startTime.split(" ")[0];
+                                value: count++,
+                                period: value.period
+                            };
                         }
-                    ];
+                    });
                     resolve();
                 });
             });
@@ -141,8 +157,7 @@ class DALIndexPage {
         return Promise.all([
             this.fetchSignUpNumber(courseId),
             this.fetchStartTime(courseId),
-            this.fetchCourseInfo(courseId),
-            this.fetchPayOrder(courseId)
+            this.fetchCourseInfo(courseId)
         ]);
     }
 }

@@ -35,7 +35,7 @@ class DALUserInfo {
                             this.headImage = tempUserInfo.headImage;
                             this.payOpenId = tempUserInfo.payOpenId;
                             this.subscribe = tempUserInfo.subscribe;
-                            this.openId = tempUserInfo.subscribe;
+                            this.openId = tempUserInfo.openId;
                             this.hasFetchData = true;
                         });
                         resolve();
@@ -47,7 +47,7 @@ class DALUserInfo {
                     this.headImage = tempUserInfo.headImage;
                     this.payOpenId = tempUserInfo.payOpenId;
                     this.subscribe = tempUserInfo.subscribe;
-                    this.openId = tempUserInfo.subscribe;
+                    this.openId = tempUserInfo.openId;
                     this.hasFetchData = true;
                     resolve();
                 }

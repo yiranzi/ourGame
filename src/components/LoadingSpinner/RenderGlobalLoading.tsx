@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Loading from "./Loading/Loading";
-
-
+import Spinner from "./Loading/Spinner";
+import WinLoading from "./Loading/WinLoading";
 function mountGlobalLoading() {
     if (!(window as any).globalLoading) {
         ReactDOM.render(
-            <Loading animationOut={false}/>,
+            <WinLoading animationOut={false}/>,
             document.getElementById("loading")
         );
         (window as any).globalLoading = true;
@@ -16,7 +16,7 @@ function mountGlobalLoading() {
 function unMountGlobalLoading() {
     if ((window as any).globalLoading) {
         ReactDOM.render(
-            <Loading animationOut={true}/>,
+            <WinLoading animationOut={true}/>,
             document.getElementById("loading")
         );
         setTimeout(function() {
