@@ -19,7 +19,6 @@ class DALCourseList {
     constructor() {
         this.fetchDayItem = this.fetchDayItem.bind(this);
     }
-
     /**
      * <Promise> 获取课程列表
      * @param {number} courseId
