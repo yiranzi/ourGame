@@ -5,14 +5,14 @@ const path = require("path");
 const webpack = require("webpack");
 const Visualizer = require("webpack-visualizer-plugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractLess = new ExtractTextPlugin({
-    filename: "vinda/app.css",
-    allChunks: true
-});
 const svgDirs = [
     require.resolve('antd-mobile').replace(/warn\.js$/, ''),  // 1. 属于 antd-mobile 内置 svg 文件
     // path.resolve(__dirname, 'src/my-project-svg-foler'),  // 2. 自己私人的 svg 存放目录
   ];
+const extractLess = new ExtractTextPlugin({
+    filename: "vinda/app.css",
+    allChunks: true
+});
 module.exports = {
     resolve: {
         extensions: ['.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.json'],
@@ -26,6 +26,11 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.(svg)$/i,
+                include: svgDirs,
+                loader: "svg-sprite-loader"
+            },
             // load ts/tsx with awesome-typescript-loader
             {
                 test: /\.tsx?$/,
@@ -130,6 +135,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg|eot|woff|woff2|ttf)(\?.*)?$/,
+                exclude: /(antd-mobile)/,
                 use: {
                     loader: 'url-loader',
                     query: {
@@ -147,16 +153,11 @@ module.exports = {
                         name: 'assets/audio/[name].[hash:7].[ext]'
                     }
                 }
-            },
-            {
-                test: /\.(svg)$/i,
-                loader: 'svg-sprite',
-                include: svgDirs,  // 把 svgDirs 路径下的所有 svg 文件交给 svg-sprite-loader 插件处理
             }
         ]
     },
     plugins: [
         extractLess,
-        new Visualizer()
+        new Visualizer(),
     ]
 };
