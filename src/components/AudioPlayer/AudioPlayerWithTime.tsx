@@ -72,7 +72,7 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
     handleTipFormatter(value: number) {
         return [
             Math.floor(value / 60) ,
-            Math.floor(value % 60）
+            Math.floor(value % 60)
         ].join(":").replace(/\b(\d)\b/g, "0$1");
     }
     handlePlayButton() {
@@ -110,7 +110,8 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
     handleOnListen(value: number) {
         if (!this.sliderChangeFlag) {
             this.setState({
-                sliderValue: value
+                sliderValue: value,
+                current_time: value
             });
         }
     }

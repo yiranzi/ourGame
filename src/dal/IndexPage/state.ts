@@ -1,10 +1,16 @@
-import {observable, useStrict, action, computed, runInAction} from "mobx";
+import * as _GLOBAL_CONFIG_ from '@/global/global.config';
+import DALUserInfoState from '@/dal/Global';
+import fetch from '@/isomorphic/fetch';
+import {
+    action,
+    computed,
+    observable,
+    runInAction,
+    useStrict
+    } from 'mobx';
 
 
-import DALUserInfoState from "@/dal/Global";
 
-import fetch from "@/isomorphic/fetch";
-import * as _GLOBAL_CONFIG_ from "@/global/global.config";
 class DALIndexPage {
     @observable bannerSrc: string = null;
     @observable price: string|number = null;
@@ -25,17 +31,17 @@ class DALIndexPage {
         this.fetchPayOrder = this.fetchPayOrder.bind(this);
     }
     @action
-    fetchPayOrder(courseId: number) {
+    fetchPayOrder(courseId: number, period: number) {
         return new Promise((resolve, reject) => {
             (window as any).WXSDK.wechatPay(JSON.stringify({
                 "body": "商品成本费",
                 "deal": {
                     "items": [
                         {
-                            dealType: 102, // 交易类型
-                            itemId: 2,
-                            mchantType: 11, // 商品类型
-                            misc: "1",
+                            dealType: 103, // 交易类型
+                            itemId: 1, // 基金课,应该改成全局
+                            mchantType: 11, // 商品类型 21days
+                            misc: period,
                             price: 1
                         }
                     ]
@@ -97,16 +103,17 @@ class DALIndexPage {
                 .json()
                 .then((data: any) => {
                     console.log(data);
+                    let count = 0;
                      // todo 时间选择
-                    this.timePicker = [
-                        {
-                            label: "8 月 31 日",
-                            value: 1
-                        }, {
-                            label: "9 月 31 日",
-                            value: 2
+                    this.timePicker = data.map((value, index) => {
+                        if (value.valid === false) {
+                            return {
+                                label: value.startTime.split(" ")[0];
+                                value: count++,
+                                period: value.period
+                            };
                         }
-                    ];
+                    });
                     resolve();
                 });
             });
