@@ -17,7 +17,7 @@ export default function AppRouter() {
         <Router>
             <Switch>
                 <Route path="/course/:id" component={CourseAppPage} />
-                <Route component={CourseListPage} />
+                <Route component={NoMatchPage} />
             </Switch>
         </Router>
     );

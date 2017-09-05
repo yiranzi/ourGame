@@ -21,6 +21,29 @@ class DALIndexPage {
         this.fetchSignUpNumber = this.fetchSignUpNumber.bind(this);
         this.fetchStartTime = this.fetchStartTime.bind(this);
         this.fetchCourseInfo = this.fetchCourseInfo.bind(this);
+        this.fetchPayOrder = this.fetchPayOrder.bind(this);
+    }
+    @action
+    fetchPayOrder(courseId: number) {
+        return new Promise((resolve, reject) => {
+            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `payment/wx/jsapi/order`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
+                    "Content-Type": "application/json;charset=utf-8",
+                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
+                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
+                }
+            }).then((res: any) => {
+                res
+                .json()
+                .then((data: any) => {
+                    console.log(data);
+                    resolve();
+                });
+            });
+        });
     }
     // 查询课程人数是否已满
     @action
@@ -118,7 +141,8 @@ class DALIndexPage {
         return Promise.all([
             this.fetchSignUpNumber(courseId),
             this.fetchStartTime(courseId),
-            this.fetchCourseInfo(courseId)
+            this.fetchCourseInfo(courseId),
+            this.fetchPayOrder(courseId)
         ]);
     }
 }

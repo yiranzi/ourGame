@@ -21,19 +21,20 @@ module.exports = webpackMerge([
             )
         },
         output: {
-            path: path.join(__dirname, "..", "prod", "vinda"),
-            filename: "[name].js",
+            path: path.join(__dirname, "..", "prod"),
+            filename: "vinda/[name].js",
         },
         plugins: [
             new webpack.DefinePlugin({
-                $$webpack_dev: JSON.stringify(true)
+                $$webpack_dev: JSON.stringify(true),
+                "process.env.NODE_ENV": JSON.stringify("production")
             }),
             new webpack.NamedModulesPlugin(),
             new HtmlWebpackPlugin({
                 title: 'prod',
                 template: 'index.html',
                 filename: 'index.html',
-                hash: true
+                hash: true,
             }),
             new webpack.DllReferencePlugin({
                 context: __dirname,
@@ -41,6 +42,7 @@ module.exports = webpackMerge([
                 name: 'dll'
             })
         ],
+        recordsOutputPath: path.join(__dirname, "..", "prod", "records.json"),
         devtool: false
     }
 ]);

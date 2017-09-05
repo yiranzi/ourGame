@@ -23,10 +23,10 @@ interface PropsTypes {
 }
 @observer
 @resolve("fetchDALUserSignState", function(props: PropsTypes) {
-    if (props.DALCourseAppState.isUserBuy) {
-        props.location.push(`${this.props.propsPath}/courselist`);
-        return Promise.resolve();
-    }
+    // if (props.DALCourseAppState.isUserBuy) {
+    //     props.location.push(`${this.props.propsPath}/courselist`);
+    //     return Promise.resolve();
+    // }
     // 获取当前页面需要的数据
     return props.DALIndexPageState.fetchIndexPageState(1).then(() => {
         unMountGlobalLoading();
