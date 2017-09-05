@@ -9,6 +9,12 @@ import SelectPage from "@/containers/CourseAppPage/SelectPage/SelectPage";
 import DALGetCourseList from "@/dal/SelectPage/GetCourseList";
 
 
+import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
+
+
 import { resolve } from "@/utils/resolver";
 import {
     Route,
@@ -32,6 +38,8 @@ interface PropsTypes {
             if (props.location.pathname !== `${props.match.url}/wait`) {
                 props.history.push(`${props.match.url}/wait`);
             }
+        } else {
+            unMountGlobalLoading();
         }
     });
 })

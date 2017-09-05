@@ -42,7 +42,6 @@ let DALWaitPageState = new DALWaitPage();
 
 @observer
 @resolve("fetchDALUserSignState", function(props: PropsTypes) {
-    console.log('123');
     // 唤起加载页面
     mountGlobalLoading();
     // 1、获取用户登陆信息
@@ -58,7 +57,7 @@ let DALWaitPageState = new DALWaitPage();
                 }
             } else {
                 // todo 查询是否已经开课，现在没有这个接口
-                if (props.location.pathname !== `${props.match.url}/courselist` && (props.location.pathname !== `${props.match.url}/courselist/wait`)) {
+                if (props.location.pathname === `${props.match.url}/index`) {
                     props.history.push(`${props.match.url}/courselist`);
                 }
             }
