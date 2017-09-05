@@ -115,10 +115,15 @@ export default function AppRouter() {
             <Switch>
                 <Route path="/course/:id" component={CourseAppPage} />
                 {/*<Route component={ListenCourseContain} />*/}
+                {/*<Route*/}
+                       {/*render={() => (*/}
+                           {/*<ListenCourseContain courseListenState={prop}/>*/}
+                       {/*)}*/}
+                {/*/>*/}
                 <Route
-                       render={() => (
-                           <ListenCourseContain courseListenState={prop}/>
-                       )}
+                    render={() => (
+                        <CourseListContain dayCourseList={prop}/>
+                    )}
                 />
             </Switch>
         </Router>
