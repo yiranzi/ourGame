@@ -15,7 +15,7 @@
     "tslint:fix": "tslint -c tslint.json --fix src/**/*.ts?(x)",
     "dev": " rm -rf dev/* && webpack --progress --colors --config webpack/webpack.dll.js &&  webpack-dev-server --config webpack/webpack.dev.js --devtool eval --progress --colors --content-base dev",
     "prod": "gulp prod",
-    "webpack": "  webpack  --progress --colors --config webpack/webpack.dev.js",
+    "webpack": "rm -rf prod/* && webpack --progress --colors --config webpack/webpack.dll.prod.js && webpack    --progress --colors       --config webpack/webpack.prod.js",
     "webpack:prod": " rm -rf prod/* && webpack --progress --colors --config webpack/webpack.dll.prod.js && webpack    --progress --colors       --config webpack/webpack.prod.js && gulp build:prod",
     "compress": "gulp build:prod",
     "doc": " rm -rf lib/* && tsc && gulp doc",

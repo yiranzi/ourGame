@@ -26,7 +26,7 @@ interface PropsTypes {
 @observer
 @resolve("fetchListenItem", function(props: PropsTypes) {
     return props.DALCourseListenState.fetchListenItem(1, 10).then(() => {
-        mountGlobalLoading();
+        unMountGlobalLoading();
     });
 })
 class CourseListenPage extends React.Component<PropsTypes> {
