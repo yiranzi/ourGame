@@ -34,6 +34,14 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         );
     }
 
+    renderQQGroup() {
+        return(<div>
+            <img src={}/>
+            <h1></h1>
+            <img/>
+        </div>)
+    }
+
     renderCourseList() {
         console.log('renderCourseList');
         let gapStyle = {
@@ -101,9 +109,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         return courseStatus;
     }
 
-    renderQQGroup() {
 
-    }
 
     renderTopBanner() {
         let style = {
