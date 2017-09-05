@@ -44,7 +44,7 @@ class DALCourseList {
                     runInAction(() => {
                         this.dayItem = data;
                     });
-                    resolve();
+                    resolve(data);
                 });
             });
         });

@@ -24,7 +24,7 @@ export default class WaitPage extends React.Component<PropsTypes, StateTypes> {
             sureText: "立即加群",
             cancelText: "就是不加",
             sureFunction: () => {
-                window.location.href = this.props.DALUserInfoState.link;
+                window.location.href = this.props.DALWaitPageState.link;
             },
             cancelFunction: () => {}
         });
