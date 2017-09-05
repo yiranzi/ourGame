@@ -93,7 +93,11 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
     handleOnLoadedMetadata(e: Event) {
         this.props.onLoadedMetadata && this.props.onLoadedMetadata(e);
         this.setState({
-            length: this.audioPlayerEl.audioEl.duration
+            sliderValue: 0,
+            current_time: 0,
+            isPlay: false
+        }, () => {
+            this.audioPlayerEl.audioEl.pause();
         });
     }
     handleOnAfterChange(value: any) {
@@ -117,6 +121,13 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
     }
     handleOnEnded() {
         this.props.onEnded && this.props.onEnded();
+        this.setState({
+            sliderValue: 0,
+            current_time: 0,
+            isPlay: false
+        }, () => {
+            this.audioPlayerEl.audioEl.pause();
+        });
     }
     render() {
         const {isPlay, ...otherProps} = this.props;
