@@ -66,6 +66,18 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
         this.handleOnListen = this.handleOnListen.bind(this);
         this.handleOnEnded = this.handleOnEnded.bind(this);
     }
+    componentWillReceiveProps(nextProps: PropsTypes) {
+        if (nextProps.src !== this.props.src) {
+            this.setState({
+                sliderValue: 0,
+                current_time: 0,
+                isPlay: false,
+                length: this.audioPlayerEl.audioEl.duration
+            }, () => {
+                this.audioPlayerEl.audioEl.pause();
+            });
+        }
+    }
     get playButtonIcon(): string {
         return this.state.isPlay ? IconFont.icon_zanting + " " + IconFont.iconfont : IconFont.icon_bofang + " " + IconFont.iconfont;
     }
@@ -93,12 +105,7 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
     handleOnLoadedMetadata(e: Event) {
         this.props.onLoadedMetadata && this.props.onLoadedMetadata(e);
         this.setState({
-            sliderValue: 0,
-            current_time: 0,
-            isPlay: false,
             length: this.audioPlayerEl.audioEl.duration
-        }, () => {
-            this.audioPlayerEl.audioEl.pause();
         });
     }
     handleOnAfterChange(value: any) {
