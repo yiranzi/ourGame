@@ -62,6 +62,7 @@ class AudioPlayerWithOutTime extends React.PureComponent<PropsTypes, StateTypes>
         this.handleOnAfterChange = this.handleOnAfterChange.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnListen = this.handleOnListen.bind(this);
+        this.handleOnEnded = this.handleOnEnded.bind(this);
     }
     get playButtonIcon(): string {
         return this.state.isPlay ? IconFont.icon_zanting + " " + IconFont.iconfont : IconFont.icon_bofang + " " + IconFont.iconfont;
@@ -90,7 +91,10 @@ class AudioPlayerWithOutTime extends React.PureComponent<PropsTypes, StateTypes>
     handleOnLoadedMetadata(e: Event) {
         this.props.onLoadedMetadata && this.props.onLoadedMetadata(e);
         this.setState({
-            length: this.audioPlayerEl.audioEl.duration
+            sliderValue: 0,
+            isPlay: false
+        }, () => {
+            this.audioPlayerEl.audioEl.pause();
         });
     }
     handleOnAfterChange(value: any) {
@@ -100,15 +104,24 @@ class AudioPlayerWithOutTime extends React.PureComponent<PropsTypes, StateTypes>
     handleOnChange(value: number) {
         this.sliderChangeFlag = true;
         this.setState({
-            sliderValue: value
+            sliderValue: value,
         });
     }
     handleOnListen(value: number) {
         if (!this.sliderChangeFlag) {
             this.setState({
-                sliderValue: value
+                sliderValue: value,
             });
         }
+    }
+    handleOnEnded() {
+        this.props.onEnded && this.props.onEnded();
+        this.setState({
+            sliderValue: 0,
+            isPlay: false
+        }, () => {
+            this.audioPlayerEl.audioEl.pause();
+        });
     }
     render() {
         const {isPlay, ...otherProps} = this.props;
@@ -133,6 +146,7 @@ class AudioPlayerWithOutTime extends React.PureComponent<PropsTypes, StateTypes>
                     onListen={this.handleOnListen}
                     autoPlay={this.props.autoPlay}
                     loop={this.props.loop}
+                    onEnded={this.handleOnEnded}
                     muted={this.props.muted}
                     preload={this.props.preload}
                     title={this.props.title}
