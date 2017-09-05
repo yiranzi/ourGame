@@ -16,6 +16,7 @@ class DALIndexPage {
     @observable teacherImg: string = null;
     @observable teacherIntro: string = null;
     @observable isUserCanBuy: boolean = null;
+    @observable misc: boolean = null;
     constructor() {
         this.fetchIndexPageState = this.fetchIndexPageState.bind(this);
         this.fetchSignUpNumber = this.fetchSignUpNumber.bind(this);
@@ -25,24 +26,23 @@ class DALIndexPage {
     }
     @action
     fetchPayOrder(courseId: number) {
-        return new Promise((resolve, reject) => {
-            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `payment/wx/jsapi/order`, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
-                    "Content-Type": "application/json;charset=utf-8",
-                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
-                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
-                }
-            }).then((res: any) => {
-                res
-                .json()
-                .then((data: any) => {
-                    console.log(data);
-                    resolve();
-                });
-            });
+        return WXSDK.wechatPay(JSON.stringify({
+            "body": "商品成本费",
+            "deal": {
+                "items": [
+                    {
+                        dealType: 102, // 交易类型
+                        itemId: 2,
+                        mchantType: 11, // 商品类型
+                        misc: "1",
+                        price: 1
+                    }
+                ]
+            },
+            "openId": DALUserInfoState.payOpenId && DALUserInfoState
+                .payOpenId
+                .toString(),
+            "sum": 1
         });
     }
     // 查询课程人数是否已满
@@ -141,8 +141,7 @@ class DALIndexPage {
         return Promise.all([
             this.fetchSignUpNumber(courseId),
             this.fetchStartTime(courseId),
-            this.fetchCourseInfo(courseId),
-            this.fetchPayOrder(courseId)
+            this.fetchCourseInfo(courseId)
         ]);
     }
 }

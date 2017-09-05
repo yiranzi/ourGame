@@ -27,13 +27,13 @@ module.exports = webpackMerge([
         plugins: [
             new webpack.DefinePlugin({
                 $$webpack_dev: JSON.stringify(true),
-                "process.env.NODE_ENV": JSON.stringify("production")
+                "process.env.NODE_ENV": JSON.stringify("testing")
             }),
             new webpack.NamedModulesPlugin(),
             new HtmlWebpackPlugin({
                 title: 'prod',
                 template: 'index.html',
-                filename: 'index.html',
+                filename: 'indexVinda.html',
                 hash: true,
             }),
             new webpack.DllReferencePlugin({

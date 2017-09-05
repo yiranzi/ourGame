@@ -12,17 +12,19 @@ window._WXGLOBAL_ = (function () {
         .indexOf('localhost') > 0;
     var __TEST_API_TOKEN__ = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';
     var __FORMA_API_TOKEN__ = 'DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';
-    var __API_TOKEN__ = _ENVIRONMENT ? __FORMA_API_TOKEN__ : __TEST_API_TOKEN__;
+    var __API_TOKEN__ = _ENVIRONMENT
+        ? __FORMA_API_TOKEN__
+        : __TEST_API_TOKEN__;
     var _FORMAL_API_DOMAIN = 'https://growth.ichangtou.com/';
     var _TEST_API_DOMAIN = 'https://geek.ichangtou.com/';
-    var __API_URL_DOMAIN__ = _ENVIRONMENT ?
-        _FORMAL_API_DOMAIN :
-        _TEST_API_DOMAIN;
+    var __API_URL_DOMAIN__ = _ENVIRONMENT
+        ? _FORMAL_API_DOMAIN
+        : _TEST_API_DOMAIN;
     var __TEST_APPID__ = 'wx7cf8dd5d80048e42';
     var __FORMA_APPID__ = 'wxd6c823882698f217';
-    var __APPID__ = _ENVIRONMENT ?
-        __FORMA_APPID__ :
-        __TEST_APPID__;
+    var __APPID__ = _ENVIRONMENT
+        ? __FORMA_APPID__
+        : __TEST_APPID__;
     var __API_URL_GROUP__ = {
         'wx_sign': 'wx/signature',
         'userinfo_authorization': 'wx/h5/info/login/OA_CTW',
@@ -40,9 +42,9 @@ window._WXGLOBAL_ = (function () {
     var _FORMAL_PAID_APPID = 'wxd6c823882698f217';
 
     //支付APPID
-    var __PAID_APPID__ = _ENVIRONMENT ?
-        _FORMAL_PAID_APPID :
-        _TEST_PAID_APPID;
+    var __PAID_APPID__ = _ENVIRONMENT
+        ? _FORMAL_PAID_APPID
+        : _TEST_PAID_APPID;
     var __PAYPULLINGFLAG__ = false;
     var __COURSE_SUM__ = 1;
     return {
@@ -101,16 +103,12 @@ WXSDK.InitWxApi = function () {
                         .then(function (response) {
                             var date = response.json();
                             date.then(function (date) {
-                                wx.config({
-                                    appId: window._WXGLOBAL_.__APPID__,
-                                    timestamp: date.timestamp,
-                                    nonceStr: date.nonceStr,
-                                    signature: date.signature,
-                                    jsApiList: window._WXGLOBAL_.__JSAPILIST__
-                                });
+                                wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
                                 wx.ready(function () {
                                     // WXSDK.shareConfig();
-                                    window.sessionStorage.setItem('wx-share-ready', 'true');
+                                    window
+                                        .sessionStorage
+                                        .setItem('wx-share-ready', 'true');
                                     dispatchEvent(new CustomEvent('_dove_FetchEvent', {
                                         bubbles: true,
                                         cancelable: false,
@@ -135,16 +133,11 @@ WXSDK.InitWxApi = function () {
 WXSDK._getUserInfoFromServer = function () {
     // inject vinda
     var code = WXSDK._getUrlPara('code');
-    var jsonData = JSON.stringify({
-        'code': code
-    });
+    var jsonData = JSON.stringify({'code': code});
     var APIUrl = WXSDK._getAPIUrl('base_login');
     if (WXSDK._getUrlPara('isuserinfo')) {
         APIUrl = WXSDK._getAPIUrl('userinfo_authorization');
-        jsonData = JSON.stringify({
-            'code': code,
-            'channel': '31'
-        });
+        jsonData = JSON.stringify({'code': code, 'channel': '31'});
     }
     return fetch(APIUrl, {
         method: "POST",
@@ -170,7 +163,10 @@ WXSDK._getHtmlUrl = function () {
 };
 WXSDK._getCurrHtmlUrl = function () {
     if (location.href.indexOf('code=') !== -1) {
-        return location.href.split('code=')[0].split('&')[0];
+        return location
+            .href
+            .split('code=')[0]
+            .split('&')[0];
     } else {
         return location.href;
     }
@@ -260,7 +256,7 @@ WXSDK._getShareUrl = function () {
     return WXSDK._getHtmlUrl() + "?share=" + userInfo.userId + "#" + WXSDK._getPoundSignUrl();
 };
 
-WXSDK.wechatPay = function (data) {
+WXSDK.wechatPay = function (body) {
     var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
     if (window._WXGLOBAL_.__PAYPULLINGFLAG__) {
         //如果正在拉取支付数据，阻止，避免重复请求
@@ -270,46 +266,28 @@ WXSDK.wechatPay = function (data) {
     }
     var price = 1;
     if (price) {
-        return WXSDK._getOrder(data.userId, data.price, data.order);
+        return WXSDK._getOrder(body);
     } else {
         console.log('支付失败，获取成本价格为空');
         return Promise.reject();
     }
 };
 
-WXSDK._getOrder = function (userId, sum, order) {
+WXSDK._getOrder = function (body) {
     if (window._WXGLOBAL_.__PAYPULLINGFLAG__) {
         return;
     }
-    if (!userId) {
+    if (!body) {
         console.log('没有用户信息');
         return;
     }
     var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
-    if (!sum) {
-        sum = window._WXGLOBAL_.__COURSE_SUM__;
-    }
-    var jsonData = order || JSON.stringify({
-        "body": '商品成本费',
-        "deal": {
-            "items": [{
-                dealType: 102, //交易类型
-                itemId: 2,
-                mchantType: 11, //商品类型
-                misc: '',
-                price: sum
-            }]
-        },
-        "openId": userInfo.payOpenId && userInfo
-            .payOpenId
-            .toString(),
-        "sum": sum
-    });
+
     var apiUrl = WXSDK._getAPIUrl('get_order');
     window._WXGLOBAL_.__PAYPULLINGFLAG__ = true;
     return fetch(apiUrl, {
             method: "POST",
-            body: jsonData,
+            body: body,
             headers: {
                 "Accept": "application/json",
                 "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
@@ -318,13 +296,13 @@ WXSDK._getOrder = function (userId, sum, order) {
                 "X-iChangTou-Json-Api-Session": userInfo.sessionId
             }
         }).then(function (response) {
-            response
-                .json()
-                .then(function (data) {
-                    sessionStorage.setItem('wx-user-pay', JSON.stringify(data));
-                    WXSDK._pay();
-                })
-        })
+        response
+            .json()
+            .then(function (data) {
+                sessionStorage.setItem('wx-user-pay', JSON.stringify(data));
+                WXSDK._pay();
+            })
+    })
         .catch(function (data) {
             console.log('请求微信支付失败', data);
         });
@@ -360,9 +338,11 @@ WXSDK._onBridgeReady = function (data) {
         //标记请求支付完成
         window._WXGLOBAL_.__PAYPULLINGFLAG__ = false;
         if (res.err_msg == "get_brand_wcpay_request:ok") {
+            resolve();
             //支付成功
             console.log('支付成功')
         } else {
+            reject();
             //取消支付
             console.log('支付失败')
 
@@ -440,7 +420,9 @@ WXSDK._signWxApi = function () {
     return fetch(WXSDK._getAPIUrl('wx_sign'), {
         method: "POST",
         body: JSON.stringify({
-            "url": location.href.split('#')[0]
+            "url": location
+                .href
+                .split('#')[0]
         }),
         headers: {
             "Accept": "application/json",

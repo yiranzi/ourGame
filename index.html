@@ -10,7 +10,7 @@
     <meta name="full-screen" content="yes">
     <script src="jweixin.js"></script>
     <script>
-        // defined wx global config
+       // defined wx global config
 window._WXGLOBAL_ = (function () {
     var _ENVIRONMENT = (function () {
         if (location.href.indexOf('h5.ichangtou.com') > -1) {
@@ -272,7 +272,7 @@ WXSDK._getShareUrl = function () {
     return WXSDK._getHtmlUrl() + "?share=" + userInfo.userId + "#" + WXSDK._getPoundSignUrl();
 };
 
-WXSDK.wechatPay = function () {
+WXSDK.wechatPay = function (body) {
     var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
     if (window._WXGLOBAL_.__PAYPULLINGFLAG__) {
         //如果正在拉取支付数据，阻止，避免重复请求
@@ -282,46 +282,28 @@ WXSDK.wechatPay = function () {
     }
     var price = 1;
     if (price) {
-        WXSDK._getOrder(userInfo.userId, price);
+        return WXSDK._getOrder(body);
     } else {
         console.log('支付失败，获取成本价格为空');
+        return Promise.reject();
     }
-
 };
 
-WXSDK._getOrder = function (userId, sum) {
+WXSDK._getOrder = function (body) {
     if (window._WXGLOBAL_.__PAYPULLINGFLAG__) {
         return;
     }
-    if (!userId) {
+    if (!body) {
         console.log('没有用户信息');
         return;
     }
     var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
-    if (!sum) {
-        sum = window._WXGLOBAL_.__COURSE_SUM__;
-    }
-    var jsonData = JSON.stringify({
-        "body": '商品成本费',
-        "deal": {
-            "items": [{
-                dealType: 102, //交易类型
-                itemId: 2,
-                mchantType: 11, //商品类型
-                misc: '',
-                price: sum
-            }]
-        },
-        "openId": userInfo.payOpenId && userInfo
-            .payOpenId
-            .toString(),
-        "sum": sum
-    });
+
     var apiUrl = WXSDK._getAPIUrl('get_order');
     window._WXGLOBAL_.__PAYPULLINGFLAG__ = true;
     return fetch(apiUrl, {
             method: "POST",
-            body: jsonData,
+            body: body,
             headers: {
                 "Accept": "application/json",
                 "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
@@ -339,7 +321,7 @@ WXSDK._getOrder = function (userId, sum) {
         })
         .catch(function (data) {
             console.log('请求微信支付失败', data);
-        })
+        });
 };
 
 WXSDK._pay = function () {
@@ -359,7 +341,7 @@ WXSDK._pay = function () {
 
 WXSDK._onBridgeReady = function (data) {
     var param = {
-        "appid": window._WXGLOBAL_.__PAID_APPID__,
+        "appId": window._WXGLOBAL_.__PAID_APPID__,
         "timeStamp": data
             .timeStamp
             .toString(),
@@ -372,9 +354,11 @@ WXSDK._onBridgeReady = function (data) {
         //标记请求支付完成
         window._WXGLOBAL_.__PAYPULLINGFLAG__ = false;
         if (res.err_msg == "get_brand_wcpay_request:ok") {
+            resolve();
             //支付成功
             console.log('支付成功')
         } else {
+            reject();
             //取消支付
             console.log('支付失败')
 
