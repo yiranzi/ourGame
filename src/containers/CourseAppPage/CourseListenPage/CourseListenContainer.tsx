@@ -57,7 +57,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
     // 0判断类型
     setRenderType() {
-        let allLesson = this.props.courseListenState;
+        let allLesson = this.props.courseListenState.listenItem;
         if ( allLesson[allLesson.length - 1].subs.length !== 0 ) {
             this.state.renderType = 'question';
         } else {
@@ -68,7 +68,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
     //1初始化
     calcInit() {
-        let allLesson = this.props.courseListenState;
+        let allLesson = this.props.courseListenState.listenItem;
         let lastLesson = allLesson[allLesson.length - 1];
         let lastProcess = {};
         if ( this.state.renderType === 'question' ) {
@@ -89,7 +89,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
     //4计算进度
     calcProcess() {
-        let allLesson = this.props.courseListenState;
+        let allLesson = this.props.courseListenState.listenItem;
         // 初始化
         this.state.totalElement = 0;
         this.state.finishElement = 0;
@@ -123,7 +123,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
 
     processSet() {
-        let courseListenState = this.props.courseListenState;
+        let courseListenState = this.props.courseListenState.listenItem;
         let questionItem = {};
         for ( let i = 0 ; i < courseListenState.length; i++) {
             questionItem = courseListenState[i];
@@ -149,7 +149,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
     questionItemSet () {
         console.log('questionItemSet')
-        let courseListenState = this.props.courseListenState;
+        let courseListenState = this.props.courseListenState.listenItem;
         let questionItem = {};
         for ( let i = 0 ; i < courseListenState.length; i++) {
             questionItem = courseListenState[i];
@@ -214,7 +214,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
     cbfPostAnswer(Itemindex) {
         console.log(Itemindex);
         console.log("post");
-        if ( this.state.questionStatus[this.state.lessonIndex][Itemindex].selectIndex === this.props.courseListenState[this.state.lessonIndex].subs[Itemindex].trueindex[0] ) {
+        if ( this.state.questionStatus[this.state.lessonIndex][Itemindex].selectIndex === this.props.courseListenState.listenItem[this.state.lessonIndex].subs[Itemindex].trueindex[0] ) {
             this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "rightChoose";
         } else {
             this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "wrongChoose";
@@ -253,8 +253,8 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
     rederPPT() {
         let arr = [];
-        for ( let i = 0; i < this.props.courseListenState[this.state.lessonIndex].pptUrl.length; i++ ) {
-            arr.push(<img src = {this.props.courseListenState[this.state.lessonIndex].pptUrl[i]}/>);
+        for ( let i = 0; i < this.props.courseListenState.listenItem[this.state.lessonIndex].pptUrl.length; i++ ) {
+            arr.push(<img src = {this.props.courseListenState.listenItem[this.state.lessonIndex].pptUrl[i]}/>);
         }
         return arr;
     }
@@ -273,7 +273,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
                     {this.rederPPT()}
                 </AudioPlayerPPTCard>
                 <div>
-                    <AudioPlayerWithTime src = {this.props.courseListenState[this.state.lessonIndex].audio} onEnded = {this.finishAudio}/>
+                    <AudioPlayerWithTime src = {this.props.courseListenState.listenItem[this.state.lessonIndex].audio} onEnded = {this.finishAudio}/>
                 </div>
                 {this.renderChooses()}
                 {this.renderNextButton()}
@@ -294,7 +294,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
     // 渲染选择题列表
     renderChooses() {
         let arr = [];
-        let lessonData = this.props.courseListenState[this.state.lessonIndex];
+        let lessonData = this.props.courseListenState.listenItem[this.state.lessonIndex];
         let questions = lessonData.subs;
         let question = {};
         console.log('123')
@@ -333,7 +333,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
     buttonTxt() {
         if ( this.state.lessonProcess[this.state.lessonIndex].finishProcess ) {
-            if ( this.state.lessonIndex < this.props.courseListenState.length - 1 ) {
+            if ( this.state.lessonIndex < this.props.courseListenState.listenItem.length - 1 ) {
                 return(<div onClick = {this.cbfNextLesson}>我准备好啦~开始学习下一节</div>);
             } else {
                 return(<div >都完成了!</div>);

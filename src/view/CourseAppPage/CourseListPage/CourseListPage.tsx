@@ -44,7 +44,7 @@ class CourseListPage extends React.Component<PropsTypes> {
             <div className={className.view}>
                 <Route path={`${this.props.match.url}/`}
                     render={props => (
-                        <SelectPage {...props} dayCourseList={this.props.DALCourseListState} propsPath={this.props.match.url}/>
+                        <SelectPage {...props} dayCourseList={this.props.DALCourseListState} propsPath={this.props.propsPath}/>
                     )}
                 />
                 <Route path={`${this.props.match.url}/wait`}

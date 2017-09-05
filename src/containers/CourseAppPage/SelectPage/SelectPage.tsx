@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import ImageCard from "@/components/ImageCard";
+import Card from "@/components/Card/Card";
 import LessonBar from "@/components/SelectPage/LessonBar/LessonBar";
 
 import className from "./style/SelectPage.less";
@@ -35,19 +36,24 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     }
 
     renderQQGroup() {
-        return(<div className={(className as any).qqGroup}>
-            <div className={(className as any).left}>
-                <img src={require("@/assets/image/qqGroup_icon.png")}/>
-                {/*<img src={''}/>*/}
+        return(<div onClick = {this.onClickGroup} className={(className as any).gap}>
+                <Card>
+                    <div className={(className as any).qqGroup}>
+
+                        <div className={(className as any).left}>
+                            <img src={require("@/assets/image/qqGroup_icon.png")}/>
+                        </div>
+                        <div className={(className as any).mid}>
+                            <h1>~加入社群学习啦~</h1>
+                        </div>
+                        <div className={(className as any).right}>
+                            <img src={require("@/assets/image/arrow.png")}/>
+                        </div>
+
+                    </div>
+                </Card>
             </div>
-            <div className={(className as any).mid}>
-                <h1>~加入社群讯息啦~</h1>
-            </div>
-            <div className={(className as any).right}>
-                <img src={require("@/assets/image/arrow.png")}/>
-                <img src={''}/>
-                </div>
-        </div>);
+        );
     }
 
     renderCourseList() {
@@ -80,7 +86,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
 
     cbfOnEnter(type, dayId) {
         if ( type ) {
-            // this.props.location =
+            this.props.location.push(`${this.props.propsPath}/listen/${dayId}`);
             alert( "进入" + dayId );
         } else {
             alert( "无法进入" + dayId );
@@ -128,7 +134,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     renderTopBanner() {
         let style = {
             padding: '0',
-            height: ''
+            // height: '100px',
         };
         return(<div style = {style} className={(className as any).gap}>
             <ImageCard src={this.props.DALState ? this.props.DALState.bannerSrc : "https://github.com/bebraw.png?v=3&s=150"}></ImageCard>
