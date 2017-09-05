@@ -24,7 +24,7 @@ class DALWaitPage {
     @action
     fetchCourseInfo(courseId: number) {
         return new Promise((resolve, reject) => {
-            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + ` /ctplus/qq-details/${courseId}`, {
+            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/qq-details/${courseId}`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",

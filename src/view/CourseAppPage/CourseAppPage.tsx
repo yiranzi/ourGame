@@ -10,7 +10,6 @@ import {
 // url页面
 import NoMatchPage from "..//NoMatchPage";
 import IndexPage from "./IndexPage/IndexPage";
-import WaitPage from "./WaitPage/WaitPage";
 import CourseListenPage from "./CourseListenPage/CourseListenPage";
 import CourseListPage from "./CourseListPage/CourseListPage";
 // state
@@ -58,17 +57,10 @@ let DALWaitPageState = new DALWaitPage();
                     props.history.push(`${props.match.url}/index`);
                 }
             } else {
-                if (props.location.pathname === `${props.match.url}/wait`) {
-                    props.history.push(`${props.match.url}/wait`);
-                }
                 // todo 查询是否已经开课，现在没有这个接口
-                else if (props.location.pathname !== `${props.match.url}/courselist`) {
+                if (props.location.pathname !== `${props.match.url}/courselist` && (props.location.pathname !== `${props.match.url}/courselist/wait`)) {
                     props.history.push(`${props.match.url}/courselist`);
                 }
-            }
-        }).catch(() => {
-            if (props.location.pathname !== `${props.match.url}/error`) {
-                props.history.push(`${props.match.url}/error`);
             }
         });
     }).catch(() => {
@@ -90,14 +82,9 @@ class CourseAppPage extends React.Component<PropsTypes> {
                         <IndexPage {...props} DALCourseAppState = {DALCourseAppState} DALUserInfoState={DALUserInfoState} DALIndexPageState={DALIndexPageState} propsPath={this.props.match.url}/>
                     )}
                 />
-                <Route path={`${this.props.match.url}/wait`}
-                    render={props => (
-                        <WaitPage {...props} DALUserInfoState={DALUserInfoState} DALWaitPageState={DALWaitPageState} propsPath={this.props.match.url}/>
-                    )}
-                />
                 <Route path={`${this.props.match.url}/courselist`}
                     render={props => (
-                        <CourseListPage {...props}  propsPath={this.props.match.url} DALCourseListState={DALCourseListState}/>
+                        <CourseListPage {...props}  propsPath={this.props.match.url} DALCourseListState={DALCourseListState} DALUserInfoState={DALUserInfoState} DALWaitPageState={DALWaitPageState}/>
                     )}
                 />
                 <Route path={`${this.props.match.url}/listen/:dayId`}

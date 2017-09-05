@@ -11,12 +11,12 @@ function CourseStartTimeCard(props: PropsTypes): JSX.Element {
             <div className={className.wrapper}>
                 <span className={className.hrline}/>
                 <span className={className.hrline_2}/>
-                <h1 className={className.title}>开课时间</h1>
+                <h1 className={className.title}>尚未开课</h1>
                 <span className={className.hrline_2}/>
                 <span className={className.hrline}/>
-                <div className={className.content}>
+                {/* <div className={className.content}>
                     <p>{props.mouth || "XXX" } 月 {props.day || "XXX"} 日 </p>
-                </div>
+                </div> */}
             </div>
         </Card>
     );
