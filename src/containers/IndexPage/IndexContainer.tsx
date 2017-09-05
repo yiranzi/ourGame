@@ -71,7 +71,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                 // window.WXSDK.wechatPay();
                 this.props.DALState.fetchPayOrder().then(() => {
                     mountGlobalLoading();
-                    setTimeout(this.props.history.push(`${this.props.propsPath}/wait`), 500);
+                    setTimeout(this.props.history.push(`${this.props.propsPath}/wait`), 1000);
                 });
             }
         }
