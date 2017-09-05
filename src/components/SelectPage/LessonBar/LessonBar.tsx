@@ -58,7 +58,7 @@ export default class LessonBar extends React.Component<LessonBarPropsTypes> {
         let arr = [];
         if ( this.props.cbfOnClickReward ) {
             arr.push(<div onClick = {this.cbfOnClickReward} className={(className as any).left}>
-                <img className={(className as any).rewardIcon} key = {0} src={this.props.rewardIcon ? this.props.rewardIcon : "./src/assets/image/getReward_icon.png"} />
+                <img className={(className as any).rewardIcon} key = {0} src={this.props.rewardIcon ? this.props.rewardIcon : `${require("@/assets/image/getReward_icon.png")}`}/>
             </div>)
         } else {
             arr.push(<div className={(className as any).left}></div>)
@@ -69,7 +69,7 @@ export default class LessonBar extends React.Component<LessonBarPropsTypes> {
                 <h1 className={(className as any).subTitle}>{this.props.subTitle}</h1>
             </div>
         </div>);
-        arr.push(<div onClick = {this.cbfOnEnter} className={(className as any).right}><img  key = {2} className={(className as any).nextIcon} src={''}/></div>)
+        arr.push(<div onClick = {this.cbfOnEnter} className={(className as any).right}><img  key = {2} className={(className as any).nextIcon} src={require("@/assets/image/arrow.png")}/></div>)
         return arr;
     }
 

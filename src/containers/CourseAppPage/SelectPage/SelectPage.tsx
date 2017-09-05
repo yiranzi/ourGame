@@ -37,14 +37,14 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     renderQQGroup() {
         return(<div className={(className as any).qqGroup}>
             <div className={(className as any).left}>
-                {/*<img src={require("@/assets/image/qqGroup_icon.jpg")}/>*/}
-                <img src={''}/>
+                <img src={require("@/assets/image/qqGroup_icon.png")}/>
+                {/*<img src={''}/>*/}
             </div>
             <div className={(className as any).mid}>
                 <h1>~加入社群讯息啦~</h1>
             </div>
             <div className={(className as any).right}>
-                {/*<img src={require("@/assets/image/arrow.jpg")}/>*/}
+                <img src={require("@/assets/image/arrow.png")}/>
                 <img src={''}/>
                 </div>
         </div>);
@@ -128,6 +128,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     renderTopBanner() {
         let style = {
             padding: '0',
+            height: ''
         };
         return(<div style = {style} className={(className as any).gap}>
             <ImageCard src={this.props.DALState ? this.props.DALState.bannerSrc : "https://github.com/bebraw.png?v=3&s=150"}></ImageCard>
