@@ -95,7 +95,8 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
         this.setState({
             sliderValue: 0,
             current_time: 0,
-            isPlay: false
+            isPlay: false,
+            length: this.audioPlayerEl.audioEl.duration
         }, () => {
             this.audioPlayerEl.audioEl.pause();
         });
