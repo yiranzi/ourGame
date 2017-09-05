@@ -57,7 +57,7 @@ let DALWaitPageState = new DALWaitPage();
                     props.history.push(`${props.match.url}/index`);
                 }
             } else {
-                if (props.location.pathname !== `${props.match.url}/wait`) {
+                if (props.location.pathname === `${props.match.url}/wait`) {
                     props.history.push(`${props.match.url}/wait`);
                 }
                 // todo 查询是否已经开课，现在没有这个接口

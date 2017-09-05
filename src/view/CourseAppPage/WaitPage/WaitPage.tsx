@@ -31,7 +31,7 @@ export default class WaitPage extends React.Component<PropsTypes> {
         unMountGlobalLoading();
         return (
             <div className={className.wrapper}>
-                <Route path={`${this.props.match.url}/index`}
+                <Route path={`${this.props.match.url}/`}
                     render={props => (
                         <WaitContainer {...props} DALWaitPageState = {this.props.DALWaitPageState} DALUserInfoState={this.props.DALUserInfoState}  propsPath={this.props.match.url}/>
                     )}
