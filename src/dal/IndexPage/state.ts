@@ -26,23 +26,32 @@ class DALIndexPage {
     }
     @action
     fetchPayOrder(courseId: number) {
-        return WXSDK.wechatPay(JSON.stringify({
-            "body": "商品成本费",
-            "deal": {
-                "items": [
-                    {
-                        dealType: 102, // 交易类型
-                        itemId: 2,
-                        mchantType: 11, // 商品类型
-                        misc: "1",
-                        price: 1
-                    }
-                ]
-            },
-            "openId": DALUserInfoState.payOpenId && DALUserInfoState
-                .payOpenId
-                .toString(),
-            "sum": 1
+        return new Promise((resolve, reject) => {
+            (window as any).WXSDK.wechatPay(JSON.stringify({
+                "body": "商品成本费",
+                "deal": {
+                    "items": [
+                        {
+                            dealType: 102, // 交易类型
+                            itemId: 2,
+                            mchantType: 11, // 商品类型
+                            misc: "1",
+                            price: 1
+                        }
+                    ]
+                },
+                "openId": DALUserInfoState.payOpenId && DALUserInfoState
+                    .payOpenId
+                    .toString(),
+                "sum": 1
+            }));
+            window.addEventListener("_dove_WxPay", (event) => {
+                if (event.detail.success) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            });
         });
     }
     // 查询课程人数是否已满

@@ -285,7 +285,8 @@ WXSDK._getOrder = function (body) {
 
     var apiUrl = WXSDK._getAPIUrl('get_order');
     window._WXGLOBAL_.__PAYPULLINGFLAG__ = true;
-    return fetch(apiUrl, {
+    return new Promise((resolve, reject) => {
+        fetch(apiUrl, {
             method: "POST",
             body: body,
             headers: {
@@ -300,15 +301,16 @@ WXSDK._getOrder = function (body) {
             .json()
             .then(function (data) {
                 sessionStorage.setItem('wx-user-pay', JSON.stringify(data));
-                WXSDK._pay();
+                WXSDK._pay(resolve, reject);
             })
     })
         .catch(function (data) {
             console.log('请求微信支付失败', data);
         });
+    });
 };
 
-WXSDK._pay = function () {
+WXSDK._pay = function (resolve, reject) {
 
     var data = JSON.parse(sessionStorage.getItem('wx-user-pay'));
     if (typeof WeixinJSBridge == "undefined") {
@@ -319,11 +321,11 @@ WXSDK._pay = function () {
             document.attachEvent('onWeixinJSBridgeReady', WXSDK._pay);
         }
     } else {
-        WXSDK._onBridgeReady(data);
+        WXSDK._onBridgeReady(data, resolve, reject);
     }
 };
 
-WXSDK._onBridgeReady = function (data) {
+WXSDK._onBridgeReady = function (data, resolve, reject) {
     var param = {
         "appId": window._WXGLOBAL_.__PAID_APPID__,
         "timeStamp": data
@@ -334,7 +336,7 @@ WXSDK._onBridgeReady = function (data) {
         "signType": "MD5",
         "paySign": data.paySign
     };
-    WeixinJSBridge.invoke('getBrandWCPayRequest', param, function res() {
+    WeixinJSBridge.invoke('getBrandWCPayRequest', param, function (res) {
         //标记请求支付完成
         window._WXGLOBAL_.__PAYPULLINGFLAG__ = false;
         if (res.err_msg == "get_brand_wcpay_request:ok") {

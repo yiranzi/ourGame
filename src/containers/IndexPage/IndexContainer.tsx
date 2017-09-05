@@ -1,7 +1,7 @@
 import * as React from "react";
 import Card from "@/components/Card";
 import className from "./style/IndexContainer.less";
-import { AudioPlayerWithoutTime } from "@/components/AudioPlayer";
+import { AudioPlayerWithoutTime, AudioPlayerWithTime } from "@/components/AudioPlayer";
 import {
     Button as Antdbutton,
     Carousel,
@@ -69,8 +69,10 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
             } else {
                 // todo 提交报名唤起支付
                 // window.WXSDK.wechatPay();
-                this.props.DALState.fetchPayOrder();
-               // this.props.history.push(`${this.props.propsPath}/wait`);
+                this.props.DALState.fetchPayOrder().then(() => {
+                    mountGlobalLoading();
+                    setTimeout(this.props.history.push(`${this.props.propsPath}/wait`), 500);
+                });
             }
         }
     }
@@ -81,7 +83,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                     <ImageCard src={this.props.DALState.bannerSrc}></ImageCard>
                 </div>
                 <div>
-                    <AudioPlayerWithoutTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithoutTime>
+                    <AudioPlayerWithTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithTime>
                 </div>
                 <div>
                     <SummaryCard>
