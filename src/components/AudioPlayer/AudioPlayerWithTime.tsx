@@ -64,6 +64,7 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
         this.handleOnAfterChange = this.handleOnAfterChange.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnListen = this.handleOnListen.bind(this);
+        this.handleOnEnded = this.handleOnEnded.bind(this);
     }
     get playButtonIcon(): string {
         return this.state.isPlay ? IconFont.icon_zanting + " " + IconFont.iconfont : IconFont.icon_bofang + " " + IconFont.iconfont;
@@ -113,6 +114,9 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
             });
         }
     }
+    handleOnEnded() {
+        this.props.onEnded && this.props.onEnded();
+    }
     render() {
         const {isPlay, ...otherProps} = this.props;
         return (
@@ -136,6 +140,7 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
                     onLoadedMetadata={this.handleOnLoadedMetadata}
                     onListen={this.handleOnListen}
                     autoPlay={this.props.autoPlay}
+                    onEnded={this.handleOnEnded}
                     loop={this.props.loop}
                     muted={this.props.muted}
                     preload={this.props.preload}
