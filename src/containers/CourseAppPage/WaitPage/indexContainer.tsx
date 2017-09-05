@@ -9,7 +9,8 @@ interface StateTypes {
     Carouselindex: number;
 }
 interface PropsTypes {
-
+    DALWaitPageState: any;
+    DALUserInfoState: any;
 }
 export default class WaitPage extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
@@ -19,10 +20,12 @@ export default class WaitPage extends React.Component<PropsTypes, StateTypes> {
     handleButtonClick() {
         Modal.showModal({
             title: "速速加群啦",
-            bodyText: <div>本课程包含QQ社群管理:<br />请加入QQ群: 41322222<br />暗号: 栀子花</div>,
+            bodyText: <div>本课程包含QQ社群管理:<br />请加入QQ群: {this.props.DALWaitPageState.qq}<br />暗号: {this.props.DALWaitPageState.secret}</div>,
             sureText: "立即加群",
             cancelText: "就是不加",
-            sureFunction: () => {},
+            sureFunction: () => {
+                window.location.href = this.props.DALUserInfoState.link;
+            },
             cancelFunction: () => {}
         });
     }

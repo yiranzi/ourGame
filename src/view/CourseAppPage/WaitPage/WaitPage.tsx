@@ -4,6 +4,8 @@ import WaitContainer from "@/containers/CourseAppPage/WaitPage/IndexContainer";
 import DALIndexPage from "@/dal/indexPage";
 import NoMatchPage from "@/view/NoMatchPage";
 import { Route } from "react-router-dom";
+import { resolve } from "@/utils/resolver";
+import { observer } from "mobx-react";
 import {
     mountGlobalLoading,
     unMountGlobalLoading
@@ -11,11 +13,16 @@ import {
 
 interface PropsTypes {
     DALUserInfoState: any;
-    DALCourseState: any;
+    DALWaitPageState: any;
     history?: any;
     propsPath?: string;
+    match?: any;
 }
 
+@observer
+@resolve("fetchCourseInfo", (props: PropsTypes) => {
+    props.DALWaitPageState.fetchCourseInfo(1);
+})
 export default class WaitPage extends React.Component<PropsTypes> {
     constructor(props: PropsTypes) {
         super(props);
@@ -24,7 +31,11 @@ export default class WaitPage extends React.Component<PropsTypes> {
         unMountGlobalLoading();
         return (
             <div className={className.wrapper}>
-                <WaitContainer />
+                <Route path={`${this.props.match.url}/index`}
+                    render={props => (
+                        <WaitContainer {...props} DALWaitPageState = {this.props.DALWaitPageState} DALUserInfoState={this.props.DALUserInfoState}  propsPath={this.props.match.url}/>
+                    )}
+                />
             </div>
         );
     }

@@ -22,7 +22,7 @@ interface PropsTypes {
 }
 @observer
 @resolve("fetchDayItem", function(props: PropsTypes) {
-    return props.DALCourseListState.fetchDayItem();
+    return props.DALCourseListState.fetchDayItem(1);
 })
 class CourseListPage extends React.Component<PropsTypes> {
     constructor() {
