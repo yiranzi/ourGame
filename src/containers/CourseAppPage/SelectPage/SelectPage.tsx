@@ -64,11 +64,11 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         };
         let arr = [];
         let homeWorkCount = 0;
-        for (let i = 0; i < this.props.dayCourseList.length; i++) {
+        for (let i = 0; i < this.props.dayCourseList.dayItem.length; i++) {
             // 计算出来状态,并赋值.
             let courseStatus = this.calcCourseStatus(i);
             // 如果上一个能看.这个还可以渲染.
-            if ( i === 0 || this.props.dayCourseList[i - 1].status !== -1 ) {
+            if ( i === 0 || this.props.dayCourseList.dayItem[i - 1].status !== -1 ) {
                 console.log(i);
                 arr.push(
                     <div className={(className as any).gap}>
@@ -99,7 +99,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
 
     calcCourseStatus(index) {
         //制作一个用来解析day状态的json.根据具体的赋值 并保存.为了渲染使用.
-        let courseDay = this.props.dayCourseList[index];
+        let courseDay = this.props.dayCourseList.dayItem[index];
         let courseStatus = {
             dayId: courseDay.id,
             dayTitle: `第${index}天`,
@@ -112,6 +112,10 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         switch ( courseDay.status ) {
             case -1:
                 courseStatus.isEnter = false;
+                courseStatus.cbfOnEnter = this.cbfOnEnter;
+                break;
+            case 0:
+                courseStatus.isEnter = true;
                 courseStatus.cbfOnEnter = this.cbfOnEnter;
                 break;
             case 1:
