@@ -34,8 +34,25 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         );
     }
 
+    renderQQGroup() {
+        return(<div className={(className as any).qqGroup}>
+            <div className={(className as any).left}>
+                {/*<img src={require("@/assets/image/qqGroup_icon.jpg")}/>*/}
+                <img src={''}/>
+            </div>
+            <div className={(className as any).mid}>
+                <h1>~加入社群讯息啦~</h1>
+            </div>
+            <div className={(className as any).right}>
+                {/*<img src={require("@/assets/image/arrow.jpg")}/>*/}
+                <img src={''}/>
+                </div>
+        </div>);
+    }
+
     renderCourseList() {
         console.log('renderCourseList');
+        console.log(this.props);
         let gapStyle = {
             padding: "1rem",
         };
@@ -57,8 +74,13 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         return arr;
     }
 
+    onClickGroup() {
+        alert( "加入QQ社群");
+    }
+
     cbfOnEnter(type, dayId) {
         if ( type ) {
+            // this.props.location =
             alert( "进入" + dayId );
         } else {
             alert( "无法进入" + dayId );
@@ -101,9 +123,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         return courseStatus;
     }
 
-    renderQQGroup() {
 
-    }
 
     renderTopBanner() {
         let style = {

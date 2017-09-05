@@ -4,8 +4,12 @@ import className from "./style/CourseListPage.less";
 
 import { observer } from "mobx-react";
 
+<<<<<<< HEAD
 import WaitPage from "..//WaitPage/WaitPage";
 import SelectPage from "@/containers/SelectPage/SelectPage";
+=======
+import SelectPage from "@/containers/CourseAppPage/SelectPage/SelectPage";
+>>>>>>> 434b8fcf54fc5ad31d0f4c24f03daa35377fdc20
 import DALGetCourseList from "@/dal/SelectPage/GetCourseList";
 
 
@@ -27,6 +31,7 @@ interface PropsTypes {
 }
 @observer
 @resolve("fetchDayItem", function(props: PropsTypes) {
+<<<<<<< HEAD
     return props.DALCourseListState.fetchDayItem(1).then((data: any) => {
         if (data[0].status === -1) {
             if (props.location.pathname !== `${props.match.url}/wait`) {
@@ -34,6 +39,9 @@ interface PropsTypes {
             }
         }
     });
+=======
+    return props.DALCourseListState.fetchDayItem(1);
+>>>>>>> 434b8fcf54fc5ad31d0f4c24f03daa35377fdc20
 })
 class CourseListPage extends React.Component<PropsTypes> {
     constructor() {

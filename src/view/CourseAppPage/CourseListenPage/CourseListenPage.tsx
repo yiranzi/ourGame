@@ -28,7 +28,7 @@ class CourseListenPage extends React.Component<PropsTypes> {
             <div className={className.wrapper}>
                 <Route path={`${this.props.match.url}/`}
                     render={props => (
-                        <CourseListenContainer {...props}  DALCourseListenState={this.props.DALCourseListenState} propsPath={this.props.match.url}/>
+                        <CourseListenContainer {...props}  courseListenState={this.props.DALCourseListenState} propsPath={this.props.match.url}/>
                     )}
                 />
             </div>
