@@ -17,7 +17,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         this.cbfNextLesson = this.cbfNextLesson.bind(this);
         this.state = {
             // 当前小节
-            lessonIndex: 0,// 当前的题目
+            lessonIndex: 0, // 当前的题目
 
             // 进度条
             totalElement: 0,
@@ -25,7 +25,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
             // 小节
             allFinish: false,
-            renderType: "null",// 有无题目
+            renderType: "null", // 有无题目
 
             // 选择题的进度状态
             questionStatus: [],
