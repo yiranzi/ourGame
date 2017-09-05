@@ -54,7 +54,7 @@ export default class LessonBar extends React.Component<LessonBarPropsTypes> {
     }
 
     renderEnter() {
-        console.log('renderEnter')
+        console.log('renderEnter');
         let arr = [];
         if ( this.props.cbfOnClickReward ) {
             arr.push(<div onClick = {this.cbfOnClickReward} className={(className as any).left}>

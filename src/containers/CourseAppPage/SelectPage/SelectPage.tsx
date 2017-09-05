@@ -35,11 +35,17 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     }
 
     renderQQGroup() {
-        return(<div>
-            <img src={}/>
-            <h1></h1>
-            <img/>
-        </div>)
+        return(<div className={(className as any).qqGroup}>
+            <div className={(className as any).left}>
+                <img src={require("@/assets/image/qqGroup_icon.jpg")}/>
+            </div>
+            <div className={(className as any).mid}>
+                <h1>~加入社群讯息啦~</h1>
+            </div>
+            <div className={(className as any).right}>
+                <img src={require("@/assets/image/arrow.jpg")}/>
+            </div>
+        </div>);
     }
 
     renderCourseList() {
@@ -65,8 +71,13 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         return arr;
     }
 
+    onClickGroup() {
+        alert( "加入QQ社群");
+    }
+
     cbfOnEnter(type, dayId) {
         if ( type ) {
+            // this.props.location =
             alert( "进入" + dayId );
         } else {
             alert( "无法进入" + dayId );
