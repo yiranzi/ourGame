@@ -52,6 +52,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
 
     renderCourseList() {
         console.log('renderCourseList');
+        console.log(this.props);
         let gapStyle = {
             padding: "1rem",
         };
