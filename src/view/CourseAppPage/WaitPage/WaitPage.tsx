@@ -21,7 +21,9 @@ interface PropsTypes {
 
 @observer
 @resolve("fetchCourseInfo", (props: PropsTypes) => {
-    props.DALWaitPageState.fetchCourseInfo(1);
+    return props.DALWaitPageState.fetchCourseInfo(1).then(() => {
+        unMountGlobalLoading();
+    });
 })
 export default class WaitPage extends React.Component<PropsTypes> {
     constructor(props: PropsTypes) {

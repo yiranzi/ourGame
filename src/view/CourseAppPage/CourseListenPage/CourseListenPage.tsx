@@ -6,6 +6,11 @@ import CourseListenContainer from "@/containers/CourseAppPage/CourseListenPage/C
 import className from "./style/CourseListenPage.less";
 
 import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
+
+import {
     Route,
     Link,
     Switch
@@ -20,7 +25,9 @@ interface PropsTypes {
 
 @observer
 @resolve("fetchListenItem", function(props: PropsTypes) {
-    return props.DALCourseListenState.fetchListenItem();
+    return props.DALCourseListenState.fetchListenItem().then(() => {
+        mountGlobalLoading();
+    });
 })
 class CourseListenPage extends React.Component<PropsTypes> {
     render() {
