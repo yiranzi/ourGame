@@ -37,14 +37,16 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     renderQQGroup() {
         return(<div className={(className as any).qqGroup}>
             <div className={(className as any).left}>
-                <img src={require("@/assets/image/qqGroup_icon.jpg")}/>
+                {/*<img src={require("@/assets/image/qqGroup_icon.jpg")}/>*/}
+                <img src={''}/>
             </div>
             <div className={(className as any).mid}>
                 <h1>~加入社群讯息啦~</h1>
             </div>
             <div className={(className as any).right}>
-                <img src={require("@/assets/image/arrow.jpg")}/>
-            </div>
+                {/*<img src={require("@/assets/image/arrow.jpg")}/>*/}
+                <img src={''}/>
+                </div>
         </div>);
     }
 

@@ -17,7 +17,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         this.cbfNextLesson = this.cbfNextLesson.bind(this);
         this.state = {
             // 当前小节
-            lessonIndex: 0,//当前的题目
+            lessonIndex: 0,// 当前的题目
 
             // 进度条
             totalElement: 0,
@@ -25,64 +25,37 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
             // 小节
             allFinish: false,
-            renderType: 'null',//有无题目
+            renderType: "null",// 有无题目
 
             // 选择题的进度状态
             questionStatus: [],
 
             // 音频的进度情况
+            lessonProcess: [],
             fmProcess: false,
             chooseProcess: false,
         };
     }
 
     componentWillMount() {
-        this.initData();
+        console.log(this.props.courseListenState);
+        // this.initData();
         this.processInit();
     }
 
     processInit() {
-        //1设定有无选择题
+        // day
         this.setRenderType();
         this.calcInit();
         this.calcProcess();
 
+        // 小节
         this.processSet();
+        this.questionItemSet(); // 设置选择题答案
+        this.afterFinishCalc();
     }
 
-    initData() {
-        //0构造数据
-        this.props.courseListenState = [
-            {
-                audio: "",
-                dayid: 10,
-                fmid: 100,
-                pptUrl: ["1", "2"],
-                process: false,
-                subs: [
-                    {
-                        answerList: [
-                            {
-                                amswerid: 100,
-                                detail: "债券",
-                                istrue: 0,
-                                subjectid: 100,
-                            }
-                        ],
-                        fmid: 100,
-                        introduce: '问题描述',
-                        process: true,
-                        subjectid: 100,
-                        tips: '我是股神',
-                        trueindex: [2],
-                    }
-                ],
-                title: "title",
-            },
-        ];
-    }
-
-    //0判断类型
+    // 0判断类型
     setRenderType() {
         let allLesson = this.props.courseListenState;
         if ( allLesson[allLesson.length - 1].subs.length !== 0 ) {
@@ -124,10 +97,12 @@ class CourseListenContainer extends React.Component<PropsTypes> {
             this.state.totalElement++;
             if (this.state.renderType === 'question') {
                 if ( allLesson[i].subs[allLesson[i].subs.length - 1].process === true ) {
+                    this.state.lessonProcess[this.state.lessonIndex].finishProcess = true;
                     this.state.finishElement++;
                 }
             } else {
                 if ( allLesson[i].process === true ) {
+                    this.state.lessonProcess[this.state.lessonIndex].finishProcess = true;
                     this.state.finishElement++;
                 }
             }
@@ -145,63 +120,132 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         });
     }
 
+
+
     processSet() {
         let courseListenState = this.props.courseListenState;
+        let questionItem = {};
         for ( let i = 0 ; i < courseListenState.length; i++) {
-            // todo subs0
-            this.state.questionStatus[i].chooseStatus = "notChoose";
-            this.state.questionStatus[i].selectIndex = -1;
+            questionItem = courseListenState[i];
+            //初始化
+            this.state.lessonProcess[i] = {};
+            if ( questionItem.process ) {
+                this.state.lessonProcess[i].fmProcess = true;
+                if ( courseListenState[i].subs[courseListenState[i].subs.length - 1].process ) {
+                    this.state.lessonProcess[i].chooseProcess = true;
+                } else {
+                    this.state.lessonProcess[i].chooseProcess = false;
+                }
+            } else {
+                this.state.lessonProcess[i].fmProcess = false;
+                this.state.lessonProcess[i].chooseProcess = false;
+            }
+        }
+        //设置值
+        this.setState({
+            lessonProcess: this.state.lessonProcess
+        });
+    }
 
-            // 如果完成了音频
-            if ( courseListenState[i].process ) {
-                this.state.fmProcess = true;
-                if ( courseListenState[i].subs[0].process ) {
-                    this.state.chooseProcess = true;
-
-                    this.state.questionStatus[i].chooseStatus = "true";
-                    this.state.questionStatus[i].selectIndex = courseListenState[i].subs[0].trueindex[0];
+    questionItemSet () {
+        console.log('questionItemSet')
+        let courseListenState = this.props.courseListenState;
+        let questionItem = {};
+        for ( let i = 0 ; i < courseListenState.length; i++) {
+            questionItem = courseListenState[i];
+            if ( this.state.lessonProcess[this.state.lessonIndex].chooseProcess ) {
+                this.state.questionStatus[i] = [];
+                for ( let j = 0; j < questionItem.subs.length; j++) {
+                    this.state.questionStatus[i][j] = {};
+                    this.state.questionStatus[i][j].chooseStatus = "rightChoose";
+                    this.state.questionStatus[i][j].selectIndex = questionItem.subs[j].trueindex[0];
+                }
+            } else {
+                this.state.questionStatus[i] = [];
+                for ( let j = 0; j < questionItem.subs.length; j++) {
+                    this.state.questionStatus[i][j] = {};
+                    this.state.questionStatus[i][j].chooseStatus = "notChoose";
+                    this.state.questionStatus[i][j].selectIndex = -1;
                 }
             }
         }
         //设置值
         this.setState({
-            questionStatus: this.state.questionStatus[i],
-            fmProcess: this.state.fmProcess,
-            chooseProcess: this.state.chooseProcess,
+            questionStatus: this.state.questionStatus,
         });
     }
 
-
+    //计算lesson整体的进度
+    afterFinishCalc() {
+        console.log('afterFinishCalc');
+        if ( this.state.renderType = 'question' ) {
+            //如果选择题都完成了 并且 第一次完成
+            if ( this.state.lessonProcess[this.state.lessonIndex].chooseProcess && !this.state.lessonProcess[this.state.lessonIndex].finishProcess) {
+                this.state.lessonProcess[this.state.lessonIndex].finishProcess = true;
+                this.state.finishElement++;
+            } else {
+                this.state.lessonProcess[this.state.lessonIndex].finishProcess = false;
+            }
+        } else {
+            //如果音频...
+            if ( this.state.lessonProcess[this.state.lessonIndex].fmProcess && !this.state.lessonProcess[this.state.lessonIndex].finishProcess) {
+                this.state.lessonProcess[this.state.lessonIndex].finishProcess = true;
+                this.state.finishElement++;
+            } else {
+                this.state.lessonProcess[this.state.lessonIndex].finishProcess = false;
+            }
+        }
+        this.setState({
+            finishElement: this.state.finishElement,
+            lessonProcess: this.state.lessonProcess,
+        })
+    }
 
 
     // 选择选项
-    cbfChooseBarClick(index) {
-        console.log(index);
-        this.setState({selectIndex: index});
+    cbfChooseBarClick(index, itemIndex) {
+        this.state.questionStatus[this.state.lessonIndex][itemIndex].selectIndex = index;
+        this.setState({questionStatus: this.state.questionStatus});
+        //设置值
+
     }
 
     // 提交答案
-    cbfPostAnswer() {
-        if ( this.state.selectIndex === this.props.courseListenState[this.state.lessonIndex].subs[0].trueindex[0] ) {
-            this.setState({chooseStatus: "true"});
+    cbfPostAnswer(Itemindex) {
+        console.log(Itemindex);
+        console.log("post");
+        if ( this.state.questionStatus[this.state.lessonIndex][Itemindex].selectIndex === this.props.courseListenState[this.state.lessonIndex].subs[Itemindex].trueindex[0] ) {
+            this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "rightChoose";
         } else {
-            this.setState({chooseStatus: "false"});
+            this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "wrongChoose";
         }
+        //重新计算选择题进度 如果当前选中的时候一题
+        if ( this.state.questionStatus[this.state.lessonIndex][this.state.questionStatus[this.state.lessonIndex].length - 1].chooseStatus !== "notChoose") {
+            this.state.lessonProcess[this.state.lessonIndex].chooseProcess = true;
+            this.setState({
+                lessonProcess: this.state.lessonProcess,
+            });
+        }
+
+        this.setState({questionStatus: this.state.questionStatus});
+        this.afterFinishCalc();
         // todo 题目提交接口
     }
 
     // 下一节/完成
     cbfNextLesson() {
-        this.state.lessonIndex = this.state.lessonIndex++;
+        console.log('cbfNextLesson')
+        this.state.lessonIndex = this.state.lessonIndex + 1;
         this.setState({
             lessonIndex: this.state.lessonIndex,
         });
+
         // 上报父节点 切换下一节.
     }
 
     renderProcess() {
         let arr = [];
-        for ( let i = 0; i < this.state.totalElement.length; i++ ) {
+        for ( let i = 0; i < this.state.totalElement; i++ ) {
             arr.push(<Steps.Step />);
         }
         return arr;
@@ -220,7 +264,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
             <div className={className.container}>
                 <Card>
                     <div>
-                        <Steps direction="horizontal" current={this.state.totalElement}>
+                        <Steps direction="horizontal" current={this.state.finishElement}>
                             {this.renderProcess()}
                         </Steps>
                     </div>
@@ -231,7 +275,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
                 <div>
                     <AudioPlayerWithTime src = {this.props.courseListenState[this.state.lessonIndex].audio} onEnded = {this.finishAudio}/>
                 </div>
-
+                {this.renderChooses()}
                 {this.renderNextButton()}
             </div>
         );
@@ -239,29 +283,41 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
     finishAudio() {
         // 完成音频
+        this.state.lessonProcess[this.state.lessonIndex].fmProcess = true;
         this.setState({
-            fmProcess: true,
+            lessonProcess: this.state.lessonProcess,
         });
-
+        this.afterFinishCalc();
         // post完成
     }
 
     // 渲染选择题列表
     renderChooses() {
+        let arr = [];
         let lessonData = this.props.courseListenState[this.state.lessonIndex];
         let questions = lessonData.subs;
-        if ( this.state.fmProcess ) {
-            return(<ChooseBar
-                cbfClick = {this.cbfChooseBarClick}
-                cbfPost = {this.cbfPostAnswer}
-                chooseStatus = { this.state.questionStatus[this.state.lessonIndex].chooseStatus }
-                introduce = {questions.introduce}
-                tips = {questions.tips}
-                answerList = {questions.answerList.map((answerItem) => {
-                    return answerItem.detail;
-                })}
-                selectIndex = { this.state.questionStatus[this.state.lessonIndex].selectIndex }
-            />);
+        let question = {};
+        console.log('123')
+        if ( this.state.lessonProcess[this.state.lessonIndex].fmProcess ) {
+            for ( let i = 0; i < questions.length; i++ ) {
+                console.log(this.state.questionStatus[this.state.lessonIndex])
+                if ( i === 0 || this.state.questionStatus[this.state.lessonIndex][i - 1].chooseStatus !== "notChoose") {
+                    question = questions[i];
+                    arr.push(<ChooseBar
+                        itemIndex = {i}
+                        cbfClick = {this.cbfChooseBarClick}
+                        cbfPost = {this.cbfPostAnswer}
+                        chooseStatus = { this.state.questionStatus[this.state.lessonIndex][i].chooseStatus }
+                        introduce = {question.introduce}
+                        tips = {question.tips}
+                        answerList = {question.answerList.map((answerItem) => {
+                            return answerItem.detail;
+                        })}
+                        selectIndex = { this.state.questionStatus[this.state.lessonIndex][i].selectIndex }
+                    />);
+                }
+            }
+            return(arr);
         } else {
             return null;
         }
@@ -276,11 +332,11 @@ class CourseListenContainer extends React.Component<PropsTypes> {
     }
 
     buttonTxt() {
-        if ( this.state.chooseProcess) {
+        if ( this.state.lessonProcess[this.state.lessonIndex].finishProcess ) {
             if ( this.state.lessonIndex < this.props.courseListenState.length - 1 ) {
-                return(<div onClick = {this.cbfNext}>我准备好啦~开始学习下一节</div>);
+                return(<div onClick = {this.cbfNextLesson}>我准备好啦~开始学习下一节</div>);
             } else {
-                return(<div onClick = {this.cbfNext}>都完成了!</div>);
+                return(<div >都完成了!</div>);
             }
         }
     }

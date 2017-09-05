@@ -43,6 +43,7 @@ let DALCourseListenState = new DALCourseListen();
 
 @observer
 @resolve("fetchDALUserSignState", function(props: PropsTypes) {
+    console.log('123');
     // 唤起加载页面
     mountGlobalLoading();
     // 1、获取用户登陆信息
@@ -68,6 +69,7 @@ class CourseAppPage extends React.Component<PropsTypes> {
         super(props);
     }
     render() {
+        console.log('456');
         return (
             <Switch>
                 <Route path={`${this.props.match.url}/index`}

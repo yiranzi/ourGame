@@ -8,6 +8,7 @@ import Card from "@/components/Card/Card";
 import { Alert } from 'antd';
 
 interface ChooseBarPropsTypes {
+                itemIndex: number;//选择题编号
                 chooseStatus: string; // 选择题的答题状态
                 introduce: string; // 问题描述
                 tips: string; // 问题提示
@@ -15,8 +16,6 @@ interface ChooseBarPropsTypes {
                 selectIndex: number; // 选中的选项
                 cbfClick: Function; // 点击回调
                 cbfPost: Function; // 提交回调
-                cbfNext: Function;// 提交回调
-                lastQuestion: Boolean;
             }
 
             export default class ChooseBar extends React.Component<ChooseBarPropsTypes> {
@@ -54,7 +53,7 @@ interface ChooseBarPropsTypes {
                 postButton() {
                     if(this.props.chooseStatus === 'notChoose') {
                         if(this.props.selectIndex !== -1) {
-                            return <div className={(className as any).post} onClick={this.props.cbfPost}>提交</div>
+                            return <div className={(className as any).post} onClick={this.props.cbfPost.bind(this, this.props.itemIndex)}>提交</div>
                         } else {
                 return <div className={(className as any).post}>选择答案吧</div>
             }
@@ -73,17 +72,16 @@ interface ChooseBarPropsTypes {
 
 
     renderAnswer() {
-        if ( this.props.chooseStatus === 'true' ) {
+        console.log('renderAnswer')
+        if ( this.props.chooseStatus === 'rightChoose' ) {
             return(<Alert
                 message="恭喜你回答正确"
-                description="Detailed description and advices about successful copywriting."
                 type="success"
                 showIcon
             />);
-        } else if ( this.props.chooseStatus === 'false' ) {
+        } else if ( this.props.chooseStatus === 'wrongChoose' ) {
             return(<Alert
                 message="哎呀答错了"
-                description="Detailed description and advices about successful copywriting."
                 type="error"
                 showIcon
             />);
@@ -108,6 +106,7 @@ interface ChooseBarPropsTypes {
     }
 
     renderChooseBar(index) {
+        console.log('renderChooseBar')
         let style = {};
         let styleActive = {
             color: 'white';
@@ -125,7 +124,7 @@ interface ChooseBarPropsTypes {
 
     cbfClick(index) {
         if(this.props.chooseStatus === 'notChoose') {
-            this.props.cbfClick(index);
+            this.props.cbfClick(index, this.props.itemIndex);
         }
     }
 }
