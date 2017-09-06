@@ -20,7 +20,7 @@ class DALTinyCourseApp {
         this.fetchIsUerBuy = this.fetchIsUerBuy.bind(this);
     }
     /**
-     * <promise> 获取用户登陆状态，判断是否报名，若已报名，保存chapterArray，并resolve(true)，否则resolve(false)
+     * <promise> 获取用户登陆状态，判断是否报名，若已报名，保存chapterArray，并resolve(chapterArray)，否则resolve(false)
      * @param {number} tiny_course_id 课程id号
      * @returns {Promise}
      * @memberof DALTinyCourseApp
@@ -52,8 +52,9 @@ class DALTinyCourseApp {
                                 this.isUserBuy = data.isQualified;
                                 if (data.isQualified) {
                                     this.chapterArray = data.chapterArray;
+                                    resolve(data.chapterArray);
                                 }
-                                resolve(data);
+                                resolve(false);
                             });
                         });
                 });

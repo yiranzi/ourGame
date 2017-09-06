@@ -7,16 +7,30 @@ import {
 } from "react-router-dom";
 import { resolve } from "@/utils/resolver";
 
+
+import {
+    mountGlobalLoading,
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
+
+
+
 // 引入数据state
 import DALUserInfoState from "@/dal/Global";
 import DALIndexPage from "@/dal/TinyCourseApp/IndexPage/state";
 import DALTinyCourseApp from "@/dal/TinyCourseApp/state";
+import DALTinyListenPage from "@/dal/TinyCourseApp/ListenPage/state";
+
 // 引入page view
 import TinyIndexPage from "./IndexPage";
+import TinyListenPage from "./ListenPage/TinyListenPage";
 
 
+// 实例化数据state
 let DALTinyIndexPageState = new DALIndexPage();
 let DALTinyCourseAppState = new DALTinyCourseApp();
+let DALTinyListenPageState = new DALTinyListenPage();
+
 
 interface PropsTypes {
     match?: any;
@@ -24,16 +38,26 @@ interface PropsTypes {
     history?: any;
 }
 
+
 // 以下为resolve顺序阻塞执行方法
+// 获取用户信息
+@resolve("fetchDALUserSignState", function(props: PropsTypes) {
+    // 唤起加载页面
+    mountGlobalLoading();
+    // 1、获取用户登陆信息
+    return DALUserInfoState.fetchDALUserInfo().catch(() => {
+        if (props.location.pathname !== `${props.match.url}/error`) {
+            props.history.push(`${props.match.url}/error`);
+            resolve();
+        }
+    });
+})
 // 拉取是否已经购买接口数据
 @resolve("fetch_isUserBuy", function(props: PropsTypes) {
-    return DALTinyCourseAppState.fetchIsUerBuy(props.match.params.id);
-})
-// 判断是否已经购买
-@resolve("judge_isUserBuy", function(props: PropsTypes) {
-    return new Promise((resolve, reject) => {
+    return DALTinyCourseAppState.fetchIsUerBuy(props.match.params.id).then((chapterArray: any) => {
         // 如果用户没有购买，一律跳转报名页，若购买，一律跳转听课页
-        if (DALUserInfoState.isUserBuy) {
+        if (chapterArray) {
+            DALTinyListenPageState.setChapterArray(chapterArray);
             if (props.location.pathname !== `${props.match.url}/listen`) {
                 props.history.push(`${props.match.url}/listen`);
             }
@@ -57,6 +81,17 @@ class TinyCoursePage extends React.Component<PropsTypes> {
                             propsPath={this.props.match.url}
                             DALUserInfoState={DALUserInfoState}
                             DALTinyIndexPageState={DALTinyIndexPageState}
+                        />
+                    )}
+                />
+                <Route path={`${this.props.match.url}/index`}
+                    render={props => (
+                        <TinyListenPage 
+                            {...props}
+                            propsPath={this.props.match.url}
+                            DALUserInfoState={DALUserInfoState}
+                            DALTinyListenPageState={DALTinyListenPageState}
+                            DALTinyCourseAppState={DALTinyCourseAppState}
                         />
                     )}
                 />

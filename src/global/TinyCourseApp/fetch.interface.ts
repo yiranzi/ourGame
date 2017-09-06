@@ -10,7 +10,16 @@ const _fetchIndexInfo_: string = "/ctplus/tiny-course/application/";
  */
 const _fetchIsUserBuy_: string = "/ctplus/tiny-course/qualification/";
 
+
+/**
+ * 查询对应小课的章节作业内容
+ * /ctplus/tiny-course/{tiny_course_id}/{chapter_id}
+ */
+const _fetchListenInfo_: string = "/ctplus/tiny-course/";
+
+
 export {
     _fetchIndexInfo_,
-    _fetchIsUserBuy_
+    _fetchIsUserBuy_,
+    _fetchListenInfo_
 };
