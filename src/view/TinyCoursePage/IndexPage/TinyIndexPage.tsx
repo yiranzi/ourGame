@@ -16,17 +16,25 @@ interface PropsTypes {
     history?: any;
     propsPath?: string;
     DALUserInfoState?: any;
-    DALIndexPageState?: any;
+    DALTinyIndexPageState?: any;
 }
 
 @observer
+@resolve("fetch_indexPageInfo", function(props: PropsTypes) {
+    return props.DALTinyIndexPageState.fetchIndexInfo();
+})
 class TinyCoursePage extends React.Component<PropsTypes> {
     render() {
         return (
             <switch>
-                <Route path={`${this.props.match.url}/index`}
+                <Route path={`${this.props.match.url}/`}
                     render={props => (
-                        <IndexPage {...props} DALCourseAppState = {DALCourseAppState} DALUserInfoState={DALUserInfoState} DALIndexPageState={DALIndexPageState} propsPath={this.props.match.url}/>
+                        <IndexPage
+                            {...props}
+                            DALUserInfoState={this.props.DALUserInfoState}
+                            DALIndexPageState={this.props.DALTinyIndexPageState}
+                            propsPath={this.props.match.url}
+                        />
                     )}
                 />
             </switch>

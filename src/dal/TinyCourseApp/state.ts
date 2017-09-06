@@ -2,7 +2,7 @@ import {observable, action, runInAction} from "mobx";
 
 import fetch from "@/isomorphic/fetch";
 import * as _GLOBAL_CONFIG_ from "@/global/global.config";
-import DALUserInfoState from "@/dal/Global";
+import DALUserInfoState from "@/dal/global";
 
 import {
     _fetchIsUserBuy_
@@ -20,8 +20,10 @@ class DALTinyCourseApp {
         this.fetchIsUerBuy = this.fetchIsUerBuy.bind(this);
     }
     /**
-     * 获取用户登陆状态，判断是否报名
-     * @memberof DALCourseApp
+     * <promise> 获取用户登陆状态，判断是否报名，若已报名，保存chapterArray，并resolve(true)，否则resolve(false)
+     * @param {number} tiny_course_id 课程id号
+     * @returns {Promise}
+     * @memberof DALTinyCourseApp
      */
     @action
     fetchIsUerBuy(tiny_course_id: number) {
@@ -47,7 +49,10 @@ class DALTinyCourseApp {
                         .then((data: any) => {
                             runInAction(() => {
                                 this.courseId = tiny_course_id;
-                                this.isUserBuy = data;
+                                this.isUserBuy = data.isQualified;
+                                if (data.isQualified) {
+                                    this.chapterArray = data.chapterArray;
+                                }
                                 resolve(data);
                             });
                         });
