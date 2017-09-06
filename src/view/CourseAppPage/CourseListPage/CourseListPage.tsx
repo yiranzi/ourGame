@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 
 import WaitPage from "../WaitPage/WaitPage";
 import SelectPage from "@/containers/CourseAppPage/SelectPage/SelectPage";
-import Modal from "@/components/Modal/Modal";
+
 import DALGetCourseList from "@/dal/SelectPage/GetCourseList";
 
 
