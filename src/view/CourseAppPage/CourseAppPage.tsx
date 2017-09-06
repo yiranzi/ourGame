@@ -15,7 +15,7 @@ import CourseListPage from "./CourseListPage/CourseListPage";
 // state
 import DALUserInfoState from "@/dal/Global";
 import DALCourseApp from "@/dal/courseApp";
-import DALIndexPage from "@/dal/indexPage";
+import DALIndexPage from "@/dal/courseApp/IndexPage";
 import DALCourseList from "@/dal/courseApp/courseListPage/state";
 import DALCourseListen from "@/dal/courseApp/courseListenPage/state";
 import DALWaitPage from "@/dal/courseApp/waitPage/state";
