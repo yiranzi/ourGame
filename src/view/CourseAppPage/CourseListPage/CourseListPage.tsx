@@ -34,7 +34,7 @@ interface PropsTypes {
 }
 @observer
 @resolve("fetchDayItem", function(props: PropsTypes) {
-    return props.DALWaitPageState.fetchCourseInfo().then(() => {
+    return props.DALWaitPageState.fetchCourseInfo(1).then(() => {
         props.DALCourseListState.fetchDayItem(1).then((data: any) => {
             if (data[0].status === -1) {
                 if (props.location.pathname !== `${props.match.url}/wait`) {
