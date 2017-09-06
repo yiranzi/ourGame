@@ -5,7 +5,7 @@ import {
     Link,
     Switch
 } from "react-router-dom";
-
+import { resolve } from "@/utils/resolver";
 
 // url页面
 import NoMatchPage from "..//NoMatchPage";
@@ -15,7 +15,6 @@ import CourseListPage from "./CourseListPage/CourseListPage";
 // state
 import DALUserInfoState from "@/dal/Global";
 import DALCourseApp from "@/dal/courseApp";
-import { resolve } from "@/utils/resolver";
 import DALIndexPage from "@/dal/indexPage";
 import DALCourseList from "@/dal/courseApp/courseListPage/state";
 import DALCourseListen from "@/dal/courseApp/courseListenPage/state";

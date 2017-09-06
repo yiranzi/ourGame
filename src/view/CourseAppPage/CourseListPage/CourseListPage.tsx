@@ -33,14 +33,17 @@ interface PropsTypes {
 }
 @observer
 @resolve("fetchDayItem", function(props: PropsTypes) {
-    return props.DALCourseListState.fetchDayItem(1).then((data: any) => {
-        if (data[0].status === -1) {
-            if (props.location.pathname !== `${props.match.url}/wait`) {
-                props.history.push(`${props.match.url}/wait`);
+    return props.DALWaitPageState.fetchCourseInfo().then(() => {
+        props.DALCourseListState.fetchDayItem(1).then((data: any) => {
+            if (data[0].status === -1) {
+                if (props.location.pathname !== `${props.match.url}/wait`) {
+                    props.history.push(`${props.match.url}/wait`);
+                }
+            } else {
+                unMountGlobalLoading();
             }
-        } else {
-            unMountGlobalLoading();
-        }
+            resolve();
+        });
     });
 })
 class CourseListPage extends React.Component<PropsTypes> {
