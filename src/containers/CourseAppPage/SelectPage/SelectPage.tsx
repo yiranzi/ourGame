@@ -81,20 +81,36 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     }
 
     onClickGroup() {
-        alert( "加入QQ社群");
+        Modal.showModal({
+            title: "速速加群啦",
+            bodyText: <div>本课程包含QQ社群管理:<br />请加入QQ群: {this.props.qqGroupInfo.qq}<br />暗号: {this.props.qqGroupInfo.secret}</div>,
+            sureText: "立即加群",
+            cancelText: "就是不加",
+            sureFunction: () => {
+                window.location.href = this.props.qqGroupInfo.link;
+            },
+            cancelFunction: () => {}
+        });
     }
 
     cbfOnEnter(type, dayId) {
         if ( type ) {
-            this.props.location.push(`${this.props.propsPath}/listen/${dayId}`);
-            alert( "进入" + dayId );
+            this.props.history.push(`${this.props.propsPath}/listen/${dayId}`);
         } else {
-            alert( "无法进入" + dayId );
+            Modal.showModal({
+                title: "还没有开放课程哦",
+                bodyText: <div>每天更新一课哦，耐心等一等吧！</div>,
+                sureText: "知道啦",
+                sureFunction: () => {
+                    window.location.href = this.props.DALWaitPageState.link;
+                },
+            });
         }
     }
 
     cbfOnClickReward(dayId) {
-        alert( "成就卡" + dayId );
+        // alert( "成就卡" + dayId );
+        this.cbfOnEnter(true, dayId);
     }
 
     calcCourseStatus(index) {
