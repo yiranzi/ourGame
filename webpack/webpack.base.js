@@ -140,7 +140,7 @@ module.exports = {
                     loader: 'url-loader',
                     query: {
                         limit: 10000,
-                        name: 'assets/img/[name].[hash:7].[ext]'
+                        name: 'vinda/assets/img/[name].[hash:7].[ext]'
                     }
                 }
             },

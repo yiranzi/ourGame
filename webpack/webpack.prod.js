@@ -42,7 +42,6 @@ module.exports = webpackMerge([
                 name: 'dll'
             })
         ],
-        recordsOutputPath: path.join(__dirname, "..", "prod", "records.json"),
         devtool: false
     }
 ]);

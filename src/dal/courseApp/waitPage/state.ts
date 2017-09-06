@@ -34,16 +34,14 @@ class DALWaitPage {
                     "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
                 }
             }).then((res: any) => {
-                res
-                .json()
-                .then((data: any) => {
-                    runInAction(() => {
-                        this.link = data.link;
-                        this.qq = data.qq;
-                        this.secret = data.secret;
+                res.json().then((data: any) => {
+                        runInAction(() => {
+                            this.link = data.link;
+                            this.qq = data.qq;
+                            this.secret = data.secret;
+                            resolve();
+                        });
                     });
-                    resolve();
-                });
             });
         });
     }

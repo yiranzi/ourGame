@@ -8,7 +8,7 @@ class DALCourseApp {
     // 一次启动只可能存在同一courseid，若courseid不同需要重新查询
     @observable courseId: number = null;
     // 用户是否报名
-    @observable isUserBuy: boolean = null;
+    @observable isUserBuy: boolean = false;
     // 课程是否已开课
     @observable isCourseStart: boolean = null;
 
@@ -65,12 +65,12 @@ class DALCourseApp {
      */
     @action
     fetchIsUerBuy(courseId: number) {
-        return new Promise((resolve, reject) => {
-            // 判断用户是否已经报名，如果已报名直接返回true，不再拉去数据
-            // 但必须课程id与已查询的课程id相同，若不同需要重新查询
-            if (this.isUserBuy && this.courseId === courseId) {
-                resolve(true);
-            } else {
+        // 判断用户是否已经报名，如果已报名直接返回true，不再拉去数据
+        // 但必须课程id与已查询的课程id相同，若不同需要重新查询
+        if (this.isUserBuy !== false && this.courseId === courseId) {
+            return Promise.resolve(true);
+        } else {
+            return new Promise((resolve, reject) => {
                 fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/WhetherSignUp/${courseId}`, {
                     method: "PUT",
                     mode: "cors",
@@ -83,17 +83,17 @@ class DALCourseApp {
                     }
                 }).then((res: any) => {
                     res
-                    .json()
-                    .then((data: any) => {
-                        runInAction(() => {
-                            this.courseId = courseId;
-                            this.isUserBuy = data;
+                        .json()
+                        .then((data: any) => {
+                            runInAction(() => {
+                                this.courseId = courseId;
+                                this.isUserBuy = data;
+                                resolve(data);
+                            });
                         });
-                        resolve(data);
-                    });
                 });
-            }
-        });
+            });
+        }
     }
 }
 

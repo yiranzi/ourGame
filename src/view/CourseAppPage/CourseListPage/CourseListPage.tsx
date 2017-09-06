@@ -6,7 +6,6 @@ import { observer } from "mobx-react";
 
 import WaitPage from "../WaitPage/WaitPage";
 import SelectPage from "@/containers/CourseAppPage/SelectPage/SelectPage";
-import DALGetCourseList from "@/dal/SelectPage/GetCourseList";
 
 
 import {
@@ -33,29 +32,30 @@ interface PropsTypes {
 }
 @observer
 @resolve("fetchDayItem", function(props: PropsTypes) {
-    return props.DALWaitPageState.fetchCourseInfo().then(() => {
-        props.DALCourseListState.fetchDayItem(1).then((data: any) => {
-            if (data[0].status === -1) {
-                if (props.location.pathname !== `${props.match.url}/wait`) {
-                    props.history.push(`${props.match.url}/wait`);
-                }
-            } else {
-                unMountGlobalLoading();
+    return props.DALWaitPageState.fetchCourseInfo(1);
+})
+@resolve("fetchCourseInfo", function(props: PropsTypes) {
+    return props.DALCourseListState.fetchDayItem(1).then((data: any) => {
+        if (data[0].status === -1) {
+            if (props.location.pathname !== `${props.match.url}/wait`) {
+                props.history.push(`${props.match.url}/wait`);
             }
-            resolve();
-        });
+        } else {
+            unMountGlobalLoading();
+        }
+        resolve();
     });
 })
 class CourseListPage extends React.Component<PropsTypes> {
-    constructor() {
-        super();
+    constructor(props: PropsTypes) {
+        super(props);
     }
     render() {
         return (
             <div className={className.view}>
                 <Route path={`${this.props.match.url}/`}
                     render={props => (
-                        <SelectPage {...props} dayCourseList={this.props.DALCourseListState} propsPath={this.props.propsPath}/>
+                        <SelectPage {...props} qqGroupInfo = {this.props.DALWaitPageState} dayCourseList={this.props.DALCourseListState} propsPath={this.props.propsPath}/>
                     )}
                 />
                 <Route path={`${this.props.match.url}/wait`}
