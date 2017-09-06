@@ -49,7 +49,6 @@ let DALWaitPageState = new DALWaitPage();
         // 2、获取用户是否已经报名，若未报名，一律跳转报名页
         // todo courseid写死
         DALCourseAppState.fetchIsUerBuy(1).then((isUserBuy) => {
-            resolve();
             // 如果用户没有购买，跳转购买页面
             if (!isUserBuy) {
                 if (props.location.pathname !== `${props.match.url}/index`) {
@@ -61,10 +60,12 @@ let DALWaitPageState = new DALWaitPage();
                     props.history.push(`${props.match.url}/courselist`);
                 }
             }
+            resolve();
         });
     }).catch(() => {
         if (props.location.pathname !== `${props.match.url}/error`) {
             props.history.push(`${props.match.url}/error`);
+            resolve();
         }
     });
 })
@@ -73,7 +74,6 @@ class CourseAppPage extends React.Component<PropsTypes> {
         super(props);
     }
     render() {
-        console.log('456');
         return (
             <Switch>
                 <Route path={`${this.props.match.url}/index`}

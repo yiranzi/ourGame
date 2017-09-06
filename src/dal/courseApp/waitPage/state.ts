@@ -24,33 +24,26 @@ class DALWaitPage {
     @action
     fetchCourseInfo(courseId: number) {
         return new Promise((resolve, reject) => {
-            if (this.qq !== null && courseId === DALUserInfoState.courseId) {
-                resolve();
-            } else {
-                fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/qq-details/${courseId}`, {
-                    method: "GET",
-                    headers: {
-                        "Accept": "application/json",
-                        "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
-                        "Content-Type": "application/json;charset=utf-8",
-                        "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
-                        "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
-                    }
-                }).then((res: any) => {
-                    res
-                        .json()
-                        .then((data: any) => {
-                            runInAction(() => {
-                                this.link = data.link;
-                                this.qq = data.qq;
-                                this.secret = data.secret;
-                            });
+            fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/qq-details/${courseId}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,
+                    "Content-Type": "application/json;charset=utf-8",
+                    "X-iChangTou-Json-Api-User": DALUserInfoState.userId,
+                    "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
+                }
+            }).then((res: any) => {
+                res.json().then((data: any) => {
+                        runInAction(() => {
+                            this.link = data.link;
+                            this.qq = data.qq;
+                            this.secret = data.secret;
                             resolve();
                         });
-                });
-            }
+                    });
+            });
         });
-
     }
 }
 
