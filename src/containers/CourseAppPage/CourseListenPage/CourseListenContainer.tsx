@@ -212,10 +212,12 @@ class CourseListenContainer extends React.Component<PropsTypes> {
     }
 
     // 提交答案
+    // Itemindex是第几个选择题
     cbfPostAnswer(Itemindex) {
         console.log(Itemindex);
         console.log("post");
-        if ( this.state.questionStatus[this.state.lessonIndex][Itemindex].selectIndex === this.props.courseListenState.listenItem[this.state.lessonIndex].subs[Itemindex].trueindex[0] ) {
+        let chooseIndex = this.state.questionStatus[this.state.lessonIndex][Itemindex].selectIndex
+        if ( chooseIndex === this.props.courseListenState.listenItem[this.state.lessonIndex].subs[Itemindex].trueindex[0] ) {
             this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "rightChoose";
         } else {
             this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "wrongChoose";
@@ -229,6 +231,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         }
 
         this.setState({questionStatus: this.state.questionStatus});
+        this.props.courseListenState.postWorkFinish(1, this.props.courseListenState.listenItem[this.state.lessonIndex].subs[Itemindex].answerList[chooseIndex].subjectid);
         this.afterFinishCalc();
         // todo 题目提交接口
     }
@@ -288,6 +291,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         this.setState({
             lessonProcess: this.state.lessonProcess,
         });
+        this.props.courseListenState.postWorkFinish(0, this.props.courseListenState.listenItem[this.state.lessonIndex].fmid);
         this.afterFinishCalc();
         // post完成
     }
@@ -328,6 +332,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         let style = {
             backgroundColor: '#108ee9',
             color: 'white',
+            textAlign: 'center',
         };
         return(<Card styleDefault = {style}>{this.buttonTxt()}</Card>);
     }
