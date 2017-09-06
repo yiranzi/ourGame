@@ -45,28 +45,29 @@ let DALWaitPageState = new DALWaitPage();
     // 唤起加载页面
     mountGlobalLoading();
     // 1、获取用户登陆信息
-    return DALUserInfoState.fetchDALUserInfo().then(() => {
-        // 2、获取用户是否已经报名，若未报名，一律跳转报名页
-        // todo courseid写死
-        DALCourseAppState.fetchIsUerBuy(1).then((isUserBuy) => {
-            // 如果用户没有购买，跳转购买页面
-            if (!isUserBuy) {
-                if (props.location.pathname !== `${props.match.url}/index`) {
-                    props.history.push(`${props.match.url}/index`);
-                }
-            } else {
-                // todo 查询是否已经开课，现在没有这个接口
-                if (props.location.pathname === `${props.match.url}/index`) {
-                    props.history.push(`${props.match.url}/courselist`);
-                }
-            }
-            resolve();
-        });
-    }).catch(() => {
+    return DALUserInfoState.fetchDALUserInfo().catch(() => {
         if (props.location.pathname !== `${props.match.url}/error`) {
             props.history.push(`${props.match.url}/error`);
             resolve();
         }
+    });
+})
+@resolve("fetchDALUserInfo", function(props: PropsTypes) {
+     // 2、获取用户是否已经报名，若未报名，一律跳转报名页
+        // todo courseid写死
+    return DALCourseAppState.fetchIsUerBuy(1).then((isUserBuy) => {
+        // 如果用户没有购买，跳转购买页面
+        if (!isUserBuy) {
+            if (props.location.pathname !== `${props.match.url}/index`) {
+                props.history.push(`${props.match.url}/index`);
+            }
+        } else {
+            // todo 查询是否已经开课，现在没有这个接口
+            if (props.location.pathname === `${props.match.url}/index`) {
+                props.history.push(`${props.match.url}/courselist`);
+            }
+        }
+        resolve();
     });
 })
 class CourseAppPage extends React.Component<PropsTypes> {
