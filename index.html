@@ -10,6 +10,9 @@
     <meta name="full-screen" content="yes">
     <script src="jweixin.js"></script>
     <script>
+        window.onerror = function (msg) {
+            alert(msg)
+        }
 // defined wx global config
 window._WXGLOBAL_ = (function () {
     var _ENVIRONMENT = (function () {

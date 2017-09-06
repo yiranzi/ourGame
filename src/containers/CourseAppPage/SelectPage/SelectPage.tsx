@@ -3,6 +3,7 @@ import * as React from "react";
 import ImageCard from "@/components/ImageCard";
 import Card from "@/components/Card/Card";
 import LessonBar from "@/components/SelectPage/LessonBar/LessonBar";
+import Modal from "@/components/Modal/Modal";
 
 import className from "./style/SelectPage.less";
 
@@ -19,6 +20,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
         super();
         this.cbfOnEnter = this.cbfOnEnter.bind(this);
         this.cbfOnClickReward = this.cbfOnClickReward.bind(this);
+        this.onClickGroup = this.onClickGroup.bind(this);
         this.state = {
             courseList: []
         };
@@ -100,10 +102,12 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
             Modal.showModal({
                 title: "还没有开放课程哦",
                 bodyText: <div>每天更新一课哦，耐心等一等吧！</div>,
-                sureText: "知道啦",
+                sureText: "明天来听",
+                cancelText: "知道啦",
                 sureFunction: () => {
                     window.location.href = this.props.DALWaitPageState.link;
                 },
+                cancelFunction: () => {}
             });
         }
     }
@@ -152,12 +156,14 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
 
 
     renderTopBanner() {
+        console.log('123');
         let style = {
             padding: '0',
             // height: '100px',
+            // width: '100%',
         };
         return(<div style = {style} className={(className as any).gap}>
-            <ImageCard src={this.props.DALState ? this.props.DALState.bannerSrc : "https://github.com/bebraw.png?v=3&s=150"}></ImageCard>
+            <ImageCard src={require("@/assets/image/fund_bunner.png")}></ImageCard>
         </div>);
     }
 
