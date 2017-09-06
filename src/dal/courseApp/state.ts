@@ -8,7 +8,7 @@ class DALCourseApp {
     // 一次启动只可能存在同一courseid，若courseid不同需要重新查询
     @observable courseId: number = null;
     // 用户是否报名
-    @observable isUserBuy: boolean = null;
+    @observable isUserBuy: boolean = false;
     // 课程是否已开课
     @observable isCourseStart: boolean = null;
 
@@ -88,8 +88,8 @@ class DALCourseApp {
                         runInAction(() => {
                             this.courseId = courseId;
                             this.isUserBuy = data;
+                            resolve(data);
                         });
-                        resolve(data);
                     });
                 });
             }
