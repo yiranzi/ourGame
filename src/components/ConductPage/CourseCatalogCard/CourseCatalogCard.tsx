@@ -19,13 +19,13 @@ function CourseCatalogCard(props: PropsTypes): JSX.Element {
             <div className={className.wrapper}>
                 <h1 className={className.title}>{props.title}</h1>
                 <div className={className.catalog}>
-                    <Timeline>
-                        {props.children && props.children.map((value: string) => {
-                            return (
-                                <Timeline.Item key={value}>{value}</Timeline.Item>
-                            );
-                        })}
-                    </Timeline>
+                    {props.children.map((item: string) => {
+                        return (
+                            <div className={className.catalogItem}>
+                                {item}
+                            </div>
+                            )
+                    })}
                 </div>
             </div>
         </Card>
