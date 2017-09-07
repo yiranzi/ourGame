@@ -384,13 +384,15 @@ WXSDK._getRedirectUri = function (isUserInfo) {
         if (redirectUri.indexOf('?') !== -1) {
             if (redirectUri.indexOf('#/') !== -1) {
                 redirectUri = redirectUri.split('#/')[0] + '&isuserinfo=1' + redirectUri.split('#/')[1]
+            } else {
+                redirectUri = redirectUri + '&isuserinfo=1'
             }
-            redirectUri = redirectUri + '&isuserinfo=1'
         } else {
             if (redirectUri.indexOf('#/') !== -1) {
                 redirectUri = redirectUri.split('#/')[0] + prefix + 'isuserinfo=1' + redirectUri.split('#/')[1]
+            } else {
+                redirectUri = redirectUri + prefix + 'isuserinfo=1';
             }
-            redirectUri = redirectUri + prefix + 'isuserinfo=1';
         }
     }
     var code = WXSDK._getUrlPara('code');
