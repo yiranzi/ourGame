@@ -1,7 +1,7 @@
 import {observable, useStrict, action, computed, runInAction} from "mobx";
 
 
-import DALUserInfoState from "@/dal/Global";
+import DALUserInfoState from "@/dal/Global/UserInfo";
 
 import fetch from "@/isomorphic/fetch";
 

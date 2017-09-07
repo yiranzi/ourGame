@@ -2,7 +2,7 @@ import {observable, action, runInAction} from "mobx";
 
 import fetch from "@/isomorphic/fetch";
 import * as _GLOBAL_CONFIG_ from "@/global/global.config";
-import DALUserInfoState from "@/dal/global";
+import DALUserInfoState from "@/dal/Global/UserInfo";
 
 import {
     _fetchListenInfo_,

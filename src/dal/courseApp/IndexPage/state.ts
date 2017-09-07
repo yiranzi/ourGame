@@ -1,5 +1,5 @@
 import * as _GLOBAL_CONFIG_ from '@/global/global.config';
-import DALUserInfoState from '@/dal/Global';
+import DALUserInfoState from '@/dal/Global/UserInfo';
 import fetch from '@/isomorphic/fetch';
 import {
     action,

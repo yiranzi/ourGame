@@ -2,7 +2,7 @@ import {observable, action, runInAction} from "mobx";
 
 import fetch from "@/isomorphic/fetch";
 import * as _GLOBAL_CONFIG_ from "@/global/global.config";
-import DALUserInfoState from "@/dal/Global";
+import DALUserInfoState from "@/dal/Global/UserInfo";
 
 class DALCourseApp {
     // 一次启动只可能存在同一courseid，若courseid不同需要重新查询
