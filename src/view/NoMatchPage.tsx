@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "@/components/Card";
 import ICTCube from "@/components/LoadingSpinner/ICTCube";
-import MaterialSpinner  from "@/components/LoadingSpinner/Loading/MaterialSpinner";
 export default function NoMatchPage() {
     return (
         <div style={{
@@ -11,7 +10,7 @@ export default function NoMatchPage() {
             paddingTop: "6rem",
             backgroundColor: "#FAEBD7"
         }}>
-            <MaterialSpinner />
+            <ICTCube />
         </div>
     );
 }

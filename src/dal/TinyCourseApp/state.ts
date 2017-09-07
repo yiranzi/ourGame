@@ -29,7 +29,6 @@ class DALTinyCourseApp {
     fetchIsUerBuy(tiny_course_id: number) {
         // 判断用户是否已经报名，如果已报名直接返回true，不再拉去数据
         // 但必须课程id与已查询的课程id相同，若不同需要重新查询
-        return Promise.resolve(false);
         if (this.isUserBuy !== false && this.courseId === tiny_course_id) {
             return Promise.resolve(true);
         } else {
