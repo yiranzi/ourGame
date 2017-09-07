@@ -382,8 +382,14 @@ WXSDK._getRedirectUri = function (isUserInfo) {
         //区分baseInfo和userInfo
         prefix = '?';
         if (redirectUri.indexOf('?') !== -1) {
+            if (redirectUri.indexOf('#/') !== -1) {
+                redirectUri = redirectUri.split('#/')[0] + '&isuserinfo=1' + redirectUri.split('#/')[1]
+            }
             redirectUri = redirectUri + '&isuserinfo=1'
         } else {
+            if (redirectUri.indexOf('#/') !== -1) {
+                redirectUri = redirectUri.split('#/')[0] + prefix + 'isuserinfo=1' + redirectUri.split('#/')[1]
+            }
             redirectUri = redirectUri + prefix + 'isuserinfo=1';
         }
     }
