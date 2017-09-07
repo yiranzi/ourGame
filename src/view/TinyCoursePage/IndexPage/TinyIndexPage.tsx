@@ -7,6 +7,9 @@ import {
 } from "react-router-dom";
 import { resolve } from "@/utils/resolver";
 
+import {
+    unMountGlobalLoading
+} from "@/components/LoadingSpinner/RenderGlobalLoading";
 
 // 引入page view
 
@@ -21,7 +24,10 @@ interface PropsTypes {
 
 @observer
 @resolve("fetch_indexPageInfo", function(props: PropsTypes) {
-    return props.DALTinyIndexPageState.fetchIndexInfo();
+    return props.DALTinyIndexPageState.fetchIndexInfo().then(() => {
+        // 关闭全局loading动画
+        unMountGlobalLoading();
+    });
 })
 class TinyCoursePage extends React.Component<PropsTypes> {
     render() {
