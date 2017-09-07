@@ -11,6 +11,7 @@ import {
     } from "antd";
 import { Button, List } from "antd-mobile";
 import { observer } from "mobx-react";
+import ImageCardWithTitle from "@/components/ImageCard/ImageCardWithTitle";
 import { CourseCatalogCard, SummaryCard, CourseStartTimeCard, TimePickerCard, TeacherIntro } from "@/components/ConductPage";
 import ImageCard from "@/components/ImageCard";
 import Loading from "@/components/LoadingSpinner/Loading/Loading";
@@ -81,6 +82,9 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                             {this.props.DALIndexPageState.outline}
                         </CourseCatalogCard>
                     </div>
+                    <div>
+                        <ImageCardWithTitle title={"课程定位"} src={this.props.DALIndexPageState.cover} />
+                    </div>
                     <div className={className.submitButton} onClick={this.handleSubmitButton}>
                         {this.props.DALIndexPageState.price} 元，立即学习
                     </div>
@@ -89,5 +93,21 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         );
     }
 }
-
+IndexContainer.defaultProps = {
+    DALIndexPageState: {
+        cover: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png',
+        price: 1,
+        intro: 'sadsadasdasdasd',
+        outline: ['啊啊啊', '啊啊啊'],
+        audioSrc: 'sdsadsada',
+        hasFetchData: true,
+        teacher: {
+            avatar: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png',
+            intro: 'sdasdasjdhajkdhaskjdkajdsd',
+            name: 'jksadhjaksjdhaksjdhkasjdaskj'
+        }
+    },
+    propsPath: '',
+    history: []
+}
 export default IndexContainer;
