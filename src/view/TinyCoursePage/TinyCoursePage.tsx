@@ -90,7 +90,6 @@ class TinyCoursePage extends React.Component<PropsTypes> {
                         <TinyListenPage
                             {...props}
                             propsPath={this.props.match.url}
-                            DALUserInfoState={DALUserInfoState}
                             DALTinyListenPageState={DALTinyListenPageState}
                             DALTinyCourseAppState={DALTinyCourseAppState}
                         />
