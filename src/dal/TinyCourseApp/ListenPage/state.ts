@@ -126,20 +126,20 @@ class DALTinyListenPage {
     }
     /**
      * <promise> 提交选择题，提交成功 resolve，失败 reject
-     * @param {number} answerId 答案id
-     * @param {number} assignmentId 作业id
+     * @param {number} selectionId 答案id
+     * @param {number} questionId 作业id
      * @param {boolean} isLasted 是否为最后一道题
      * @returns
      * @memberof DALTinyListenPage
      */
     @action
-    postListenAssignment(answerId: number, assignmentId: number, isLasted: boolean) {
+    postListenAssignment(selectionId: number, questionId: number, isLasted: boolean) {
         return new Promise ((resolve, reject) => {
             fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + _postListenAssignment_, {
                 method: "GET",
                 body: {
-                    answerId,
-                    assignmentId,
+                    selectionId,
+                    questionId,
                     isLasted
                 },
                 mode: "cors",

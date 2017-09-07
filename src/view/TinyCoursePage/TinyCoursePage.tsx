@@ -13,7 +13,7 @@ import {
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 
-
+import Lazyloader from "@/utils/lazyloader/Lazyloader";
 
 // 引入数据state
 import DALUserInfoState from "@/dal/Global/UserInfo";
@@ -22,8 +22,8 @@ import DALTinyCourseApp from "@/dal/TinyCourseApp/state";
 import DALTinyListenPage from "@/dal/TinyCourseApp/ListenPage/state";
 
 // 引入page view
-import TinyIndexPage from "./IndexPage";
-import TinyListenPage from "./ListenPage/TinyListenPage";
+import loadTinyIndexPage from "./IndexPage";
+import loadTinyListenPage from "./ListenPage/TinyListenPage";
 
 
 // 实例化数据state
@@ -76,7 +76,7 @@ class TinyCoursePage extends React.Component<PropsTypes> {
             <switch>
                 <Route path={`${this.props.match.url}/index`}
                     render={props => (
-                        <TinyIndexPage 
+                        <TinyIndexPage
                             {...props}
                             propsPath={this.props.match.url}
                             DALUserInfoState={DALUserInfoState}
@@ -86,7 +86,7 @@ class TinyCoursePage extends React.Component<PropsTypes> {
                 />
                 <Route path={`${this.props.match.url}/index`}
                     render={props => (
-                        <TinyListenPage 
+                        <TinyListenPage
                             {...props}
                             propsPath={this.props.match.url}
                             DALUserInfoState={DALUserInfoState}
