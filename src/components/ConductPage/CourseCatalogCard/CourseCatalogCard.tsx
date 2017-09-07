@@ -19,9 +19,9 @@ function CourseCatalogCard(props: PropsTypes): JSX.Element {
             <div className={className.wrapper}>
                 <h1 className={className.title}>{props.title}</h1>
                 <div className={className.catalog}>
-                    {props.children.map((item: string) => {
+                    {props.children.map((item: string, index: number) => {
                         return (
-                            <div className={className.catalogItem}>
+                            <div key={index} className={className.catalogItem}>
                                 {item}
                             </div>
                             )

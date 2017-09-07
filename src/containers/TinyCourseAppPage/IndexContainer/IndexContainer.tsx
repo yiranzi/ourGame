@@ -27,6 +27,7 @@ interface StateTypes {
 interface PropsTypes {
     DALIndexPageState: any;
     DALUserInfoState: any;
+    DALTinyCourseAppState: any;
     propsPath: string;
     history: any;
 }
@@ -46,35 +47,11 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         });
     }
     handleSubmitButton() {
-        if (this.props.DALIndexPageState.isUserCanBuy) {
-            Modal.showModal({
-                title: "注意啦!!",
-                bodyText: <div>名额已经满了，没法报名了哟</div>,
-                sureText: "没法选啦",
-                cancelText: "等下一期吧~",
-                sureFunction: () => {},
-                cancelFunction: () => {}
-            });
-        } else {
-            if (this.state.period === -1) {
-                Modal.showModal({
-                    title: "注意啦!!",
-                    bodyText: <div>快选择报名期数</div>,
-                    sureText: "马上去选",
-                    cancelText: "就是不选",
-                    sureFunction: () => {},
-                    cancelFunction: () => {}
-                });
-            } else {
-                // todo 提交报名唤起支付
-                // window.WXSDK.wechatPay();
-                this.props.DALIndexPageState.fetchPayOrder(1, this.state.period).then(() => {
-                    setTimeout(() => {
-                        this.props.history.push(`${this.props.propsPath}/courselist`);
-                    }, 500);
-                });
-            }
-        }
+        this.props.DALIndexPageState.fetchPayOrder(this.props.DALTinyCourseAppState.courseId).then(() => {
+            setTimeout(() => {
+                this.props.history.push(`${this.props.propsPath}/listen`);
+            }, 500);
+        });
     }
     render() {
         return (
@@ -124,9 +101,7 @@ IndexContainer.defaultProps = {
             avatar: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png',
             intro: 'sdasdasjdhajkdhaskjdkajdsd',
             name: 'jksadhjaksjdhaksjdhkasjdaskj'
-        },
-        isUserCanBuy: true,
-        misc: true
+        }
     },
     propsPath: '',
     history: []
