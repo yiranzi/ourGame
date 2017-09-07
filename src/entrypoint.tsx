@@ -78,7 +78,6 @@ if ($$webpack_dev && (module as HMRModule).hot) {
     // dev w/o HMR
     console.info("webpack HMR not available");
 }
-flex(20, 1);
 import AppRouter from "./view/AppRouter";
 ReactDOM.render(
     <AppRouter />,

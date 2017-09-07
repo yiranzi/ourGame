@@ -6,6 +6,7 @@ import {Timeline} from "antd";
 
 interface PropsTypes {
     children?: Array<string>;
+    title?: String
 }
 /**
  * 传入一个数组，返回课程大纲的 jsx element
@@ -16,15 +17,15 @@ function CourseCatalogCard(props: PropsTypes): JSX.Element {
     return (
         <Card>
             <div className={className.wrapper}>
-                <h1 className={className.title}>课程大纲</h1>
+                <h1 className={className.title}>{props.title}</h1>
                 <div className={className.catalog}>
-                    <Timeline>
-                        {props.children && props.children.map((value: string) => {
-                            return (
-                                <Timeline.Item key={value}>{value}</Timeline.Item>
-                            );
-                        })}
-                    </Timeline>
+                    {props.children.map((item: string, index: number) => {
+                        return (
+                            <div key={index} className={className.catalogItem}>
+                                {item}
+                            </div>
+                            )
+                    })}
                 </div>
             </div>
         </Card>

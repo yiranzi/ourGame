@@ -9,6 +9,8 @@ import {
 import NoMatchPage from "@/view/NoMatchPage";
 import CourseAppPage from "./CourseAppPage/CourseAppPage";
 import CourseListPage from "./CourseAppPage/CourseListPage/CourseListPage";
+import IndexConrainer from "@/containers/TinyCourseAppPage/IndexContainer/IndexContainer"
+
 import TinyCoursePage from "./TinyCoursePage/TinyCoursePage";
 
 
@@ -20,7 +22,7 @@ export default function AppRouter() {
             <Switch>
                 <Route path="/course/:id" component={CourseAppPage} />
                 <Route path="/tinycourse/:id" component={TinyCoursePage} />
-                <Route component={NoMatchPage} />
+                <Route component={IndexConrainer} />
             </Switch>
         </Router>
     );

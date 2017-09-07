@@ -140,7 +140,7 @@ class DALIndexPage {
     }
 
     @action
-    fetchPayOrder(courseId: number, period: number) {
+    fetchPayOrder(courseId: number) {
         return new Promise((resolve, reject) => {
             (window as any).WXSDK.wechatPay(JSON.stringify({
                 "body": "商品成本费",

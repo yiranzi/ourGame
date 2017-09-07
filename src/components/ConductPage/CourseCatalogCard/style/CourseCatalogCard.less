@@ -1,19 +1,32 @@
 .wrapper {
     padding: 1rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
     text-align: center;
     .title {
-        color: #108EE9;
-        font-size: 1.5rem;
+        color: #333;
+        font-size: 1rem;
         padding-bottom: 0.6rem;
     }
     .catalog {
-        padding-right: 1rem;
-        padding-left: 1rem;
-        margin-bottom: -2rem;
-        color: rgba(0, 0, 0, .65);
-        font-size: 1rem !important;
+        padding-right: 2rem;
+        padding-left: 3rem;
+        color: #333;
         text-align: left;
+    }
+    .catalogItem{
+        position: relative;
+        font-size: .8rem;
+        line-height: .8rem;
+        margin-bottom: 0.6rem;
+    }
+    .catalogItem:before{
+        content: '';
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #108EE9;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0 auto -1rem;
     }
 }
