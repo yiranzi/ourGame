@@ -10,7 +10,7 @@
     <meta name="full-screen" content="yes">
     <script src="jweixin.js"></script>
     <script>
-       // defined wx global config
+// defined wx global config
 window._WXGLOBAL_ = (function () {
     var _ENVIRONMENT = (function () {
         if (location.href.indexOf('h5.ichangtou.com') > -1) {
@@ -175,10 +175,15 @@ WXSDK._getHtmlUrl = function () {
 };
 WXSDK._getCurrHtmlUrl = function () {
     if (location.href.indexOf('code=') !== -1) {
-        return location
-            .href
-            .split('code=')[0]
-            .split('&')[0];
+        let route = ''
+        if (location.href.indexOf('#/') !== -1) {
+            route = location.href.split('#/')[1]
+        }
+        let path = location.href.split('code=')[0].split('&')[0];
+        if (path[path.length - 1] === '?') {
+            path = path.split('?')[0]
+        }
+        return path + '#/' + route
     } else {
         return location.href;
     }
@@ -385,12 +390,18 @@ WXSDK._redirectToBaseInfo = function () {
 WXSDK._getRedirectUri = function (isUserInfo) {
     var redirectUri = WXSDK._getCurrHtmlUrl(),
         prefix = '?';
-    if (isUserInfo) {
+    if (isUserInfo && location.href.indexOf('isuserinfo=1') === -1) {
         //区分baseInfo和userInfo
         prefix = '?';
         if (redirectUri.indexOf('?') !== -1) {
+            if (redirectUri.indexOf('#/') !== -1) {
+                redirectUri = redirectUri.split('#/')[0] + '&isuserinfo=1' + redirectUri.split('#/')[1]
+            }
             redirectUri = redirectUri + '&isuserinfo=1'
         } else {
+            if (redirectUri.indexOf('#/') !== -1) {
+                redirectUri = redirectUri.split('#/')[0] + prefix + 'isuserinfo=1' + redirectUri.split('#/')[1]
+            }
             redirectUri = redirectUri + prefix + 'isuserinfo=1';
         }
     }
