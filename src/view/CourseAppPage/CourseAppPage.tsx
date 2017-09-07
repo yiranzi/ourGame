@@ -86,7 +86,7 @@ class CourseAppPage extends React.Component<PropsTypes> {
                         <CourseListPage {...props}  propsPath={this.props.match.url} DALCourseListState={DALCourseListState} DALUserInfoState={DALUserInfoState} DALWaitPageState={DALWaitPageState}/>
                     )}
                 />
-                <Route path={`${this.props.match.url}/listen/:dayId`}
+                <Route path={`${this.props.match.url}/listen`}
                     render={props => (
                         <CourseListenPage {...props}  propsPath={this.props.match.url} DALCourseListenState={DALCourseListenState}/>
                     )}
