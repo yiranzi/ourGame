@@ -2,7 +2,7 @@ import {observable, action, runInAction} from "mobx";
 
 import fetch from "@/isomorphic/fetch";
 import * as _GLOBAL_CONFIG_ from "@/global/global.config";
-import DALUserInfoState from "@/dal/global";
+import DALUserInfoState from "@/dal/Global/UserInfo";
 
 import {
     _fetchListenInfo_,
@@ -13,13 +13,20 @@ import {
 class DALTinyListenPage {
     // 课程列表，保存课程id号
     @observable chapterArray: Array<number> = null;
+    // 课程详情
     @observable listenArray: Array<any> = null;
+    // 当前听课进度
     @observable listenIndex: number = null;
-    // 课程是否已开课
+    // 当前课程
+    @observable currentLesson: any = null;
+    // 总课程长度
+    @observable lessonSum: number = null;
     constructor() {
         this.setChapterArray = this.setChapterArray.bind(this);
         this.fetchEnterListenInfo = this.fetchEnterListenInfo.bind(this);
         this.fetchListenInfo = this.fetchListenInfo.bind(this);
+        this.postListenAssignment = this.postListenAssignment.bind(this);
+        this.fetchListenInfoByIndex = this.fetchListenInfoByIndex.bind(this);
     }
     /**
      * [private] 获取听课信息
@@ -52,6 +59,7 @@ class DALTinyListenPage {
         this.chapterArray = chapterArray;
         // 根据长度初始化听课内容数组
         this.listenArray = new Array(chapterArray.length);
+        this.lessonSum = chapterArray.length;
     }
     /**
      * <promise> 获取首屏课程数据
@@ -73,6 +81,7 @@ class DALTinyListenPage {
                             this.listenArray[parseInt(tinyCourseListenID)] = data;
                             // 赋值当前index
                             this.listenIndex = parseInt(tinyCourseListenID);
+                            this.currentLesson = data;
                             resolve();
                         });
                     });
@@ -91,6 +100,7 @@ class DALTinyListenPage {
         // 如果 tinyCourseListenID 对应array存在，则直接修改 listenIndex
         if (this.listenArray[index]) {
             this.listenIndex = index;
+            this.currentLesson = this.listenArray[index];
         }
         // 如果不存在， 异步获取数据，获取到之后再修改 listenIndex
         else {
@@ -104,6 +114,7 @@ class DALTinyListenPage {
                                 this.listenArray[index] = data;
                                 // 赋值当前index
                                 this.listenIndex = index;
+                                this.currentLesson = data;
                                 // 保存到localstorage
                                 window.localStorage.setItem("tinycourse_" + courseId, this.chapterArray[index].toString());
                                 resolve();
@@ -115,20 +126,20 @@ class DALTinyListenPage {
     }
     /**
      * <promise> 提交选择题，提交成功 resolve，失败 reject
-     * @param {number} answer_id 答案id
-     * @param {number} assignment_id 作业id
+     * @param {number} answerId 答案id
+     * @param {number} assignmentId 作业id
      * @param {boolean} isLasted 是否为最后一道题
      * @returns
      * @memberof DALTinyListenPage
      */
     @action
-    postListenAssignment(answer_id: number, assignment_id: number, isLasted: boolean) {
+    postListenAssignment(answerId: number, assignmentId: number, isLasted: boolean) {
         return new Promise ((resolve, reject) => {
             fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + _postListenAssignment_, {
                 method: "GET",
                 body: {
-                    answer_id,
-                    assignment_id,
+                    answerId,
+                    assignmentId,
                     isLasted
                 },
                 mode: "cors",

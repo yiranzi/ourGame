@@ -9,7 +9,6 @@ import { resolve } from "@/utils/resolver";
 
 
 import {
-    mountGlobalLoading,
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 
@@ -25,9 +24,10 @@ interface PropsTypes {
 }
 
 // 以下为resolve顺序阻塞执行方法
-// 拉取是否已经购买接口数据
+// 拉取首屏数据
 @resolve("fetch_enterListenInfo", function(props: PropsTypes) {
     return props.DALTinyListenPageState.fetchEnterListenInfo(props.DALTinyCourseAppState.courseId).then(() => {
+        // 关闭全局loading 动画
         unMountGlobalLoading();
     });
 })
@@ -36,7 +36,7 @@ class TinyListenPage extends React.Component<PropsTypes> {
     render() {
         return (
             <switch>
-                <Route path={`${this.props.match.url}/index`}
+                <Route path={`${this.props.match.url}/`}
                     render={props => (
                         <TinyListenContainer
                             {...props}

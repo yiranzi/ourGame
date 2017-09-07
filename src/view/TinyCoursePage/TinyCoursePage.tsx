@@ -16,7 +16,7 @@ import {
 
 
 // 引入数据state
-import DALUserInfoState from "@/dal/Global";
+import DALUserInfoState from "@/dal/Global/UserInfo";
 import DALIndexPage from "@/dal/TinyCourseApp/IndexPage/state";
 import DALTinyCourseApp from "@/dal/TinyCourseApp/state";
 import DALTinyListenPage from "@/dal/TinyCourseApp/ListenPage/state";

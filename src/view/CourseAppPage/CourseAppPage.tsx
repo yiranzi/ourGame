@@ -13,7 +13,7 @@ import IndexPage from "./IndexPage/IndexPage";
 import CourseListenPage from "./CourseListenPage/CourseListenPage";
 import CourseListPage from "./CourseListPage/CourseListPage";
 // state
-import DALUserInfoState from "@/dal/Global";
+import DALUserInfoState from "@/dal/Global/UserInfo";
 import DALCourseApp from "@/dal/courseApp";
 import DALIndexPage from "@/dal/courseApp/IndexPage";
 import DALCourseList from "@/dal/courseApp/courseListPage/state";

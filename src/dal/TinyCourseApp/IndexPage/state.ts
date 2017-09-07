@@ -1,4 +1,4 @@
-import DALUserInfoState from "@/dal/Global";
+import DALUserInfoState from "@/dal/Global/UserInfo";
 import fetch from "@/isomorphic/fetch";
 
 // 引入页面接口
