@@ -9,7 +9,25 @@ interface PropsTypes {
     courseListenState: any;
     propsPath: string;
 }
-class CourseListenContainer extends React.Component<PropsTypes> {
+interface StateTypes {
+    // 当前小节
+    lessonIndex: number; // 当前的题目
+
+    // 进度条
+    totalElement: number;
+    finishElement: number;
+
+    // 小节
+    allFinish: boolean;
+    renderType: String; // 有无题目
+
+    // 选择题的进度状态
+    questionStatus: Array;
+
+    // 音频的进度情况
+    lessonProcess: Array;
+}
+class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
         super(props);
         this.cbfChooseBarClick = this.cbfChooseBarClick.bind(this);
@@ -33,8 +51,6 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
             // 音频的进度情况
             lessonProcess: [],
-            fmProcess: false,
-            chooseProcess: false,
         };
     }
 
