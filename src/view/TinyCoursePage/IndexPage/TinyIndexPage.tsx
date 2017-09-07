@@ -11,7 +11,7 @@ import {
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 
-// 引入page view
+import IndexPageContainer from "@/containers/TinyCourseAppPage/IndexContainer/IndexContainer";
 
 interface PropsTypes {
     match?: any;
@@ -20,11 +20,12 @@ interface PropsTypes {
     propsPath?: string;
     DALUserInfoState?: any;
     DALTinyIndexPageState?: any;
+    DALTinyCourseAppState?: any;
 }
 
 @observer
 @resolve("fetch_indexPageInfo", function(props: PropsTypes) {
-    return props.DALTinyIndexPageState.fetchIndexInfo().then(() => {
+    return props.DALTinyIndexPageState.fetchIndexInfo(props.DALTinyCourseAppState.courseId).then(() => {
         // 关闭全局loading动画
         unMountGlobalLoading();
     });
@@ -35,10 +36,11 @@ class TinyCoursePage extends React.Component<PropsTypes> {
             <switch>
                 <Route path={`${this.props.match.url}/`}
                     render={props => (
-                        <IndexPage
+                        <IndexPageContainer
                             {...props}
                             DALUserInfoState={this.props.DALUserInfoState}
                             DALIndexPageState={this.props.DALTinyIndexPageState}
+                            DALTinyCourseAppState={this.props.DALTinyCourseAppState}
                             propsPath={this.props.match.url}
                         />
                     )}

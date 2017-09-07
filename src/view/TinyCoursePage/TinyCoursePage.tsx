@@ -22,8 +22,8 @@ import DALTinyCourseApp from "@/dal/TinyCourseApp/state";
 import DALTinyListenPage from "@/dal/TinyCourseApp/ListenPage/state";
 
 // 引入page view
-import loadTinyIndexPage from "./IndexPage";
-import loadTinyListenPage from "./ListenPage/TinyListenPage";
+import TinyIndexPage from "./IndexPage/TinyIndexPage";
+import TinyListenPage from "./ListenPage/TinyListenPage";
 
 
 // 实例化数据state
@@ -85,7 +85,7 @@ class TinyCoursePage extends React.Component<PropsTypes> {
                         />
                     )}
                 />
-                <Route path={`${this.props.match.url}/index`}
+                <Route path={`${this.props.match.url}/listen`}
                     render={props => (
                         <TinyListenPage
                             {...props}

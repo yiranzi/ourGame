@@ -10,10 +10,7 @@
     <meta name="full-screen" content="yes">
     <script src="jweixin.js"></script>
     <script>
-        window.onerror = function (msg) {
-            alert(msg)
-        }
-// defined wx global config
+       // defined wx global config
 window._WXGLOBAL_ = (function () {
     var _ENVIRONMENT = (function () {
         if (location.href.indexOf('h5.ichangtou.com') > -1) {
@@ -300,29 +297,32 @@ WXSDK._getOrder = function (body) {
 
     var apiUrl = WXSDK._getAPIUrl('get_order');
     window._WXGLOBAL_.__PAYPULLINGFLAG__ = true;
-    return fetch(apiUrl, {
-        method: "POST",
-        body: body,
-        headers: {
-            "Accept": "application/json",
-            "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
-            "Content-Type": "application/json;charset=utf-8",
-            "X-iChangTou-Json-Api-User": userInfo.userId,
-            "X-iChangTou-Json-Api-Session": userInfo.sessionId
-        }
-    }).then(function (response) {
+    return new Promise((resolve, reject) => {
+        fetch(apiUrl, {
+            method: "POST",
+            body: body,
+            headers: {
+                "Accept": "application/json",
+                "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
+                "Content-Type": "application/json;charset=utf-8",
+                "X-iChangTou-Json-Api-User": userInfo.userId,
+                "X-iChangTou-Json-Api-Session": userInfo.sessionId
+            }
+        }).then(function (response) {
         response
             .json()
             .then(function (data) {
                 sessionStorage.setItem('wx-user-pay', JSON.stringify(data));
-                WXSDK._pay();
+                WXSDK._pay(resolve, reject);
             })
-    }).catch(function (data) {
-        console.log('请求微信支付失败', data);
+    })
+        .catch(function (data) {
+            console.log('请求微信支付失败', data);
+        });
     });
 };
 
-WXSDK._pay = function () {
+WXSDK._pay = function (resolve, reject) {
 
     var data = JSON.parse(sessionStorage.getItem('wx-user-pay'));
     if (typeof WeixinJSBridge == "undefined") {
@@ -333,11 +333,11 @@ WXSDK._pay = function () {
             document.attachEvent('onWeixinJSBridgeReady', WXSDK._pay);
         }
     } else {
-        WXSDK._onBridgeReady(data);
+        WXSDK._onBridgeReady(data, resolve, reject);
     }
 };
 
-WXSDK._onBridgeReady = function (data) {
+WXSDK._onBridgeReady = function (data, resolve, reject) {
     var param = {
         "appId": window._WXGLOBAL_.__PAID_APPID__,
         "timeStamp": data
@@ -352,27 +352,13 @@ WXSDK._onBridgeReady = function (data) {
         //标记请求支付完成
         window._WXGLOBAL_.__PAYPULLINGFLAG__ = false;
         if (res.err_msg == "get_brand_wcpay_request:ok") {
+            resolve();
             //支付成功
             console.log('支付成功')
-            window.dispatchEvent(new CustomEvent('_dove_WxPay', {
-                    bubbles: true,
-                    cancelable: false,
-                    detail: {
-                        type: '_dove_WxPay',
-                        success: true
-                    }
-                }));
         } else {
+            reject();
             //取消支付
             console.log('支付失败')
-            window.dispatchEvent(new CustomEvent('_dove_WxPay', {
-                    bubbles: true,
-                    cancelable: false,
-                    detail: {
-                        type: '_dove_WxPay',
-                        success: false
-                    }
-                }));
 
         }
     });
@@ -399,7 +385,7 @@ WXSDK._redirectToBaseInfo = function () {
 WXSDK._getRedirectUri = function (isUserInfo) {
     var redirectUri = WXSDK._getCurrHtmlUrl(),
         prefix = '?';
-    if (!isUserInfo) {
+    if (isUserInfo) {
         //区分baseInfo和userInfo
         prefix = '?';
         if (redirectUri.indexOf('?') !== -1) {

@@ -70,14 +70,14 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                     </div>
                     <div>
                         <TeacherIntro
-                            title = {"导师介绍"}
-                            headImage = {this.props.DALIndexPageState.teacher.avatar}
+                            title = { "导师介绍" }
+                            headImage = { this.props.DALIndexPageState.teacher.avatar }
                             name = {this.props.DALIndexPageState.teacher.name}
                             intro = {this.props.DALIndexPageState.teacher.intro}
                         />
                     </div>
                     <div>
-                        <CourseCatalogCard title = {"课程作用"}>
+                        <CourseCatalogCard title = { "课程作用" }>
                             {this.props.DALIndexPageState.outline}
                         </CourseCatalogCard>
                     </div>
@@ -89,21 +89,5 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         );
     }
 }
-IndexContainer.defaultProps = {
-    DALIndexPageState: {
-        cover: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png',
-        price: 1,
-        intro: 'sadsadasdasdasd',
-        outline: ['啊啊啊', '啊啊啊'],
-        audioSrc: 'sdsadsada',
-        hasFetchData: true,
-        teacher: {
-            avatar: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png',
-            intro: 'sdasdasjdhajkdhaskjdkajdsd',
-            name: 'jksadhjaksjdhaksjdhkasjdaskj'
-        }
-    },
-    propsPath: '',
-    history: []
-}
+
 export default IndexContainer;
