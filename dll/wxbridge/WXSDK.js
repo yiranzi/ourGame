@@ -163,10 +163,15 @@ WXSDK._getHtmlUrl = function () {
 };
 WXSDK._getCurrHtmlUrl = function () {
     if (location.href.indexOf('code=') !== -1) {
-        return location
-            .href
-            .split('code=')[0]
-            .split('&')[0];
+        let route = ''
+        if (location.href.indexOf('#/') !== -1) {
+            route = location.href.split('#/')[1]
+        }
+        let path = location.href.split('code=')[0].split('&')[0];
+        if (path[path.length - 1] === '?') {
+            path = path.split('?')[0]
+        }
+        return path + '#/' + route
     } else {
         return location.href;
     }
