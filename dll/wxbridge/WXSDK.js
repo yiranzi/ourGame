@@ -378,7 +378,7 @@ WXSDK._redirectToBaseInfo = function () {
 WXSDK._getRedirectUri = function (isUserInfo) {
     var redirectUri = WXSDK._getCurrHtmlUrl(),
         prefix = '?';
-    if (isUserInfo) {
+    if (isUserInfo && location.href.indexOf('isuserinfo=1') === -1) {
         //区分baseInfo和userInfo
         prefix = '?';
         if (redirectUri.indexOf('?') !== -1) {
