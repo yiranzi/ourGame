@@ -22,7 +22,7 @@ export default function AppRouter() {
             <Switch>
                 <Route path="/course/:id" component={CourseAppPage} />
                 <Route path="/tinycourse/:id" component={TinyCoursePage} />
-                <Route component={IndexConrainer} />
+                <Route component={NoMatchPage} />
             </Switch>
         </Router>
     );

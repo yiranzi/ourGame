@@ -101,6 +101,7 @@ class DALTinyListenPage {
         if (this.listenArray[index]) {
             this.listenIndex = index;
             this.currentLesson = this.listenArray[index];
+            return Promise.resolve();
         }
         // 如果不存在， 异步获取数据，获取到之后再修改 listenIndex
         else {
