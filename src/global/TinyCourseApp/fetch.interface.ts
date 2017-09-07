@@ -16,10 +16,15 @@ const _fetchIsUserBuy_: string = "/ctplus/tiny-course/qualification/";
  * /ctplus/tiny-course/{tiny_course_id}/{chapter_id}
  */
 const _fetchListenInfo_: string = "/ctplus/tiny-course/";
-
+/**
+ * 提交作业
+ * /ctplus/tiny-course/assignment
+ */
+const _postListenAssignment_ = "/ctplus/tiny-course/assignment";
 
 export {
     _fetchIndexInfo_,
     _fetchIsUserBuy_,
-    _fetchListenInfo_
+    _fetchListenInfo_,
+    _postListenAssignment_
 };
