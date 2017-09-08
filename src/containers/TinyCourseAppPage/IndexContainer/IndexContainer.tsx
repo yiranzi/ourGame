@@ -20,7 +20,6 @@ import {
     mountGlobalLoading,
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
-
 //引入统计
 import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function"
 let isPlayed = false
@@ -84,6 +83,15 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
             setTimeout(() => {
                 this.props.history.push(`${this.props.propsPath}/listen`);
             }, 1000);
+        }, () => {
+            Modal.showModal({
+            title: "Tips",
+            bodyText: <div style={{textAlign: 'center'}}>如果支付失败，可以尝试刷新页面或者加客服妹妹的微信：<br/><img src='@/assets/image/payerror.png'/></div>,
+            sureText: "知道啦",
+            cancelText: "就是不听",
+            sureFunction: () => {},
+            cancelFunction: () => {}
+        });
         });
     }
     render() {
@@ -100,37 +108,42 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                     <div>
                         <AudioPlayerWithTime src={this.props.DALIndexPageState.audio} preload={"auto"} onPlay={this.handlePlay} onEnded={this.handleEnded}></AudioPlayerWithTime>
                     </div>
-                    <div>
+                    {this.props.DALIndexPageState.intro && <div>
                         <SummaryCard title= {"课程介绍"}>
                             {this.props.DALIndexPageState.intro}
                         </SummaryCard>
-                    </div>
-                    <div>
+                    </div>}
+                    {this.props.DALIndexPageState.teacher && <div>
                         <TeacherIntro
                             title = { "导师介绍" }
                             headImage = { this.props.DALIndexPageState.teacher.avatar }
                             name = {this.props.DALIndexPageState.teacher.name}
                             intro = {this.props.DALIndexPageState.teacher.intro}
                         />
-                    </div>
-                    {this.props.DALIndexPageState.intro && <div>
+                    </div>}
+                    {this.props.DALIndexPageState.crowd && <div>
                         <SummaryCard title= {"适合人群"}>
-                            {this.props.DALIndexPageState.intro}
+                            {this.props.DALIndexPageState.crowd}
                         </SummaryCard>
                     </div>}
-                    {this.props.DALIndexPageState.intro &&<div>
+                    {this.props.DALIndexPageState.hierarchy &&<div>
                         <SummaryCard title= {"知识体系"}>
-                            {this.props.DALIndexPageState.intro}
+                            {this.props.DALIndexPageState.hierarchy}
                         </SummaryCard>
                     </div>}
-                    <div>
+                    {this.props.DALIndexPageState.effect &&<div>
+                        <SummaryCard title= {"知识体系"}>
+                            {this.props.DALIndexPageState.effect}
+                        </SummaryCard>
+                    </div>}
+                    {this.props.DALIndexPageState.outline && <div>
                         <CourseCatalogCard title = { "学习大纲" }>
                             {this.props.DALIndexPageState.outline}
                         </CourseCatalogCard>
-                    </div>
-                    <div>
+                    </div>}
+                    {this.props.DALIndexPageState.position && <div>
                         <ImageCardWithTitle title={"课程定位"} src={this.props.DALIndexPageState.position} />
-                    </div>
+                    </div>}
                     <div className={className.submitButton} onClick={this.handleSubmitButton}>
                         {this.props.DALIndexPageState.price} 元，立即学习
                     </div>
