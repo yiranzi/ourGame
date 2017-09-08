@@ -528,7 +528,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     buttonTxt() {
         let style = {
             backgroundColor: 'white',
-            width: '5px',
+            width: '2px',
         };
         let arr = [];
         switch ( this.props.DALTinyListenPageState.listenIndex ) {
