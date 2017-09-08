@@ -16,6 +16,8 @@ import {
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 
+import AutoMove from "@/utils/AutoMove/AutoMove";
+
 interface PropsTypes {
     DALTinyCourseAppState: Object;
     // DALTinyCourseAppState: Object,
@@ -79,6 +81,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         this.cbfNextLesson = this.cbfNextLesson.bind(this);
         this.finishAudio = this.finishAudio.bind(this);
         this.changeNextButton = this.changeNextButton.bind(this);
+        this.autoMove = this.autoMove.bind(this);
         this.state = {
             // 当前小节
             lessonIndex: 0, // 当前的题目
@@ -247,7 +250,11 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
                 if ( !chooseBool ) {
                     this.state.questionStatus[j].chooseStatus = "notChoose";
                 } else {
-                    if ( questionItem.assignment[j].selected === questionItem.assignment[j].answer ) {
+                    let answer = questionItem.assignment[j].answer;
+                    if( typeof answer === 'string') {
+                        answer = parseInt(answer)
+                    }
+                    if ( questionItem.assignment[j].selected === answer ) {
                         this.state.questionStatus[j].chooseStatus = "rightChoose";
                     } else {
                         this.state.questionStatus[j].chooseStatus = "wrongChoose";
@@ -313,7 +320,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         let answerId = chooseIndex; // 作业Id
         let isLast = false;
         //如果这是最后一小节的最后一题
-        if ( this.props.DALTinyListenPageState.listenIndex === this.props.DALTinyListenPageState.listenArray) {
+        if ( this.props.DALTinyListenPageState.listenIndex === this.props.DALTinyListenPageState.listenArray.length - 1) {
             if ( Itemindex === this.state.questionStatus.length - 1) {
                 isLast = true;
             }
@@ -339,9 +346,18 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
             this.props.DALTinyListenPageState.forceFetchListenInfoByIndex(courseId, this.state.lessonIndex);
         });
         //todo 提交选择题后,渲染下一个选择题,滚动到最下面.
-        window.scrollTo (0, 9999);
+        this.autoMove();
         this.afterFinishCalc();
         // todo 题目提交接口
+    }
+
+    autoMove() {
+        window.setTimeout(()=>{
+            let divHeight = document.getElementById("listenView").offsetHeight;
+            console.log('scrollTo222');
+            // window.scrollTo (0, 9999);
+            AutoMove.startMove(divHeight);
+        },100);
     }
 
 
@@ -460,6 +476,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         // console.log('完成音频');
         // this.props.DALTinyListenPageState.postWorkFinish(0, this.props.DALTinyListenPageState.currentLesson.fmid);
         this.afterFinishCalc();
+        this.autoMove()
         // post完成
     }
 
@@ -539,9 +556,12 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     }
 
     renderAllFinish() {
+        let style = {
+            marginTop: '-10px',
+        }
         if ( this.state.lessonProcess.finishProcess ) {
-            if ( this.props.DALTinyListenPageState.listenIndex === this.props.DALTinyListenPageState.listenArray ) {
-                return(<ImageCard src={`https://h5.ichangtou.com/minicfm/assets/image/newfundppt/01.jpg`}></ImageCard>)
+            if ( this.props.DALTinyListenPageState.listenIndex === this.props.DALTinyListenPageState.listenArray.length - 1 ) {
+                return(<div style = {style}><ImageCard src={require("@/assets/image/listenAllFinish.png")}></ImageCard></div>)
             }
         }
     }

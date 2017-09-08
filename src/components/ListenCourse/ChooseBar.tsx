@@ -65,7 +65,7 @@ interface ChooseBarPropsTypes {
     renderSecond() {
         let arr = [];
         arr.push(<Card key = {1}>{this.renderAnswer()}</Card>);
-        arr.push(<Card key = {2}>{this.renderTips()}</Card>);
+        // arr.push(<Card key = {2}>{this.renderTips()}</Card>);
         return arr;
     }
 
@@ -77,12 +77,14 @@ interface ChooseBarPropsTypes {
             return(<Alert
                 message="恭喜你回答正确"
                 type="success"
+                description = {this.props.tips}
                 showIcon
             />);
         } else if ( this.props.chooseStatus === 'wrongChoose' ) {
             return(<Alert
                 message="哎呀答错了"
                 type="error"
+                description = {this.props.tips}
                 showIcon
             />);
         }
