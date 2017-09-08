@@ -267,15 +267,20 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         let nextBool = false;
         if ( this.state.renderType = "question" ) {
             // 如果选择题都完成了 并且 第一次完成
-            if ( this.state.lessonProcess.chooseProcess && !this.state.lessonProcess.finishProcess) {
-                nextBool = true;
+            if ( this.state.lessonProcess.chooseProcess ) {
+                if( !this.state.lessonProcess.finishProcess ) {
+                    nextBool = true;
+                }
+
             } else {
                 this.state.lessonProcess.finishProcess = false;
             }
         } else {
             // 如果音频...
-            if ( this.state.lessonProcess.audioProcess && !this.state.lessonProcess.finishProcess) {
-                nextBool = true;
+            if ( this.state.lessonProcess.audioProcess ) {
+                if( !this.state.lessonProcess.finishProcess ) {
+                    nextBool = true;
+                }
             } else {
                 this.state.lessonProcess.finishProcess = false;
             }
@@ -366,7 +371,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
 
     changeNextButton() {
         let courseId = this.props.DALTinyCourseAppState.courseId;
-        console.log('changeNextButton2');
+        console.log('changeNextButton3');
         window.scrollTo (0, 0);
         mountGlobalLoading();
         this.props.DALTinyListenPageState.fetchListenInfoByIndex(courseId, this.state.lessonIndex);
