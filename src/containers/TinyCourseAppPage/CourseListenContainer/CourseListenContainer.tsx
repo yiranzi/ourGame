@@ -433,6 +433,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
 
 
     render() {
+        console.log('renderMe')
         return (
             <div className={className.container}>
                 <div className= {className.topImage}>
@@ -526,7 +527,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     buttonTxt() {
         let style = {
             backgroundColor: 'white',
-            width: '5px',
+            width: '2px',
         };
         let arr = [];
         switch ( this.props.DALTinyListenPageState.listenIndex ) {

@@ -32,10 +32,13 @@ interface PropsTypes {
 }
 @observer
 @resolve("fetchDayItem", function(props: PropsTypes) {
+    console.log(6);
     return props.DALWaitPageState.fetchCourseInfo(1);
 })
 @resolve("fetchCourseInfo", function(props: PropsTypes) {
+    console.log(7);
     return props.DALCourseListState.fetchDayItem(1).then((data: any) => {
+        console.log(8);
         if (data[0].status === -1) {
             if (props.location.pathname !== `${props.match.url}/wait`) {
                 props.history.push(`${props.match.url}/wait`);
@@ -51,6 +54,7 @@ class CourseListPage extends React.Component<PropsTypes> {
         super(props);
     }
     render() {
+        console.log(9);
         return (
             <div className={className.view}>
                 <Route path={`${this.props.match.url}/`}
