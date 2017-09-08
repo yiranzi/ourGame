@@ -4,7 +4,7 @@ const path = require('path')
 
 module.exports = {
     entry: {
-        vendors: ['react', 'react-dom', 'unfetch']
+        vendors: ['react', 'react-dom', 'unfetch', "mobx", "mobx-react", "react-router-dom"]
     },
 
     output: {
