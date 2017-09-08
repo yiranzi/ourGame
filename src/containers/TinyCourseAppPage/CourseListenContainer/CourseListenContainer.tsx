@@ -444,7 +444,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         let style = {};
         if ( !this.state.lessonProcess.finishProcess ) {
             style = {
-                color: 'green'
+                color: "green"
             };
         }
         if (type === 0) {
@@ -455,31 +455,31 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
 
     }
 }
-// CourseListenContainer.defaultProps = {
-//     DALTinyListenPageState: {
-//         listenIndex: 0,
-//         currentLesson: {
-//             id: 0, // 章节ID
-//             title: 'title',
-//             pic: "https://h5.ichangtou.com/minicfm/assets/image/newfundppt/01.jpg",
-//             audio: "https://h5.ichangtou.com/minicfm/assets/audio/fund/0-1.mp3",
-//             summary: 'summary',
-//             knowledgePoints: ['1','2','3'],
-//             assignment: [{
-//                 assignmentId: 1, // 作业ID
-//                 question: 'question'
-//                 selected: -1, // 用户选择的答案
-//                 selection: [
-//                     {
-//                         content: 'content',
-//                         answerId: 0, // 答案ID
-//                     }]
-//                 answer: 1,
-//                 explain: 'explain',
-//             }]
-//         }
-//     };
-// propsPath: '',
-//     history: [],
-// }
+CourseListenContainer.defaultProps = {
+    DALTinyListenPageState: {
+        listenIndex: 0,
+        currentLesson: {
+            id: 0, // 章节ID
+            title: 'title',
+            pic: "https://h5.ichangtou.com/minicfm/assets/image/newfundppt/01.jpg",
+            audio: "https://h5.ichangtou.com/minicfm/assets/audio/fund/0-1.mp3",
+            summary: 'summary',
+            knowledgePoints: ['1','2','3'],
+            assignment: [{
+                assignmentId: 1, // 作业ID
+                question: 'question'
+                selected: -1, // 用户选择的答案
+                selection: [
+                    {
+                        content: 'content',
+                        answerId: 0, // 答案ID
+                    }]
+                answer: 1,
+                explain: 'explain',
+            }]
+        }
+    };
+    propsPath: '',
+    history: [],
+}
 export default CourseListenContainer;
