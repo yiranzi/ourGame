@@ -1,4 +1,5 @@
 import React from "react";
+import { observer } from "mobx-react";
 import ChooseBar from "@/components/ListenCourse/ChooseBar";
 import SummaryCard from "@/components/ConductPage/SummaryCard/SummaryCard";
 import CourseCatalogCard from "@/components/ConductPage/CourseCatalogCard/CourseCatalogCard";
@@ -57,6 +58,7 @@ interface StateTypes {
 
 
 
+@observer
 class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
 
 

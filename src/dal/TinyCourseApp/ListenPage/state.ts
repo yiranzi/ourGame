@@ -68,8 +68,6 @@ class DALTinyListenPage {
      */
     @action
     fetchEnterListenInfo(courseId: number | string) {
-        console.log(this.chapterArray[0]);
-        console.log(this.chapterArray);
         // 获取本地保存听到第几章节记录
         let tinyCourseListenID = window.localStorage.getItem("tinycourse_" + courseId) || this.chapterArray[0].toString();
         // 获取首屏数据
@@ -139,7 +137,7 @@ class DALTinyListenPage {
     postListenAssignment(selectionId: number, questionId: number, isLasted: boolean) {
         return new Promise ((resolve, reject) => {
             fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + _postListenAssignment_, {
-                method: "GET",
+                method: "POST",
                 body: {
                     selectionId,
                     questionId,
