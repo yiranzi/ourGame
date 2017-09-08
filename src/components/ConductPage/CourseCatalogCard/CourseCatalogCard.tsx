@@ -6,7 +6,7 @@ import {Timeline} from "antd";
 
 interface PropsTypes {
     children?: Array<string>;
-    title?: String
+    title?: String;
 }
 /**
  * 传入一个数组，返回课程大纲的 jsx element
