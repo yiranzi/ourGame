@@ -69,10 +69,7 @@ interface StateTypes {
 
 @observer
 class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
-
-
-
-
+    divElement: any;
     constructor(props: PropsTypes) {
 
         super(props);
@@ -361,7 +358,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
 
     autoMove() {
         window.setTimeout(()=>{
-            let divHeight = document.getElementById("listenView").offsetHeight;
+            let divHeight = this.divElement.offsetHeight;
             console.log('scrollTo222');
             // window.scrollTo (0, 9999);
             AutoMove.startMove(divHeight);
@@ -444,7 +441,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     render() {
         console.log('renderMe')
         return (
-            <div className={className.container}>
+            <div ref = {(ref)=>{this.divElement = ref}} className={className.container}>
                 <div className= {className.topImage}>
                     <div className= {className.topTitle}>{this.renderTitle()}</div>
                     <ImageCard src={this.props.DALTinyListenPageState.currentLesson.pic}></ImageCard>
