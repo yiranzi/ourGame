@@ -125,6 +125,23 @@ class DALTinyListenPage {
            });
         }
     }
+    forceFetchListenInfoByIndex(courseId: number | string, index: number) {
+        return new Promise((resolve, reject) => {
+            this
+                .fetchListenInfo(courseId, this.chapterArray[index])
+                .then((res: any) => {
+                    res
+                        .json()
+                        .then((data: any) => {
+                            runInAction(() => {
+                                // 对应章节
+                                this.listenArray[index] = data;
+                                resolve();
+                            });
+                        });
+                });
+        });
+    }
     /**
      * <promise> 提交选择题，提交成功 resolve，失败 reject
      * @param {number} selectionId 答案id
@@ -138,11 +155,11 @@ class DALTinyListenPage {
         return new Promise ((resolve, reject) => {
             fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + _postListenAssignment_, {
                 method: "POST",
-                body: {
-                    selectionId,
-                    questionId,
-                    isLasted
-                },
+                body: JSON.stringify({
+                    "answerIndex": selectionId,
+                    "assignmentId": questionId,
+                    "isLasted": isLasted
+                }),
                 mode: "cors",
                 headers: {
                     "Accept": "application/json",
