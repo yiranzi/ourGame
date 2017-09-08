@@ -140,16 +140,23 @@ class DALIndexPage {
     }
 
     @action
-    fetchPayOrder(courseId: number) {
+    fetchPayOrder(courseId: any) {
         return new Promise((resolve, reject) => {
+            window.addEventListener("_dove_WxPay", (event) => {
+                if ((event as any).detail.success) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            });
             (window as any).WXSDK.wechatPay(JSON.stringify({
                 "body": "商品成本费",
                 "deal": {
                     "items": [
                         {
-                            dealType: 103, // 交易类型
-                            itemId: 1, // 基金课,应该改成全局
-                            mchantType: 11, // 商品类型 21days
+                            dealType: 105, // 交易类型
+                            itemId: parseInt(courseId),
+                            mchantType: 11, // 商品类型
                             misc: "",
                             price: 1
                         }
@@ -160,13 +167,6 @@ class DALIndexPage {
                     .toString(),
                 "sum": 1
             }));
-            window.addEventListener("_dove_WxPay", (event) => {
-                if (event.detail.success) {
-                    resolve();
-                } else {
-                    reject();
-                }
-            });
         });
     }
 }

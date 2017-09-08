@@ -51,7 +51,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         this.props.DALIndexPageState.fetchPayOrder(this.props.DALTinyCourseAppState.courseId).then(() => {
             setTimeout(() => {
                 this.props.history.push(`${this.props.propsPath}/listen`);
-            }, 500);
+            }, 1000);
         });
     }
     render() {
