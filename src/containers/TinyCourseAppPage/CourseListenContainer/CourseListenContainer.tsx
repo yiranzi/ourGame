@@ -98,9 +98,10 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         this.processInit();
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-        this.state.lessonIndex = nextProps.DALTinyListenPageState.listenIndex;
+    componentWillReact(props) {
+        console.log(props);
+        console.log('componentWillReact');
+        // this.state.lessonIndex = nextProps.DALTinyListenPageState.listenIndex;
         this.processInit();
     }
 
@@ -318,7 +319,11 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
             });
         }
         this.setState({questionStatus: this.state.questionStatus});
-        this.props.DALTinyListenPageState.postListenAssignment(answerId, assignmentId, isLast);
+        let courseId = this.props.DALTinyCourseAppState.courseId;
+        this.props.DALTinyListenPageState.postListenAssignment(answerId, assignmentId, isLast).then(()=>{
+            console.log('forceFetchListenInfoByIndex')
+            this.props.DALTinyListenPageState.forceFetchListenInfoByIndex(courseId, this.state.lessonIndex);
+        });
         this.afterFinishCalc();
         // todo 题目提交接口
     }
@@ -492,13 +497,14 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
 
     renderAllFinish() {
         if ( this.state.lessonProcess.finishProcess ) {
-            if ( this.props.DALTinyListenPageStateTest.listenIndex === this.props.DALTinyListenPageStateTest.listenArray ) {
+            if ( this.props.DALTinyListenPageState.listenIndex === this.props.DALTinyListenPageState.listenArray ) {
                 return(<ImageCard src={`https://h5.ichangtou.com/minicfm/assets/image/newfundppt/01.jpg`}></ImageCard>)
             }
         }
     }
 
     renderNextButton(type) {
+        console.log(type)
         let style = {};
         if ( !this.state.lessonProcess.finishProcess ) {
             style = {
