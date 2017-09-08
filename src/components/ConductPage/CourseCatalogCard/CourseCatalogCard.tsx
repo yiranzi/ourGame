@@ -5,8 +5,8 @@ import {Timeline} from "antd";
 
 
 interface PropsTypes {
-    children?: Array<string>;
-    title?: String;
+    children?: string;
+    title?: string;
 }
 /**
  * 传入一个数组，返回课程大纲的 jsx element
@@ -19,7 +19,7 @@ function CourseCatalogCard(props: PropsTypes): JSX.Element {
             <div className={className.wrapper}>
                 <h1 className={className.title}>{props.title}</h1>
                 <div className={className.catalog}>
-                    {props.children.map((item: string, index: number) => {
+                    {props.children.split('#').map((item: string, index: number) => {
                         return (
                             <div key={index} className={className.catalogItem}>
                                 {item}
