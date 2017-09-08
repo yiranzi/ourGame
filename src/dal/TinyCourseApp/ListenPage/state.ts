@@ -68,6 +68,8 @@ class DALTinyListenPage {
      */
     @action
     fetchEnterListenInfo(courseId: number | string) {
+        console.log(this.chapterArray[0]);
+        console.log(this.chapterArray);
         // 获取本地保存听到第几章节记录
         let tinyCourseListenID = window.localStorage.getItem("tinycourse_" + courseId) || this.chapterArray[0].toString();
         // 获取首屏数据

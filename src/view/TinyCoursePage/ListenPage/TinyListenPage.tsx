@@ -20,7 +20,7 @@ interface PropsTypes {
     propsPath?: any;
     DALTinyCourseAppState?: any;
     DALTinyListenPageState: any;
-    DALUserInfoState: any;
+    DALUserInfoState?: any;
 }
 
 // 以下为resolve顺序阻塞执行方法
