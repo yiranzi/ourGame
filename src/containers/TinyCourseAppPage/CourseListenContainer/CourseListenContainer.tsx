@@ -434,6 +434,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
 
 
     render() {
+        console.log('renderMe')
         return (
             <div id="listenView" className={className.container}>
 

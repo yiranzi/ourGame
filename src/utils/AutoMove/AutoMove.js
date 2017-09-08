@@ -16,7 +16,7 @@ class AutoMove {
 
         let screenHeight = this.getWindowHeight();
         let perTime = 5;
-        let totalTime = 500;
+        let totalTime = 700;
         let posY = window.pageYOffset;
         let transY = divHeight - (posY + screenHeight);
         if(transY > 0) {
