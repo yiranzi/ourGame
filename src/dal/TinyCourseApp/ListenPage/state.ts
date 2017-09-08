@@ -14,7 +14,7 @@ class DALTinyListenPage {
     // 课程列表，保存课程id号
     @observable chapterArray: Array<number> = null;
     // 课程详情
-    @observable listenArray: Array<any> = null;
+    listenArray: Array<any> = null;
     // 当前听课进度
     @observable listenIndex: number = null;
     // 当前课程
@@ -127,9 +127,11 @@ class DALTinyListenPage {
         }
     }
     /**
-     * 强行拉去数据
+     * <promise> 强行拉去数据
      * @param courseId
      * @param index
+     * @returns
+     * @memberof DALTinyListenPage
      */
     forceFetchListenInfoByIndex(courseId: number | string, index: number) {
         return new Promise((resolve, reject) => {
