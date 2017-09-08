@@ -97,7 +97,7 @@ IndexContainer.defaultProps = {
     DALIndexPageState: {
         cover: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png',
         price: 1,
-        intro: 'sadsadasdasdasd',
+        intro: 'sadsadasdasdasd#sadasdasdsadsadasda',
         outline: ['啊啊啊', '啊啊啊'],
         audioSrc: 'sdsadsada',
         hasFetchData: true,

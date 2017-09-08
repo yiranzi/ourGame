@@ -3,7 +3,7 @@ import React from "react";
 import Card from "../../Card/Card";
 import className from "./style/SummaryCard.less";
 interface PropsTypes {
-    children?: JSX.Element | string;
+    children?: string;
 }
 
 function SummaryCard(props: PropsTypes) {
@@ -11,7 +11,11 @@ function SummaryCard(props: PropsTypes) {
         <Card>
             <div className={className.wrapper}>
                 <h1 className={className.title}>课程介绍</h1>
-                <div className={className.text_body}>{props.children}</div>
+                {props.children.split('#').map((item: string, index: number) => {
+                    return (
+                        <p key={index} className={className.text_body}>{item}</p>
+                        )
+                })}
             </div>
         </Card>
     );
