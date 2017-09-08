@@ -347,11 +347,25 @@ WXSDK._onBridgeReady = function (data, resolve, reject) {
         if (res.err_msg == "get_brand_wcpay_request:ok") {
             resolve();
             //支付成功
-            console.log('支付成功')
+            dispatchEvent(new CustomEvent('_dove_WxPay', {
+                bubbles: true,
+                cancelable: false,
+                detail: {
+                    type: '_dove_WxPay',
+                    success: true
+                }
+            }));
         } else {
             reject();
             //取消支付
-            console.log('支付失败')
+            dispatchEvent(new CustomEvent('_dove_WxPay', {
+                bubbles: true,
+                cancelable: false,
+                detail: {
+                    type: '_dove_WxPay',
+                    success: false
+                }
+            }));
 
         }
     });

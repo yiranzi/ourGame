@@ -12,7 +12,7 @@ import {
 
 class DALTinyListenPage {
     // 课程列表，保存课程id号
-    @observable chapterArray: Array<number> = null;
+    chapterArray: Array<number> = null;
     // 课程详情
     listenArray: Array<any> = null;
     // 当前听课进度
