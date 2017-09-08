@@ -43,7 +43,7 @@ interface ChooseBarPropsTypes {
                 //选项
                 renderFirst() {
                     let arr = [];
-                    arr.push(<h1 key = {0} className={(className as any).title}>Question</h1> );
+                    arr.push(<h1 key = {0} className={(className as any).title}>问题</h1> );
                     arr.push(<h1 key = {1} className={(className as any).introduce}>{this.props.introduce}</h1>);
                     arr.push(<div key = {2} className={(className as any).answerList}>{this.renderChooseList()}</div>);
                     arr.push(<h1 key = {3}>{this.postButton()}</h1>);
