@@ -49,6 +49,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
     }
     handleSubmitButton() {
         this.props.DALIndexPageState.fetchPayOrder(this.props.DALTinyCourseAppState.courseId).then(() => {
+            mountGlobalLoading();
             setTimeout(() => {
                 this.props.history.push(`${this.props.propsPath}/listen`);
             }, 1000);

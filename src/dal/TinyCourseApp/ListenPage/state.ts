@@ -73,6 +73,7 @@ class DALTinyListenPage {
         // 获取本地保存听到第几章节记录
         let tinyCourseListenID = window.localStorage.getItem("tinycourse_" + courseId);
         if (!tinyCourseListenID) {
+            this.index = 0;
             tinyCourseListenID = this.chapterArray[this.index].toString();
         } else {
             this.index = parseInt(tinyCourseListenID);
@@ -86,7 +87,7 @@ class DALTinyListenPage {
                     .then((data: any) => {
                         runInAction(() => {
                             // 对应章节
-                            this.listenArray[parseInt(tinyCourseListenID)] = data;
+                            this.listenArray[this.index] = data;
                             // 赋值当前index
                             this.listenIndex = this.index;
                             this.currentLesson = data;
