@@ -15,6 +15,7 @@ class DALTinyListenPage {
     chapterArray: Array<number> = null;
     // 课程详情
     listenArray: Array<any> = null;
+    index: number = 0;
     // 当前听课进度
     @observable listenIndex: number = null;
     // 当前课程
@@ -70,7 +71,13 @@ class DALTinyListenPage {
     @action
     fetchEnterListenInfo(courseId: number | string) {
         // 获取本地保存听到第几章节记录
-        let tinyCourseListenID = window.localStorage.getItem("tinycourse_" + courseId) || this.chapterArray[0].toString();
+        let tinyCourseListenID = window.localStorage.getItem("tinycourse_" + courseId);
+        if (!tinyCourseListenID) {
+            tinyCourseListenID = this.chapterArray[this.index].toString();
+        } else {
+            this.index = parseInt(tinyCourseListenID);
+            tinyCourseListenID =  this.chapterArray[this.index].toString();
+        }
         // 获取首屏数据
         return new Promise((resolve, reject) => {
             this.fetchListenInfo(courseId, tinyCourseListenID).then((res: any) => {
@@ -81,8 +88,9 @@ class DALTinyListenPage {
                             // 对应章节
                             this.listenArray[parseInt(tinyCourseListenID)] = data;
                             // 赋值当前index
-                            this.listenIndex = parseInt(tinyCourseListenID);
+                            this.listenIndex = this.index;
                             this.currentLesson = data;
+                            window.localStorage.setItem("tinycourse_" + courseId, this.index.toString());
                             resolve();
                         });
                     });
@@ -102,6 +110,7 @@ class DALTinyListenPage {
         if (this.listenArray[index]) {
             this.listenIndex = index;
             this.currentLesson = this.listenArray[index];
+            window.localStorage.setItem("tinycourse_" + courseId, index.toString());
             return Promise.resolve();
         }
         // 如果不存在， 异步获取数据，获取到之后再修改 listenIndex
@@ -118,7 +127,7 @@ class DALTinyListenPage {
                                 this.listenIndex = index;
                                 this.currentLesson = data;
                                 // 保存到localstorage
-                                window.localStorage.setItem("tinycourse_" + courseId, this.chapterArray[index].toString());
+                                window.localStorage.setItem("tinycourse_" + courseId, index.toString());
                                 resolve();
                             });
                         });
