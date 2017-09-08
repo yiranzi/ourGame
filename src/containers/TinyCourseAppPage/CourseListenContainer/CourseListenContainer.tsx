@@ -7,31 +7,9 @@ import Card from "@/components/Card";
 import className from "./style/CourseListenContainer.less";
 
 interface PropsTypes {
-    DALTinyCourseAppState: Object,
+    DALTinyCourseAppState: Object;
     // DALTinyCourseAppState: Object,
-    // DALTinyListenPageState
-    listenArray: Array;
-    listenIndex: number;
-    currentLesson: {
-        id: number, // 章节ID
-        title: string,
-        pic: string,
-        audio: string,
-        summary: string,
-        knowledgePoints: Array,
-        assignment: [{
-            assignmentId: number, // 作业ID
-            question: string
-            selected: number, // 用户选择的答案
-            selection: [
-                {
-                    content: string,
-                    answerId: number, // 答案ID
-                }]
-            answer: number,
-            explain: string,
-        }]
-    };
+    DALTinyListenPageState: any;
     propsPath: string;
 }
 
@@ -56,8 +34,6 @@ interface StateTypes {
 
 
 class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
-
-
 
 
     constructor(props: PropsTypes) {
@@ -443,7 +419,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
                     {this.renderNextButton(1)}
                 </div>)
                 break;
-            case this.props.listenArray.length - 1:
+            case this.props.DALTinyListenPageState.listenArray.length - 1:
                 return(<div className = {className.allLine}>
                     {this.renderNextButton(0)}
                 </div>)

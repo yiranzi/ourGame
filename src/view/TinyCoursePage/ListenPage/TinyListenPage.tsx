@@ -12,7 +12,7 @@ import {
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 
-
+import TinyListenContainer from "@/containers/TinyCourseAppPage/CourseListenContainer/CourseListenContainer";
 interface PropsTypes {
     match?: any;
     location?: any;
