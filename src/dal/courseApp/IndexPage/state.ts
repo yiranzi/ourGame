@@ -8,6 +8,7 @@ import {
     runInAction,
     useStrict
     } from 'mobx';
+import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function"
 
 
 
@@ -53,8 +54,12 @@ class DALIndexPage {
             }));
             window.addEventListener("_dove_WxPay", (event) => {
                 if (event.detail.success) {
+                    PostStatistic('小课', courseId, '购买成功', '购买成功');
+                    PostCnzzStatisticData('购买成功', '购买成功', courseId);
                     resolve();
                 } else {
+                    PostStatistic('小课', courseId, '购买失败', '购买失败');
+                    PostCnzzStatisticData('购买失败', '购买失败', courseId);
                     reject();
                 }
             });

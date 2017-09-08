@@ -21,6 +21,11 @@ import {
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 
+//引入统计
+import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function"
+let isPlayed = false
+let isAudioFinished = false
+let isClickSubmit = false
 interface StateTypes {
     period: number;
 }
@@ -41,6 +46,27 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         };
         this.handleOKButton = this.handleOKButton.bind(this);
         this.handleSubmitButton = this.handleSubmitButton.bind(this);
+        this.handlePlay = this.handlePlay.bind(this);
+        this.handleEnded = this.handleEnded.bind(this);
+
+    }
+    componentDidMount () {
+        PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '进入报名页', '进入报名页');
+        PostCnzzStatisticData('进入报名页', '进入报名页', this.props.DALTinyCourseAppState.courseId);
+    }
+    handlePlay () {
+        if (!isPlayed) {
+            PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '点击试听按钮', '点击试听按钮');
+            PostCnzzStatisticData('点击试听按钮', '点击试听按钮', this.props.DALTinyCourseAppState.courseId);
+            isPlayed = true
+        }
+    }
+    handleEnded () {
+        if (!isAudioFinished) {
+            PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '听完试听音频', '听完试听音频');
+            PostCnzzStatisticData('听完试听音频', '听完试听音频', this.props.DALTinyCourseAppState.courseId);
+            isAudioFinished = true
+        }
     }
     handleOKButton(val: number) {
         this.setState({
@@ -48,6 +74,11 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         });
     }
     handleSubmitButton() {
+        if (!isClickSubmit) {
+            PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '点击购买按钮', '点击购买按钮');
+            PostCnzzStatisticData('点击购买按钮', '点击购买按钮', this.props.DALTinyCourseAppState.courseId);
+            isClickSubmit = true
+        }
         this.props.DALIndexPageState.fetchPayOrder(this.props.DALTinyCourseAppState.courseId).then(() => {
             mountGlobalLoading();
             setTimeout(() => {
@@ -67,7 +98,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                 </div>
                 <div className={className.indexPageInner}>
                     <div>
-                        <AudioPlayerWithTime src={this.props.DALIndexPageState.audio} preload={"auto"}></AudioPlayerWithTime>
+                        <AudioPlayerWithTime src={this.props.DALIndexPageState.audio} preload={"auto"} onPlay={this.handlePlay} onEnded={this.handleEnded}></AudioPlayerWithTime>
                     </div>
                     <div>
                         <SummaryCard title= {"课程介绍"}>
@@ -82,8 +113,18 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                             intro = {this.props.DALIndexPageState.teacher.intro}
                         />
                     </div>
+                    {this.props.DALIndexPageState.intro && <div>
+                        <SummaryCard title= {"适合人群"}>
+                            {this.props.DALIndexPageState.intro}
+                        </SummaryCard>
+                    </div>}
+                    {this.props.DALIndexPageState.intro &&<div>
+                        <SummaryCard title= {"知识体系"}>
+                            {this.props.DALIndexPageState.intro}
+                        </SummaryCard>
+                    </div>}
                     <div>
-                        <CourseCatalogCard title = { "课程作用" }>
+                        <CourseCatalogCard title = { "学习大纲" }>
                             {this.props.DALIndexPageState.outline}
                         </CourseCatalogCard>
                     </div>

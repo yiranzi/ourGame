@@ -20,3 +20,18 @@ function PostStatistic({project, version, event, message}: any) {
         });
     });
 }
+
+function PostCnzzStatisticData(eventName:string, eventDesc:string, version:number) {
+    try {
+        if( window._czc && window._czc.push ){
+            window._czc.push(["_trackEvent",'小课',version,eventName, eventDesc]);
+        }
+    }catch ( e ) {
+        console.log('统计代码错误');
+    }
+}
+
+export {
+    PostStatistic,
+    PostCnzzStatisticData
+}

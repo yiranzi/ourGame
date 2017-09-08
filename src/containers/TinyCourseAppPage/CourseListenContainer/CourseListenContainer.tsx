@@ -15,9 +15,14 @@ import {
     mountGlobalLoading,
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
+<<<<<<< HEAD
+import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function"
+let isPlayed = false
+=======
 
 import AutoMove from "@/utils/AutoMove/AutoMove";
 
+>>>>>>> 9a5cb7bc0e3872092e9cb3dcf83c7fd5fa4c2af9
 interface PropsTypes {
     DALTinyCourseAppState: Object;
     // DALTinyCourseAppState: Object,
@@ -81,6 +86,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         this.cbfNextLesson = this.cbfNextLesson.bind(this);
         this.finishAudio = this.finishAudio.bind(this);
         this.changeNextButton = this.changeNextButton.bind(this);
+        this.handlePlay = this.handlePlay.bind(this);
         this.autoMove = this.autoMove.bind(this);
         this.state = {
             // 当前小节
@@ -100,7 +106,13 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
             lessonProcess: [],
         };
     }
-
+    handlePlay () {
+        if (!isPlayed) {
+            PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '点击试听按钮', '点击试听按钮');
+            PostCnzzStatisticData('点击试听按钮', '点击试听按钮', this.props.DALTinyCourseAppState.courseId);
+            isPlayed = true
+        }
+    }
     componentWillMount() {
         console.log(this.props.DALTinyListenPageState);
         this.state.lessonIndex = this.props.DALTinyListenPageState.listenIndex;
@@ -322,6 +334,8 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         //如果这是最后一小节的最后一题
         if ( this.props.DALTinyListenPageState.listenIndex === this.props.DALTinyListenPageState.listenArray.length - 1) {
             if ( Itemindex === this.state.questionStatus.length - 1) {
+                PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '完成最后一题', '完成最后一题');
+                PostCnzzStatisticData('完成最后一题', '完成最后一题', this.props.DALTinyCourseAppState.courseId);
                 isLast = true;
             }
         }
@@ -441,7 +455,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
                     <ImageCard src={this.props.DALTinyListenPageState.currentLesson.pic}></ImageCard>
                 </div>
                 <div>
-                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} onEnded = {this.finishAudio}/>
+                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} onEnded = {this.finishAudio} onPlay={this.handlePlay}/>
                 </div>
                 {this.renderSummary()}
                 <div>
