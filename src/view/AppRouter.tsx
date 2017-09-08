@@ -11,16 +11,13 @@ import CourseAppPage from "./CourseAppPage/CourseAppPage";
 
 import TinyCoursePage from "./TinyCoursePage/TinyCoursePage";
 
-import A from "@/containers/TinyCourseAppPage/CourseListenContainer/CourseListenContainer";
-
-
 export default function AppRouter() {
     return (
         <Router>
             <Switch>
                 <Route path="/course/:id" component={CourseAppPage} />
                 <Route path="/tinycourse/:id" component={TinyCoursePage} />
-                <Route component={A} />
+                <Route component={NoMatchPage} />
             </Switch>
         </Router>
     );
