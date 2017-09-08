@@ -227,17 +227,14 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     }
 
     questionItemSet () {
+        console.log('questionItemSet');
         let DALTinyListenPageState = this.props.DALTinyListenPageState.currentLesson;
         let questionItem = DALTinyListenPageState;
         if ( this.state.renderType === "question" ) {
-            for ( let j = 0; j < questionItem.assignment.length; j++) {
-                this.state.questionStatus[j] = {};
-                this.state.questionStatus[j].chooseStatus = "rightChoose";
-                this.state.questionStatus[j].selectIndex = questionItem.assignment[j].selected;
-            }
             this.state.questionStatus = [];
             for ( let j = 0; j < questionItem.assignment.length; j++) {
                 this.state.questionStatus[j] = {};
+                //是否已选择
                 let chooseBool =  questionItem.assignment[j].selected === -1 ? false : true;
                 if ( !chooseBool ) {
                     this.state.questionStatus[j].chooseStatus = "notChoose";
@@ -245,7 +242,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
                     if ( questionItem.assignment[j].selected === questionItem.assignment[j].answer ) {
                         this.state.questionStatus[j].chooseStatus = "rightChoose";
                     } else {
-                        this.state.questionStatus[j].chooseStatus = "notChoose";
+                        this.state.questionStatus[j].chooseStatus = "wrongChoose";
                     }
                 }
                 this.state.questionStatus[j].selectIndex = questionItem.assignment[j].selected;
