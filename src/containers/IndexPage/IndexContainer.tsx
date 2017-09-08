@@ -87,7 +87,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                     <AudioPlayerWithTime src={this.props.DALState.audioSrc} preload={"auto"}></AudioPlayerWithTime>
                 </div>
                 <div>
-                    <SummaryCard>
+                    <SummaryCard title= {"课程介绍"}>
                         {this.props.DALState.summary}
                     </SummaryCard>
                 </div>

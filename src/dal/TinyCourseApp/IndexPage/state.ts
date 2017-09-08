@@ -41,7 +41,7 @@ class DALIndexPage {
      * @type {Array<string>}
      * @memberof DALIndexPage
      */
-    @observable outline: Array<string> = null;
+    @observable outline: string = null;
     /**
      * 音频
      * @type {string}

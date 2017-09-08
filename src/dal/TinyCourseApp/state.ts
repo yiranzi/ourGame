@@ -34,7 +34,7 @@ class DALTinyCourseApp {
         } else {
             return new Promise((resolve, reject) => {
                 fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + _fetchIsUserBuy_ + tiny_course_id, {
-                    method: "PUT",
+                    method: "GET",
                     mode: "cors",
                     headers: {
                         "Accept": "application/json",
