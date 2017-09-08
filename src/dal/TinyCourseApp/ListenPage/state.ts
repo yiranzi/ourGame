@@ -52,9 +52,8 @@ class DALTinyListenPage {
             }
         });
     }
-    
     setAnswer(index: number, assignmentIndex: number, anserIndex: number) {
-        (this.chapterArray[index] as any).assignment[assignmentIndex].selected = anserIndex;
+        (this.listenArray[index] as any).assignment[assignmentIndex].selected = anserIndex;
     }
     /**
      * 保存 chapterArray 并初始化听课内容数据容器
