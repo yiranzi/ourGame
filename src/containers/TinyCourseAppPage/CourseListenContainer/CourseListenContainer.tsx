@@ -3,6 +3,7 @@ import ChooseBar from "@/components/ListenCourse/ChooseBar";
 import SummaryCard from "@/components/ConductPage/SummaryCard/SummaryCard";
 import CourseCatalogCard from "@/components/ConductPage/CourseCatalogCard/CourseCatalogCard";
 import ImageCard from "@/components/ImageCard";
+import Modal from "@/components/Modal/Modal";
 import {Steps} from "antd-mobile";
 import {AudioPlayerWithTime, AudioPlayerPPTCard} from "@/components/AudioPlayer";
 import Card from "@/components/Card";
@@ -330,13 +331,19 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
             this.props.DALTinyListenPageState.fetchListenInfoByIndex(courseId, this.state.lessonIndex);
         } else {
             if ( !this.state.lessonProcess.finishProcess ) {
-                alert('not finish');
+                Modal.showModal({
+                    title: "需要完成本节",
+                    bodyText: <div>完成这节课才能听下一节哦，加油哦</div>,
+                    sureText: "好的",
+                    cancelText: "知道了",
+                    sureFunction: () => {},
+                    cancelFunction: () => {}
+                });
             } else {
                 this.state.lessonIndex = this.state.lessonIndex + 1;
                 this.props.DALTinyListenPageState.fetchListenInfoByIndex(courseId, this.state.lessonIndex);
             }
         }
-
     }
 
     // renderProcess() {
@@ -358,20 +365,13 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     render() {
         return (
             <div className={className.container}>
-                {/*<Card>*/}
-                {/*<div>*/}
-                {/*<p>学习进度</p>*/}
-                {/*<Steps direction="horizontal" current={this.state.finishElement}>*/}
-                {/*{this.renderProcess()}*/}
-                {/*</Steps>*/}
-                {/*</div>*/}
-                {/*</Card>*/}
-                {/*<AudioPlayerPPTCard>*/}
-                {/*{this.rederPPT()}*/}
-                {/*</AudioPlayerPPTCard>*/}
+
                 <div className= {className.topTitle}>{this.renderTitle()}</div>
                 <div className= {className.topImage}>
                     <ImageCard src={this.props.DALTinyListenPageState.currentLesson.pic}></ImageCard>
+                </div>
+                <div>
+                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} onEnded = {this.finishAudio}/>
                 </div>
                 <div>
                     <SummaryCard title = {"摘要"}>
@@ -383,10 +383,8 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
                         {this.props.DALTinyListenPageState.currentLesson.knowledgePoints}
                     </CourseCatalogCard>
                 </div>
-                <div>
-                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} onEnded = {this.finishAudio}/>
-                </div>
                 {this.renderChooses()}
+                {this.renderAllFinish()}
                 {this.renderBottomButton()}
             </div>
         );
@@ -487,6 +485,14 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
             // } else {
             //     return(<div >都完成了!</div>);
             // }
+        }
+    }
+
+    renderAllFinish() {
+        if ( this.state.lessonProcess.finishProcess ) {
+            if ( this.props.DALTinyListenPageStateTest.listenIndex === this.props.DALTinyListenPageStateTest.listenArray ) {
+                return(<ImageCard src={`https://h5.ichangtou.com/minicfm/assets/image/newfundppt/01.jpg`}></ImageCard>)
+            }
         }
     }
 
