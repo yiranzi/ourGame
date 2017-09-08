@@ -436,10 +436,9 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     render() {
         console.log('renderMe')
         return (
-            <div id="listenView" className={className.container}>
-
-                <div className= {className.topTitle}>{this.renderTitle()}</div>
+            <div className={className.container}>
                 <div className= {className.topImage}>
+                    <div className= {className.topTitle}>{this.renderTitle()}</div>
                     <ImageCard src={this.props.DALTinyListenPageState.currentLesson.pic}></ImageCard>
                 </div>
                 <div>
