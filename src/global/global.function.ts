@@ -1,6 +1,6 @@
 import * as _GLOBAL_CONFIG_ from "@/global/global.config";
 
-function PostStatistic({project, version, event, message}: any) {
+function PostStatistic(project: any, version: any, event: any, message: any) {
     return new Promise((resolve, reject) => {
         fetch("https://statistic.ichangtou.com/statistic/event", {
             method: "POST",

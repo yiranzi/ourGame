@@ -21,7 +21,7 @@ import {
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
 //引入统计
-import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function"
+import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function";
 let isPlayed = false
 let isAudioFinished = false
 let isClickSubmit = false
@@ -47,6 +47,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         this.handleSubmitButton = this.handleSubmitButton.bind(this);
         this.handlePlay = this.handlePlay.bind(this);
         this.handleEnded = this.handleEnded.bind(this);
+        this.handleImgClick = this.handleImgClick.bind(this);
 
     }
     componentDidMount () {
@@ -72,6 +73,10 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
             period: val
         });
     }
+    handleImgClick () {
+        PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '点击定位地图', '点击定位地图');
+        PostCnzzStatisticData('点击定位地图', '点击定位地图', this.props.DALTinyCourseAppState.courseId);
+    }
     handleSubmitButton() {
         if (!isClickSubmit) {
             PostStatistic('小课', this.props.DALTinyCourseAppState.courseId, '点击购买按钮', '点击购买按钮');
@@ -86,7 +91,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
         }, () => {
             Modal.showModal({
             title: "Tips",
-            bodyText: <div style={{textAlign: 'center'}}>如果支付失败，可以尝试刷新页面或者加客服妹妹的微信：<br/><img src='@/assets/image/payerror.png'/></div>,
+            bodyText: <div style={{textAlign: 'center'}}>如果支付失败，可以尝试刷新页面或者加客服妹妹的微信：<br/><img src={require("@/assets/image/payerror.png")}/></div>,
             sureText: "知道啦",
             cancelText: "就是不听",
             sureFunction: () => {},
@@ -141,7 +146,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                             {this.props.DALIndexPageState.outline}
                         </CourseCatalogCard>
                     </div>}
-                    {this.props.DALIndexPageState.position && <div>
+                    {this.props.DALIndexPageState.position && <div onClick={this.handleImgClick}>
                         <ImageCardWithTitle title={"课程定位"} src={this.props.DALIndexPageState.position} />
                     </div>}
                     <div className={className.submitButton} onClick={this.handleSubmitButton}>

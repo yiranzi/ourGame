@@ -92,7 +92,7 @@ class DALIndexPage {
      * @memberof DALIndexPage
      */
     @observable isUserCanBuy: boolean = null;
-
+    @observable crowd: string = null;
     constructor() {
         this.fetchPayOrder = this.fetchPayOrder.bind(this);
         this.fetchIndexInfo = this.fetchIndexInfo.bind(this);
@@ -132,6 +132,7 @@ class DALIndexPage {
                             this.price = data.price;
                             this.teacher = data.teacher;
                             this.title = data.title;
+                            this.crowd = data.crowd;
                             resolve();
                         });
                     });
