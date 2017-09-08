@@ -41,4 +41,4 @@ class AutoMove {
     }
 }
 
-module.exports = AutoMove;
+export default AutoMove;

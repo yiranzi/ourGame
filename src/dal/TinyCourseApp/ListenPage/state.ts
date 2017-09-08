@@ -29,6 +29,7 @@ class DALTinyListenPage {
         this.postListenAssignment = this.postListenAssignment.bind(this);
         this.fetchListenInfoByIndex = this.fetchListenInfoByIndex.bind(this);
         this.forceFetchListenInfoByIndex = this.forceFetchListenInfoByIndex.bind(this);
+        this.setAnswer = this.setAnswer.bind(this);
     }
     /**
      * [private] 获取听课信息
@@ -50,6 +51,10 @@ class DALTinyListenPage {
                 "X-iChangTou-Json-Api-Session": DALUserInfoState.sessionId
             }
         });
+    }
+    
+    setAnswer(index: number, assignmentIndex: number, anserIndex: number) {
+        (this.chapterArray[index] as any).assignment[assignmentIndex].selected = anserIndex;
     }
     /**
      * 保存 chapterArray 并初始化听课内容数据容器
