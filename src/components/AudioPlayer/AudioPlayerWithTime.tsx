@@ -165,6 +165,7 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
                     muted={this.props.muted}
                     preload={this.props.preload}
                     title={this.props.title}
+                    onPlay={this.props.onPlay}
                 >
                     {this.props.children}
                 </AudioPlayer>
