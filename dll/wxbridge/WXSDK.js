@@ -389,7 +389,7 @@ WXSDK._getRedirectUri = function (isUserInfo) {
             }
         } else {
             if (redirectUri.indexOf('#/') !== -1) {
-                redirectUri = redirectUri.split('#/')[0] + prefix + 'isuserinfo=1' + redirectUri.split('#/')[1]
+                redirectUri = redirectUri.split('#/')[0] + prefix + 'isuserinfo=1' + '#/' + redirectUri.split('#/')[1]
             } else {
                 redirectUri = redirectUri + prefix + 'isuserinfo=1';
             }
