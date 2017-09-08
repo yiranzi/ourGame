@@ -57,8 +57,8 @@ window._WXGLOBAL_ = (function () {
     Object.freeze(__API_URL_GROUP__);
     var __JSAPILIST__ = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo'];
 
-    var __SHARE_DESC__ = '新版react~';
-    var __SHARE_TITLE__ = '我是标题';
+    var __SHARE_DESC__ = '带你赚钱带你飞';
+    var __SHARE_TITLE__ = '五本书带你进入理财大门';
 
     //支付AppID
     var _TEST_PAID_APPID = 'wx7cf8dd5d80048e42';
@@ -128,7 +128,7 @@ WXSDK.InitWxApi = function () {
                             date.then(function (date) {
                                 wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
                                 wx.ready(function () {
-                                    // WXSDK.shareConfig();
+                                    WXSDK.shareConfig();
                                     window
                                         .sessionStorage
                                         .setItem('wx-share-ready', 'true');

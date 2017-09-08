@@ -15,14 +15,9 @@ import {
     mountGlobalLoading,
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
-<<<<<<< HEAD
 import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function"
 let isPlayed = false
-=======
-
 import AutoMove from "@/utils/AutoMove/AutoMove";
-
->>>>>>> 9a5cb7bc0e3872092e9cb3dcf83c7fd5fa4c2af9
 interface PropsTypes {
     DALTinyCourseAppState: Object;
     // DALTinyCourseAppState: Object,
@@ -356,7 +351,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         this.setState({questionStatus: this.state.questionStatus});
         let courseId = this.props.DALTinyCourseAppState.courseId;
         this.props.DALTinyListenPageState.postListenAssignment(answerId, assignmentId, isLast).then(()=>{
-            this.props.DALTinyListenPageState.forceFetchListenInfoByIndex(courseId, this.state.lessonIndex);
+            this.props.DALTinyListenPageState.forceFetchListenInfoByIndex(this.props.DALTinyListenPageState.lessonIndex, Itemindex, chooseIndex);
         });
         //todo 提交选择题后,渲染下一个选择题,滚动到最下面.
         this.autoMove();
