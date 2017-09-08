@@ -102,7 +102,6 @@ class DALIndexPage {
                 res
                 .json()
                 .then((data: any) => {
-                    console.log(data);
                     let count = 0;
                      // todo 时间选择
                     this.timePicker = data.map((value, index) => {
