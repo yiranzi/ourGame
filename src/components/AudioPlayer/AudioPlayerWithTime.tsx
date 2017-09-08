@@ -82,9 +82,13 @@ class AudioPlayerWithTime extends React.PureComponent<PropsTypes, StateTypes> {
         return this.state.isPlay ? IconFont.icon_zanting + " " + IconFont.iconfont : IconFont.icon_bofang + " " + IconFont.iconfont;
     }
     handleTipFormatter(value: number) {
+        let seconds = Math.round(value);
+        if (isNaN(Math.floor(seconds / 60))) {
+            return "00:00";
+        }
         return [
-            Math.round(value / 60) ,
-            Math.round(value % 60)
+            Math.floor(seconds / 60) ,
+            Math.round(seconds % 60)
         ].join(":").replace(/\b(\d)\b/g, "0$1");
     }
     handlePlayButton() {

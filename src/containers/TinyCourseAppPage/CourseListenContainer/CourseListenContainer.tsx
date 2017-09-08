@@ -447,7 +447,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
                     <ImageCard src={this.props.DALTinyListenPageState.currentLesson.pic}></ImageCard>
                 </div>
                 <div>
-                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} onEnded = {this.finishAudio} onPlay={this.handlePlay}/>
+                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} preload={"auto"} onEnded = {this.finishAudio} onPlay={this.handlePlay}/>
                 </div>
                 {this.renderSummary()}
                 <div>
