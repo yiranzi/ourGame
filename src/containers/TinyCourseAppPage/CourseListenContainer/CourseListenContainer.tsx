@@ -342,7 +342,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         this.setState({questionStatus: this.state.questionStatus});
         let courseId = this.props.DALTinyCourseAppState.courseId;
         this.props.DALTinyListenPageState.postListenAssignment(answerId, assignmentId, isLast).then(()=>{
-            this.props.DALTinyListenPageState.forceFetchListenInfoByIndex(courseId, this.state.lessonIndex);
+            this.props.DALTinyListenPageState.forceFetchListenInfoByIndex(this.props.DALTinyListenPageState.lessonIndex, Itemindex, chooseIndex);
         });
         //todo 提交选择题后,渲染下一个选择题,滚动到最下面.
         this.autoMove();
