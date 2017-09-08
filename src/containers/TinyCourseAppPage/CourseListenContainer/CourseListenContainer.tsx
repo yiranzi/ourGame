@@ -15,14 +15,9 @@ import {
     mountGlobalLoading,
     unMountGlobalLoading
 } from "@/components/LoadingSpinner/RenderGlobalLoading";
-<<<<<<< HEAD
 import { PostStatistic, PostCnzzStatisticData } from "@/global/global.function"
 let isPlayed = false
-=======
-
 import AutoMove from "@/utils/AutoMove/AutoMove";
-
->>>>>>> 9a5cb7bc0e3872092e9cb3dcf83c7fd5fa4c2af9
 interface PropsTypes {
     DALTinyCourseAppState: Object;
     // DALTinyCourseAppState: Object,
