@@ -27,6 +27,7 @@ class DALTinyListenPage {
         this.fetchListenInfo = this.fetchListenInfo.bind(this);
         this.postListenAssignment = this.postListenAssignment.bind(this);
         this.fetchListenInfoByIndex = this.fetchListenInfoByIndex.bind(this);
+        this.forceFetchListenInfoByIndex = this.forceFetchListenInfoByIndex.bind(this);
     }
     /**
      * [private] 获取听课信息
@@ -125,6 +126,11 @@ class DALTinyListenPage {
            });
         }
     }
+    /**
+     * 强行拉去数据
+     * @param courseId
+     * @param index
+     */
     forceFetchListenInfoByIndex(courseId: number | string, index: number) {
         return new Promise((resolve, reject) => {
             this
