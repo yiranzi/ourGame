@@ -80,6 +80,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
             isClickSubmit = true
         }
         this.props.DALIndexPageState.fetchPayOrder(this.props.DALTinyCourseAppState.courseId).then(() => {
+            mountGlobalLoading();
             setTimeout(() => {
                 this.props.history.push(`${this.props.propsPath}/listen`);
             }, 1000);
@@ -128,7 +129,7 @@ class IndexContainer extends React.Component<PropsTypes, StateTypes> {
                         </CourseCatalogCard>
                     </div>
                     <div>
-                        <ImageCardWithTitle title={"课程定位"} src={this.props.DALIndexPageState.cover} />
+                        <ImageCardWithTitle title={"课程定位"} src={this.props.DALIndexPageState.position} />
                     </div>
                     <div className={className.submitButton} onClick={this.handleSubmitButton}>
                         {this.props.DALIndexPageState.price} 元，立即学习

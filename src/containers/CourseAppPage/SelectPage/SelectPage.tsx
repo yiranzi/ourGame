@@ -87,7 +87,7 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
             title: "速速加群啦",
             bodyText: <div>本课程包含QQ社群管理:<br />请加入QQ群: {this.props.qqGroupInfo.qq}<br />暗号: {this.props.qqGroupInfo.secret}</div>,
             sureText: "立即加群",
-            cancelText: "就是不加",
+            cancelText: "先不加",
             sureFunction: () => {
                 window.location.href = this.props.qqGroupInfo.link;
             },

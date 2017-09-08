@@ -30,7 +30,7 @@ class DALcourseListen {
     postWorkFinish(type: string|number, id: string|number) {
         return new Promise((resolve, reject) => {
             fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + `/ctplus/complete/${type}/${id}`, {
-                method: "GET",
+                method: "PUT",
                 headers: {
                     "Accept": "application/json",
                     "X-iChangTou-Json-Api-Token": _GLOBAL_CONFIG_._API_TOKEN_,

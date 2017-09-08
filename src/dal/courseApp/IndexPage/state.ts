@@ -54,12 +54,12 @@ class DALIndexPage {
             }));
             window.addEventListener("_dove_WxPay", (event) => {
                 if (event.detail.success) {
-                    PostStatistic('小课', '1.0', '购买成功', '购买成功');
-                    PostCnzzStatisticData('购买成功', '购买成功', 1.0);
+                    PostStatistic('小课', courseId, '购买成功', '购买成功');
+                    PostCnzzStatisticData('购买成功', '购买成功', courseId);
                     resolve();
                 } else {
-                    PostStatistic('小课', '1.0', '购买失败', '购买失败');
-                    PostCnzzStatisticData('购买失败', '购买失败', 1.0);
+                    PostStatistic('小课', courseId, '购买失败', '购买失败');
+                    PostCnzzStatisticData('购买失败', '购买失败', courseId);
                     reject();
                 }
             });
