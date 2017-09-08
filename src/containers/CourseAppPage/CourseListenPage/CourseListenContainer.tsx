@@ -9,7 +9,25 @@ interface PropsTypes {
     courseListenState: any;
     propsPath: string;
 }
-class CourseListenContainer extends React.Component<PropsTypes> {
+interface StateTypes {
+    // 当前小节
+    lessonIndex: number; // 当前的题目
+
+    // 进度条
+    totalElement: number;
+    finishElement: number;
+
+    // 小节
+    allFinish: boolean;
+    renderType: String; // 有无题目
+
+    // 选择题的进度状态
+    questionStatus: Array;
+
+    // 音频的进度情况
+    lessonProcess: Array;
+}
+class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
     constructor(props: PropsTypes) {
         super(props);
         this.cbfChooseBarClick = this.cbfChooseBarClick.bind(this);
@@ -33,8 +51,6 @@ class CourseListenContainer extends React.Component<PropsTypes> {
 
             // 音频的进度情况
             lessonProcess: [],
-            fmProcess: false,
-            chooseProcess: false,
         };
     }
 
@@ -53,16 +69,16 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         // 小节
         this.processSet();
         this.questionItemSet(); // 设置选择题答案
-        this.afterFinishCalc();
+        // this.afterFinishCalc();
     }
 
     // 0判断类型
     setRenderType() {
         let allLesson = this.props.courseListenState.listenItem;
         if ( allLesson[allLesson.length - 1].subs.length !== 0 ) {
-            this.state.renderType = 'question';
+            this.state.renderType = "question";
         } else {
-            this.state.renderType = 'no-question';
+            this.state.renderType = "no-question";
         }
         this.setState({renderType: this.state.renderType});
     }
@@ -95,16 +111,22 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         this.state.totalElement = 0;
         this.state.finishElement = 0;
         for ( let i = 0; i < allLesson.length; i++ ) {
+            //初始化
+            this.state.lessonProcess[i] = {};
             this.state.totalElement++;
             if (this.state.renderType === 'question') {
                 if ( allLesson[i].subs[allLesson[i].subs.length - 1].process === true ) {
-                    this.state.lessonProcess[this.state.lessonIndex].finishProcess = true;
+                    this.state.lessonProcess[i].finishProcess = true;
                     this.state.finishElement++;
+                } else {
+                    this.state.lessonProcess[i].finishProcess = false;
                 }
             } else {
                 if ( allLesson[i].process === true ) {
-                    this.state.lessonProcess[this.state.lessonIndex].finishProcess = true;
+                    this.state.lessonProcess[i].finishProcess = true;
                     this.state.finishElement++;
+                } else {
+                    this.state.lessonProcess[i].finishProcess = false;
                 }
             }
 
@@ -128,8 +150,8 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         let questionItem = {};
         for ( let i = 0 ; i < courseListenState.length; i++) {
             questionItem = courseListenState[i];
-            //初始化
-            this.state.lessonProcess[i] = {};
+
+            //如果完成音频
             if ( questionItem.process ) {
                 this.state.lessonProcess[i].fmProcess = true;
                 if ( courseListenState[i].subs[courseListenState[i].subs.length - 1].process ) {
@@ -154,7 +176,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         let questionItem = {};
         for ( let i = 0 ; i < courseListenState.length; i++) {
             questionItem = courseListenState[i];
-            if ( this.state.lessonProcess[this.state.lessonIndex].chooseProcess ) {
+            if ( this.state.lessonProcess[i].chooseProcess ) {
                 this.state.questionStatus[i] = [];
                 for ( let j = 0; j < questionItem.subs.length; j++) {
                     this.state.questionStatus[i][j] = {};
@@ -212,10 +234,12 @@ class CourseListenContainer extends React.Component<PropsTypes> {
     }
 
     // 提交答案
+    // Itemindex是第几个选择题
     cbfPostAnswer(Itemindex) {
         console.log(Itemindex);
         console.log("post");
-        if ( this.state.questionStatus[this.state.lessonIndex][Itemindex].selectIndex === this.props.courseListenState.listenItem[this.state.lessonIndex].subs[Itemindex].trueindex[0] ) {
+        let chooseIndex = this.state.questionStatus[this.state.lessonIndex][Itemindex].selectIndex
+        if ( chooseIndex === this.props.courseListenState.listenItem[this.state.lessonIndex].subs[Itemindex].trueindex[0] ) {
             this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "rightChoose";
         } else {
             this.state.questionStatus[this.state.lessonIndex][Itemindex].chooseStatus = "wrongChoose";
@@ -227,8 +251,9 @@ class CourseListenContainer extends React.Component<PropsTypes> {
                 lessonProcess: this.state.lessonProcess,
             });
         }
-
+        console.log('提交答案');
         this.setState({questionStatus: this.state.questionStatus});
+        this.props.courseListenState.postWorkFinish(1, this.props.courseListenState.listenItem[this.state.lessonIndex].subs[Itemindex].answerList[chooseIndex].subjectid);
         this.afterFinishCalc();
         // todo 题目提交接口
     }
@@ -265,6 +290,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
             <div className={className.container}>
                 <Card>
                     <div>
+                        <p>学习进度</p>
                         <Steps direction="horizontal" current={this.state.finishElement}>
                             {this.renderProcess()}
                         </Steps>
@@ -288,6 +314,8 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         this.setState({
             lessonProcess: this.state.lessonProcess,
         });
+        console.log('完成音频');
+        this.props.courseListenState.postWorkFinish(0, this.props.courseListenState.listenItem[this.state.lessonIndex].fmid);
         this.afterFinishCalc();
         // post完成
     }
@@ -301,7 +329,6 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         console.log('123')
         if ( this.state.lessonProcess[this.state.lessonIndex].fmProcess ) {
             for ( let i = 0; i < questions.length; i++ ) {
-                console.log(this.state.questionStatus[this.state.lessonIndex])
                 if ( i === 0 || this.state.questionStatus[this.state.lessonIndex][i - 1].chooseStatus !== "notChoose") {
                     question = questions[i];
                     arr.push(<ChooseBar
@@ -328,6 +355,7 @@ class CourseListenContainer extends React.Component<PropsTypes> {
         let style = {
             backgroundColor: '#108ee9',
             color: 'white',
+            textAlign: 'center',
         };
         return(<Card styleDefault = {style}>{this.buttonTxt()}</Card>);
     }

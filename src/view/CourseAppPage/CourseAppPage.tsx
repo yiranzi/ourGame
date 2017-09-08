@@ -44,7 +44,9 @@ let DALWaitPageState = new DALWaitPage();
     // 唤起加载页面
     mountGlobalLoading();
     // 1、获取用户登陆信息
+    console.log(1);
     return DALUserInfoState.fetchDALUserInfo().catch(() => {
+        console.log(2);
         if (props.location.pathname !== `${props.match.url}/error`) {
             props.history.push(`${props.match.url}/error`);
             resolve();
@@ -52,9 +54,11 @@ let DALWaitPageState = new DALWaitPage();
     });
 })
 @resolve("fetchDALUserInfo", function(props: PropsTypes) {
+    console.log(3);
      // 2、获取用户是否已经报名，若未报名，一律跳转报名页
         // todo courseid写死
     return DALCourseAppState.fetchIsUerBuy(1).then((isUserBuy) => {
+        console.log(4);
         // 如果用户没有购买，跳转购买页面
         if (!isUserBuy) {
             if (props.location.pathname !== `${props.match.url}/index`) {
@@ -74,6 +78,7 @@ class CourseAppPage extends React.Component<PropsTypes> {
         super(props);
     }
     render() {
+        console.log(5);
         return (
             <Switch>
                 <Route path={`${this.props.match.url}/index`}
