@@ -173,14 +173,14 @@ class DALTinyListenPage {
      * @memberof DALTinyListenPage
      */
     @action
-    postListenAssignment(selectionId: number, questionId: number, isLasted: boolean) {
+    postListenAssignment(selectionId: number, questionId: number, graduation: boolean) {
         return new Promise ((resolve, reject) => {
             fetch(_GLOBAL_CONFIG_._API_DOMAIN_ + _postListenAssignment_, {
                 method: "POST",
                 body: JSON.stringify({
                     "answerIndex": selectionId,
                     "assignmentId": questionId,
-                    "isLasted": isLasted
+                    "graduation": graduation
                 }),
                 mode: "cors",
                 headers: {
