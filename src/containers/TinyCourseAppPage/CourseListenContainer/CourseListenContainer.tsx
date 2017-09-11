@@ -352,7 +352,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         this.setState({questionStatus: this.state.questionStatus});
         let courseId = this.props.DALTinyCourseAppState.courseId;
         this.props.DALTinyListenPageState.postListenAssignment(answerId, assignmentId, isLast).then(()=>{
-            this.props.DALTinyListenPageState.forceFetchListenInfoByIndex(this.props.DALTinyListenPageState.lessonIndex, Itemindex, chooseIndex);
+            this.props.DALTinyListenPageState.setAnswer(this.props.DALTinyListenPageState.listenIndex, Itemindex, chooseIndex);
         });
         //todo 提交选择题后,渲染下一个选择题,滚动到最下面.
         this.autoMove();
@@ -451,7 +451,7 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
                     <ImageCard src={this.props.DALTinyListenPageState.currentLesson.pic}></ImageCard>
                 </div>
                 <div>
-                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} onEnded = {this.finishAudio} onPlay={this.handlePlay}/>
+                    <AudioPlayerWithTime src = {this.props.DALTinyListenPageState.currentLesson.audio} preload={"auto"} onEnded = {this.finishAudio} onPlay={this.handlePlay}/>
                 </div>
                 {this.renderSummary()}
                 <div>

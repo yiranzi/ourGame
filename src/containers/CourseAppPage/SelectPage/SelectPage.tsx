@@ -27,7 +27,6 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     }
 
     render() {
-        console.log('render');
         return(
             <div className={(className as any).container}>
                 {this.renderTopBanner()}
@@ -59,8 +58,6 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
     }
 
     renderCourseList() {
-        console.log('renderCourseList');
-        console.log(this.props);
         let gapStyle = {
             padding: "1rem",
         };
@@ -71,7 +68,6 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
             let courseStatus = this.calcCourseStatus(i);
             // 如果上一个能看.这个还可以渲染.
             if ( i === 0 || this.props.dayCourseList.dayItem[i - 1].status !== -1 ) {
-                console.log(i);
                 arr.push(
                     <div className={(className as any).gap}>
                         <LessonBar {...courseStatus}/>
@@ -156,7 +152,6 @@ export default class IndexPage extends React.Component<PropsTypes, StateTypes> {
 
 
     renderTopBanner() {
-        console.log('123');
         let style = {
             padding: '0',
             // height: '100px',
