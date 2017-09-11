@@ -205,13 +205,17 @@ class CourseListenContainer extends React.Component<PropsTypes, StateTypes> {
         // 如果完成音频
         // todo 没有音频进度
         if ( this.state.renderType === "question" ) {
+            //根据第一题是否完成代替音频进度
+            if ( questionItem.assignment[0].selected !== -1 ) {
+                this.state.lessonProcess.audioProcess = true;
+            } else {
+                this.state.lessonProcess.audioProcess = false;
+            }
             // 最后一题完成
             if ( questionItem.assignment[questionItem.assignment.length - 1].selected !== -1 ) {
                 this.state.lessonProcess.chooseProcess = true;
-                this.state.lessonProcess.audioProcess = true;
             } else {
                 this.state.lessonProcess.chooseProcess = false;
-                this.state.lessonProcess.audioProcess = false;
             }
         } else {
             this.state.lessonProcess.chooseProcess = false;
