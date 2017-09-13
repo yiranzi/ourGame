@@ -6,18 +6,19 @@ import {
     Switch
 } from "react-router-dom";
 
-import NoMatchPage from "@/view/NoMatchPage";
-import CourseAppPage from "./CourseAppPage/CourseAppPage";
-
-import TinyCoursePage from "./TinyCoursePage/TinyCoursePage";
+// import NoMatchPage from "@/view/NoMatchPage";
+// import CourseAppPage from "./CourseAppPage/CourseAppPage";
+//
+// import TinyCoursePage from "./TinyCoursePage/TinyCoursePage";
+import Main from "./GamePage/Main";
 
 export default function AppRouter() {
     return (
         <Router>
             <Switch>
-                <Route path="/course/:id" component={CourseAppPage} />
-                <Route path="/tinycourse/:id" component={TinyCoursePage} />
-                <Route component={NoMatchPage} />
+                {/*<Route path="/course/:id" component={CourseAppPage} />*/}
+                {/*<Route path="/tinycourse/:id" component={TinyCoursePage} />*/}
+                <Route component={Main} />
             </Switch>
         </Router>
     );

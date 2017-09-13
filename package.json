@@ -26,6 +26,7 @@
   "author": "heartblood",
   "license": "ISC",
   "dependencies": {
+    "echarts": "^3.7.1",
     "tslib": "^1.7.1"
   },
   "devDependencies": {
