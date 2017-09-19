@@ -30,14 +30,15 @@ class EPage extends React.Component<PropsTypes, StateTypes> {
         this.state = {
             currentMounth: 0,
             stockPercent: 50,
-            totalMoney: 100000,
-            userMoney: [100000],
+            totalMoney: 1000,
+            userMoney: [1000],
         };
     }
     render() {
         let style = {
-            width: '600px',
-            height: '400px',
+            width: '100%',
+            height: '200px',
+            marginLeft: '50px'
         }
 
         let slider = {
