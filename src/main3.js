@@ -6,6 +6,7 @@ var gameOptions = {
 
     // width of the game, in pixels
     gameWidth: 640,
+    gameHeight: 0,
 
     // tint colors to be applied to tiles
     tileColors: [0x00ff00, 0x00aa00],
@@ -14,27 +15,124 @@ var gameOptions = {
     verticalTiles: 9
 }
 
-var babyGameOptions = {
-    verticalTiles: 9,
-    widthTiles: 3,
+//原始物品列表
+var placeList = [
+    {
+        id: 0,
+        paddingId: 0,
+        imgSrc: 'tile',
+        posX: 300,
+        posY: 400,
+        colliderWidth: 200,
+        colliderHeight: 200,
+        imageWidth: 200,
+        imageHeight: 200,
+    },
+    {
+        id: 1,
+        paddingId: 1,
+        imgSrc: 'hero',
+        posX: 70,
+        posY: 450,
+        colliderWidth: 100,
+        colliderHeight: 100,
+        imageWidth: 50,
+        imageHeight: 50,
+
+    },
+]
+
+var talkList = [
+    {
+        id: 0,
+        talkDes: '这个看守真该死',
+        posX: 0,
+        posY: 0,
+        width: 100,
+        height: 100,
+    },
+    {
+        id: 1,
+        talkDes: '门上了锁.可恶.',
+        posX: 100,
+        posY: 100,
+        width: 100,
+        height: 100,
+    },
+    {
+        id: 2,
+        talkDes: '这里有公司的账本,我来好好看看',
+        posX: 200,
+        posY: 200,
+        width: 100,
+        height: 100,
+    },
+]
+
+var itemList = [
+    {
+        id: 0,
+        name: 'card',
+        des: '一本书',
+        getDes: '你找到了一个财神,也许可以把它糊到某个人脸上.',
+        imgSrc: 'tile',
+        posX: 400,
+        posY: 600,
+        width: 100,
+        height: 100,
+    },
+    {
+        id: 1,
+        name: 'caishen',
+        des: '一件衣服',
+        getDes: '你找到了一个卡片,看起来和门有关',
+        imgSrc: 'hero',
+        posX: 50,
+        posY: 650,
+        width: 100,
+        height: 100,
+    },
+]
+
+var Config = {
+    barDis: 100,
+    barSize: 100,
 }
+
+//全局变量
+var isDrag = false;
+var DragIndex = -1;
+
+//物品添加到的列表
+var placeObj = [
+
+]
+var viewObj = [
+]
+
+var barObj = [
+]
 window.onload = function() {
 
     // determining window width and height
     var windowWidth = window.innerWidth;
     var windowHeight = window.innerHeight;
 
+
+
     // if we are in ladscape mode, then set window height to fake a potrait mode
     if(windowWidth > windowHeight){
         windowHeight = windowWidth * 1.8;
-    }
+    };
 
     // defining game height
     var gameHeight = windowHeight * gameOptions.gameWidth / windowWidth;
-    // var gameHeight = windowHeight * gameOptions.gameWidth / windowWidth;
+
 
     // creation of the game istelf
     game = new Phaser.Game(gameOptions.gameWidth, gameHeight);
+    Config.gameWidth = gameOptions.gameWidth;
+    Config.gameHeight = gameHeight;
 
     // game states
     game.state.add("PreloadGame", preloadGame);
@@ -52,6 +150,8 @@ preloadGame.prototype = {
         game.stage.disableVisibilityChange = true;
         game.load.image("tile", './src/title.png');
         game.load.image("hero", './src/hero.png');
+        game.load.image("barBox", './src/res/barBox.jpg');
+        game.load.image("bg1", './src/res/bg1.jpg');
     },
     create: function(){
         game.state.start("PlayGame");
@@ -59,283 +159,257 @@ preloadGame.prototype = {
 }
 var playGame = function(game){}
 playGame.prototype = {
+    create: function () {
+        //初始化背景
+        let bg1 = game.add.image(0,0,'bg1');
+        bg1.width = Config.gameWidth;
+        bg1.height = Config.gameHeight;
+
+        //初始化bar列表
+        this.barRenderGroup = game.add.group();
+        this.barRenderGroup.x = 0;
+        this.barRenderGroup.y = Config.gameHeight -100;
+        let barBox = game.add.image(0,0, 'barBox');
+        // barBox.anchor.set(0, 1);
+        this.barRenderGroup.add(barBox);
+
+        //初始化 将所有的物品..放置到场景上
+
+
+        // viewObj = itemList;
+        this.addViewItem(0);
+        this.addViewItem(1);
+        // this.viewPlaceList();
+        this.renderBarList();
+
+        //初始化放置区域
+        this.addPlaceItem(0);
+        this.addPlaceItem(1);
+
+        //初始化对话区域
+
+
+
+
+    },
     setSprite(x,y,width,height) {
 
     },
-    create: function () {
-        //map
-        this.tileSize = 100;
+    clickItem(id) {
+        console.log(id)
+        //初始化,并且弹出说明框
 
-        //
-        this.moveStep = 0;
+        //从场景中删除,添加到物品栏中
+        // let index = this.getIndex(viewObj, id);
+        // if(index !== -1) {
+        let deleteItem = this.deletIndex(viewObj,id);
+        this.addBarItem(id);
 
-        let offsetX = (game.width - this.tileSize * babyGameOptions.widthTiles) / 2;
-        let offsetY = (game.height - this.tileSize * babyGameOptions.verticalTiles) / 2;
-        let _this = this;
+        //打开说明
+        let getDes = deleteItem.getDes;
+        // console.log(getDes)
+        alert(getDes)
+        // barObj.push(deleteItem);
+        // }
+        //物品栏刷新
+        this.renderBarList();
+        // this.viewPlaceList();
 
-        // amount of placed tiles, useful to tint even/odd tiles with different colors
-        var placedTiles = 0;
-        //sun
-
-        //居中
-        // horizontal offset to keep tiles centered in the game
-        // var offsetX = (game.width - this.tileSize * 3) / 2;
-
-        //group which will contain all tiles
-
-        //render bg
-
-        //render bar
-
-        //render obj
-        let obj1 = game.add.sprite(0,0,"tile");
-        obj1.width = 100;
-        obj1.height = 100;
-        game.physics.enable(obj1)obj1.
-        obj1.events.on
-
-
-        this.tileGroup = game.add.group();
-        this.tileGroup.x = offsetX
-        this.tileGroup.y = 0
-        this.tileGroupTween = game.add.tween(this.tileGroup).to({
-            y: this.tileSize
-        }, 100, Phaser.Easing.Linear.None);
-
-        this.tileArray = [];
-        for( let i = 0; i < babyGameOptions.widthTiles; i++) {
-            this.tileArray[i] = [];
-            for( let j = 0; j < babyGameOptions.verticalTiles; j++) {
-                // console.log(i + '/' + j)
-                let tile = game.add.sprite(i * this.tileSize,j * this.tileSize,"tile");
-                tile.width = this.tileSize
-                tile.height = this.tileSize
-                this.tileGroup.add(tile)
-                tile.anchor.set(0, 1);
-                this.tileArray[i][j] = tile;
-            }
-
-        }
-
-        this.tileGroupTween.onComplete.add(function () {
-            _this.tileGroup.y = 0;
-            console.log(_this.tileGroup.y)
-            console.log(_this.myHero.y)
-            //y 加上去
-            _this.tileGroup.forEach(function (child) {
-                child.y += _this.tileSize;
-            }, _this);
-            let step = _this.moveStep % babyGameOptions.verticalTiles;
-            for( let i = 0; i< babyGameOptions.widthTiles; i++) {
-                _this.tileArray[i][babyGameOptions.verticalTiles -1 - step].y -=  babyGameOptions.verticalTiles * _this.tileSize
-            }
-            _this.moveStep++;
-
-        })
-
-
-
-
-        let startButton = game.add.button(0,0,"tile",function () {
-            _this.tileGroupTween.start();
-        });
-
-
-
-
-        this.pos = {
-            x: 1,
-            y: 2,
-        }
-        this.canMove = true;
-        this.myHero = game.add.sprite(this.tileGroup.x + this.getPos(this.pos.x),this.getPos(this.pos.y),"hero");
-        this.myHero.width  = this.tileSize;
-        this.myHero.height  = this.tileSize;
-        this.getPos();
-        // this.tileGroup.add(this.myHero);
-
-        // // this.hero = game.add.sprite(0,0,"hero")
-        // let _this = this;
-        // this.heroMoveTween = game.add.tween(this.hero);
-        // game.input.onDown.add(this.moveMyHero, this);
-        //
-        // this.heroMoveTween.onComplete.add(function () {
-        //     _this.canMove = true;
-        //     console.log('123');
-        //     console.log(_this.pos.x)
-        // })
-
-    },
-    getPos(pos) {
-        return pos * this.tileSize;
+        //页面元素刷新
     },
 
-    moveMyHero: function (e) {
-        if(!this.canMove) {
-            return
-        }
-        this.canMove = false;
-        this.heroMoveTween.timeline = [];
-        this.pos.x = e.position.x;
-        this.pos.y = e.position.y;
-        this.heroMoveTween.to({
-            x: this.pos.x,
-            y:this.pos.y,
-        },500,Phaser.Easing.Linear.None);
-        this.heroMoveTween.start();
+    //获得物品
+    getItemById(array,id) {
+        for(let i = 0; i < array.length; i++) {
+            if(array[i].id === id) {
 
-    }
-
-}
-playGame.prototypeTest = {
-    create: function(){
-        console.log('123')
-
-        // useful to count travelled distance
-        //计算距离的变量
-        this.moves = 0;
-
-        //平分单元格
-        // determining tile size, according to game height and the amount of vertical tiles we want
-        this.tileSize = game.height / gameOptions.verticalTiles;
-
-        // amount of placed tiles, useful to tint even/odd tiles with different colors
-        var placedTiles = 0;
-
-        //居中
-        // horizontal offset to keep tiles centered in the game
-        var offsetX = (game.width - this.tileSize * 3) / 2;
-
-        // array which will contain all tiles
-        this.tileArray = [];
-
-        // group which will contain all tiles
-        this.tileGroup = game.add.group();
-
-        // placing the group to have tiles centered in the game
-        this.tileGroup.x = offsetX;
-        this.tileGroup.y = 0;
-
-        // creation of a tween which will scroll the terrain down by one tile
-        this.tileTween = game.add.tween(this.tileGroup).to({
-            y: this.tileSize
-        }, 1000, Phaser.Easing.Linear.None);
-
-        // since the endless runner thing is a fake, once we moved the terrain down by a tile
-        // we reset its position, then move the lowest tiles to the top, giving the idea of an
-        // infinite terrain
-        this.tileTween.onComplete.add(function(){
-            this.tileGroup.y = 0;
-            // this.tileGroup.forEach(function(child){
-            //     child.y += this.tileSize;
-            // }, this);
-            // for(var i = 0; i < 3; i++){
-            //     this.tileArray[this.moves % this.tileArray.length][i].y -= (gameOptions.verticalTiles + 1) * this.tileSize
-            // }
-            // this.moves ++;
-        }, this);
-
-        // placing and tinting terrain tiles
-        for(var i = 0; i < gameOptions.verticalTiles + 1; i ++){
-            this.tileArray[i] = [];
-            for(var j = 0; j < 3; j ++){
-                var tile = game.add.sprite(j * this.tileSize, game.height - i * this.tileSize, "tile");
-                tile.anchor.set(0, 1);
-                tile.width = this.tileSize;
-                tile.height = this.tileSize;
-                tile.tint = gameOptions.tileColors[placedTiles % 2];
-                this.tileGroup.add(tile);
-                this.tileArray[i][j] = tile;
-                placedTiles ++;
+                let result = JSON.parse(JSON.stringify(array[i]))
+                console.log('finish')
+                return result;
             }
         }
-
-        // column numvers ramge from 0 to 2. Hero starts at column 1, the one in the middle
-        this.heroColumn = 1;
-
-        // at the moment the hero can move
-        this.heroCanMove = true;
-
-        // adding and sizing hero sprite
-        //设定初始坐标
-        this.hero = game.add.sprite(this.tileGroup.x + this.tileSize, game.height - 2 * this.tileSize, "hero");
-        this.hero.width = this.tileSize;
-        this.hero.height = this.tileSize;
-        this.hero.anchor.set(0, 1);
-
-        // tween to move the sprite
-        this.heroTween = game.add.tween(this.hero);
-
-        // callback function to be called once the tween is complete
-        this.heroTween.onComplete.add(function(){
-            this.heroCanMove = true;
-            this.hero.x = this.tileGroup.x + this.tileSize * this.heroColumn;
-            // this.heroWrap.visible = false;
-        }, this);
-
-        // and this is the second hero sprite, the one we will use to create the wrap effect
-        //创建替身= =?
-        this.heroWrap = game.add.sprite(this.tileGroup.x + this.tileSize, game.height - 2 * this.tileSize, "hero");
-        this.heroWrap.width = this.tileSize;
-        this.heroWrap.height = this.tileSize;
-        this.heroWrap.anchor.set(0, 1);
-        this.heroWrap.visible = false;
-        this.heroWrapTween = game.add.tween(this.heroWrap);
-
-        // mask to hide both hero and wrapHero once outside the path of tiles
-        var mask = game.add.graphics(this.tileGroup.x, this.tileGroup.y);
-        mask.beginFill(0xffffff);
-        mask.drawRect(0, 0, this.tileSize * 3, game.height);
-        this.hero.mask = mask;
-        this.heroWrap.mask = mask;
-
-        // waiting for player input
-        game.input.onDown.add(this.moveHero, this);
+        return {}
     },
-    moveHero: function(e){
 
-        // can the hero move?
-        if(this.heroCanMove){
 
-            // start the tween which moves the terrain
-            this.tileTween.start();
-
-            // the hero can't move at the moment
-            this.heroCanMove = false;
-
-            // setting hero direction to left if the player clicked/touched the left half of the canvas, or right otherwise
-            var direction = e.position.x < game.width / 2 ? -1 : 1;
-
-            // calculating hero next column
-            var nextColumn = Phaser.Math.wrap(this.heroColumn + direction, 0, 3);
-
-            // setting hero tween timeline to an empty array to prevent adding waypoints with "to" method
-            this.heroTween.timeline = [];
-
-            // new hero destination
-            this.heroTween.to({
-                x: this.hero.x + this.tileSize * direction
-            }, 1000, Phaser.Easing.Cubic.InOut, true);
-
-            // this is the case with the wrapping hero coming into play
-            if(Math.abs(nextColumn - this.heroColumn) != 1){
-                // making it visible
-                this.heroWrap.visible = true;
-
-                // placing it outside the final column
-                this.heroWrap.x = nextColumn == 0 ? this.tileGroup.x - this.tileSize: this.tileGroup.x + 3 * this.tileSize;
-
-                // resetting tween timeline
-                // this.heroWrapTween.timeline = [];
-
-                // finally making the wrap hero move
-                this.heroWrapTween.to({
-                    x: this.heroWrap.x + this.tileSize * direction
-                }, 100, Phaser.Easing.Cubic.InOut, true);
-
+    getIndex(array,value) {
+        for(let i = 0; i < array.length; i++) {
+            if(array[i].id === value) {
+                return i
             }
-            this.heroColumn = nextColumn;
+        }
+        return -1
+    },
+
+    update: function () {
+        if(isDrag) {
+
+        }
+        // game.physics.arcade.collide(this.ground, this.sale_card);
+        // console.log('123')
+    },
+
+    dragStart(id) {
+        isDrag = true;
+        DragIndex = id;
+        console.log('dragStart')
+    },
+    dragStop(id,obj) {
+        console.log(event);
+        console.log(placeObj);
+        //从背包中获取当前的物品
+        let putObj = this.getItemById(itemList,id)
+        let putCollider = obj;
+        let getCollider;
+        let getObj;
+        // 没有正确放置
+        let placeResult = false;
+        //1遍历所有place
+        for(let i = 0; i < placeObj.length; i++) {
+            getObj = placeObj[i];
+            getCollider = getObj.ref;
+            game.physics.arcade.overlap(putCollider, getCollider, function () {
+                if(putObj.id === getObj.paddingId) {
+                    console.log('get' + getObj.paddingId);
+                    placeResult = true;
+                }
+            }, null, this);
+        }
+
+        if(placeResult) {
+            this.placeRight(id);
         } else {
+            this.placeWrong(id);
         }
-    }
+        // game.physics.arcade.collide(event, place);
+
+        console.log('dragStart')
+    },
+
+    placeRight(id) {
+        //1从背包中删除(maybe)
+        console.log('placeRight')
+        this.deletIndex(barObj, id);
+        //2添加到图画中(maybe)
+        let place = this.getItemById(placeList,id);
+        let image = game.add.image(place.posX,place.posY,place.imgSrc);
+        image.width = place.imageHeight;
+        image.height = place.imageWidth;
+        //3删除原区域
+        this.deletIndex(placeObj, id);
+        this.renderBarList();
+    },
+
+    placeWrong() {
+        //1回归原位.
+        this.renderBarList();
+    },
+
+
+    addPlaceItem(id) {
+        let item = this.getItemById(placeList,id);
+        let placeItem = game.add.sprite(item.posX, item.posY, '');
+        game.physics.arcade.enable(placeItem);
+        placeItem.width =  item.colliderWidth;
+        placeItem.height =  item.colliderHeight;
+
+        placeItem.inputEnabled = true;
+        // placeItem.events.onInputDown.add(this.clickItem.bind(this, item.id), this);
+        item.ref = placeItem;
+        placeObj.push(item);
+    },
+
+    viewPlaceList() {
+        for( let i = 0; i < viewObj.length; i++) {
+            let item = viewObj[i];
+            let placeItem = game.add.sprite(item.posX, item.posY, item.imgSrc);
+            game.physics.arcade.enable(placeItem);
+            placeItem.inputEnabled = true;
+            placeItem.width = item.width;
+            placeItem.height = item.height;
+            placeItem.events.onInputDown.add(this.clickItem.bind(this, item.id), this);
+            //绑定
+            viewObj[i].ref = placeItem;
+        }
+    },
+
+    addViewItem(id) {
+        let item = this.getItemById(itemList,id);
+        let placeItem = game.add.sprite(item.posX, item.posY, item.imgSrc);
+        game.physics.arcade.enable(placeItem);
+        placeItem.width =  item.width;
+        placeItem.height =  item.height;
+
+        placeItem.inputEnabled = true;
+        placeItem.events.onInputDown.add(this.clickItem.bind(this, item.id), this);
+        item.ref = placeItem;
+        viewObj.push(item);
+    },
+
+    //删除
+    deletIndex(array,value) {
+        for(let i = 0; i < array.length; i++) {
+            if(array[i].id === value) {
+                let result = array.splice(i, 1);
+                if(result.length !== 0) {
+                    result[0].ref.kill();
+                    return result[0];
+                } else {
+                    return -1;
+                }
+            }
+        }
+        return -1
+    },
+
+    //添加物品
+    addBarItem(id) {
+        let item = this.getItemById(itemList,id);
+        let placeItem = game.add.sprite(0, 0, item.imgSrc);
+        game.physics.arcade.enable(placeItem);
+        placeItem.inputEnabled = true;
+        placeItem.width =  Config.barSize;
+        placeItem.height =  Config.barSize;
+        this.barRenderGroup.add(placeItem);
+
+        placeItem.inputEnabled = true;
+        placeItem.input.enableDrag();
+        placeItem.input.bringToTop = true;
+        placeItem.events.onDragStart.add(this.dragStart.bind(this, id));
+        placeItem.events.onDragStop.add(this.dragStop.bind(this, id));
+
+        item.ref = placeItem;
+        barObj.push(item);
+    },
+
+    //排序背包
+    renderBarList() {
+        for( let i = 0; i < barObj.length; i++) {
+            let renderItem = barObj[i].ref;
+            renderItem.x = i * Config.barDis;
+            renderItem.y = 0
+        }
+    },
+
+
+    // getPos(pos) {
+    //     return pos * this.tileSize;
+    // },
+    //
+    // moveMyHero: function (e) {
+    //     if(!this.canMove) {
+    //         return
+    //     }
+    //     this.canMove = false;
+    //     this.heroMoveTween.timeline = [];
+    //     this.pos.x = e.position.x;
+    //     this.pos.y = e.position.y;
+    //     this.heroMoveTween.to({
+    //         x: this.pos.x,
+    //         y:this.pos.y,
+    //     },500,Phaser.Easing.Linear.None);
+    //     this.heroMoveTween.start();
+    //
+    // }
+
 }
