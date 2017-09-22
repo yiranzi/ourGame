@@ -20,10 +20,14 @@ interface PropsTypes {
 
 interface StateTypes {
     process: number,
+    usedBg: String,
 }
 
 class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     divElement: any;
+    myShow: any;
+    divElement = 0;
+    myShow = false;
     divElementUser: any;
     constructor(props: PropsTypes) {
         super(props);
@@ -32,6 +36,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             process: 0,
             finishDialog: false,
             finishDialogNow: false,
+            usedBg: '',
         };
     }
     render() {
@@ -43,7 +48,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                {/*舞台可点击元素*/}
                <div className = {className.container} onClick={this.nextDialog}>
                    {/*BackGround*/}
-                   <BackGround bgImg = {this.props.currentStage[this.state.process].bgImg}/>
+                   {this.renderBackGround()}
                    {/*Person*/}
                    <Person headImg = {this.props.currentStage[this.state.process].headImg}></Person>
                    {/*Dialiog*/}
@@ -53,6 +58,38 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                {/*NameTag*/}
            </div>
         );
+    }
+
+    renderBackGround() {
+        console.log('renderBackGround~!!!!!!!!!!!!!!!!!');
+        //如果当前为空
+        let showType = '';
+        let showStyle = {
+
+        }
+        console.log(this.divElement)
+        this.divElement = this.divElement + 1;
+        this.myShow = !(this.myShow);
+        // return <BackGround showStyle = {showStyle} bgImg = {this.props.currentStage[this.state.process].bgImg}/>
+        if (!this.myShow) {
+            showType = "show";
+            showStyle = {
+                // width: '10px'
+                opacity: '1',
+                transition: "2s opacity",
+            }
+            console.log('transition');
+            return <BackGround showStyle = {showStyle} bgImg = {this.props.currentStage[this.state.process].bgImg}/>
+        } else {
+            showStyle = {
+                // width: '10px'
+                opacity: '0',
+                transition: "2s opacity",
+            }
+            showType = "hide";
+            return <BackGround showStyle = {showStyle} bgImg = {this.props.currentStage[this.state.process].bgImg}/>
+        }
+
     }
 
     addName() {
@@ -65,6 +102,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             arr.push(<DialogName boxImg = {`${require("@/assets/image/Game/dialogName_1.jpg")}`}>{this.props.currentStage[this.state.process].name}</DialogName>);
         }
         arr.push(<Dialog
+            speedInterval = {10}
             finishDialog = {this.state.finishDialog}
             finishCalback = {this.finishCalback}
             finishDialogNow = {this.state.finishDialogNow}
@@ -87,22 +125,22 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         if (this.state.finishDialog) {
             this.nextDialog();
         } else {
-            let result = this.state.finishDialogNow;
-            result = !result;
-            this.setState({finishDialogNow: result});
+            // let result = this.state.finishDialogNow;
+            // result = !result;
+            this.setState({finishDialogNow: true});
         }
     }
 
 
     nextDialog() {
-
         console.log(this.state);
         if ( this.state.process === this.props.currentStage.length - 1) {
             return;
         }
         this.state.process = this.state.process + 1;
-        //设置对话
+        // 设置对话
         this.setState({
+            finishDialogNow: false,
             finishDialog: false,
             process: this.state.process,
         });

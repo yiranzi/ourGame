@@ -9,15 +9,22 @@ interface BackGroundPropsTypes {
         bgImg: string; // 背景图片
 }
 
-export default class ChooseBar extends React.Component<BackGroundPropsTypes> {
+export default class BackGround extends React.Component<BackGroundPropsTypes> {
     constructor() {
         super();
     }
     render() {
+        console.log(this.props.showStyle);
         return(
-            <div className={(className as any).container}>
+            <div style = {this.props.showStyle} className={(className as any).container}>
                 <img src={this.props.bgImg}/>
             </div>
         );
     }
 };
+
+BackGround.defaultProps = {
+    showStyle: {
+        opacity: 0,
+    }
+}
