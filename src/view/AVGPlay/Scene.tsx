@@ -14,7 +14,6 @@ interface StateTypes {
 class Scene extends React.Component<PropsTypes, StateTypes> {
     currentScene = 0;
     currentBranch = 0;
-    currentDialogIndex = 0;
 
     // 预设的 每次推入拷贝一个
     currentDialogSetting = {
@@ -121,10 +120,25 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         //
         console.log('cbfPostAnswer');
         console.log(index);
-        this.currentBranch = 1;
+
+        // 1 获取当前场景
+        let scene = stageData[this.currentScene];
+        // 2 确定分支
+        let branch = scene[this.currentBranch];
+        // 3 获取当前的剧情
+        let dialog = branch[this.state.currentDialogIndex];
+        // 4 获取用户选择的东西
+        let chooseQuiz = dialog.quiz.answerResult[index];
+        // 5 解析
+        for (let i= 0; i < chooseQuiz.length; i++) {
+            this.getResultFromString(chooseQuiz[i]);
+        }
+        // 6 进行点击下一步
+        let currentDialogIndex = this.state.currentDialogIndex + 1;
         this.setState({
-            currentDialogIndex: 0,
+            currentDialogIndex: currentDialogIndex,
         });
+        // 7更新branch
         this.nextBranch();
     }
 
@@ -252,6 +266,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
             case "goOver":
                 break;
             case "goDialog":
+                console.log(resultValue);
+                this.currentBranch = resultValue;
                 break;
             default:
                 console.log('error@!!!')

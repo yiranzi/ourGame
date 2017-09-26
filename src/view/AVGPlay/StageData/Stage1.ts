@@ -156,18 +156,18 @@ var stageData = [
                 },
                 quiz: {
                     answerList: ['1你是谁','2请问你是谁'],
-                    answerResult: ["addMQ#10","goScene#2"],
+                    answerResult: [["addMQ#10"],["goDialog#1"]],
                 }
             },
             // 谢幕的dialog
-            {
-                dialog: {
-                    name: "",
-                    content: "",
-                    head: "",
-                },
-                event: ["nextScene"]
-            },
+            // {
+            //     dialog: {
+            //         name: "",
+            //         content: "",
+            //         head: "",
+            //     },
+            //     event: ["nextScene"]
+            // },
             // event
             // {
             //     event: ["goScene#2"]

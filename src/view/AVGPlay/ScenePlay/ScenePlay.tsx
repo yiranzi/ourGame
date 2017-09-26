@@ -4,6 +4,7 @@ import BackGround from "@/components/AVGPlayScene/BackGround/BackGround";
 import Person from "@/components/AVGPlayScene/Person/Person";
 import Dialog from "@/components/AVGPlayScene/Dialog/Dialog";
 import DialogName from "@/components/AVGPlayScene/DialogName/DialogName";
+import QuizBar from "@/components/AVGPlayScene/QuizBar/QuizBar";
 
 import * as className from "./style/style.less";
 
@@ -162,6 +163,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                 finishDialogNow: false,
                 finishDialog: false,
             });
+            return;
         }
         // 如果对话已经完成 看看是否有选择题
         if ( this.state.finishDialog && prop.currentSceneData[prop.currentDialogIndex].quiz.answerList) {
@@ -192,7 +194,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                {/*菜单元素*/}
                {/*<div>123</div>*/}
                {/*舞台可点击元素*/}
-               <div className = {className.container} onClick={this.clickScene}>
+               <div className = {className.scene} onClick={this.clickScene}>
                    {/*BackGround*/}
                    {this.renderBackGround()}
                    {/*Person*/}
@@ -201,9 +203,11 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                    {/*Dialiog*/}
                    {this.renderDialog()}
 
-                   {/*Quiz*/}
-                   {this.renderQuiz()}
+
                </div>
+               {/*弹出框*/}
+               {/*Quiz*/}
+               {this.renderQuiz()}
 
                {/*NameTag*/}
            </div>
@@ -214,6 +218,14 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         if (this.state.canRenderQuiz === "hide") {
             return;
         }
+        let arr = []
+        let answerList = this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerResult;
+        for (let i = 0; i < answerList.length; i++) {
+            arr.push(<QuizBar key = i index = {i} cbfClick = {this.finishQuiz.bind(this, i)} content = {answerList[i]}></QuizBar>)
+        }
+        return(<div className = {className.quiz}>
+            {arr}
+        </div>)
         return(<div onClick = {this.finishQuiz.bind(this, 100)}>{this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerResult[0]}</div>);
     }
 

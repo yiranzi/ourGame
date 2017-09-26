@@ -10,7 +10,7 @@ import {
 // import CourseAppPage from "./CourseAppPage/CourseAppPage";
 //
 // import TinyCoursePage from "./TinyCoursePage/TinyCoursePage";
-import Main from "./GamePage/Main";
+import Main from "./AVGPlay/Scene";
 
 export default function AppRouter() {
     return (
