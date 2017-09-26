@@ -14,45 +14,162 @@ interface PropsTypes {
                 dialog: String,
                 headImg: String,
                 bgImg: String,
+                event: String,// 这边用不到.
             }
         ];
+    cbfNextDialog: Function;
+    currentDialogIndex: Number;
+    currentSceneData: Array;
 }
 
 interface StateTypes {
     process: number,
-    usedBg: String,
+    canRenderBg: String,
+    canRenderPerson: String,
+    canRenderDialog: String,
 }
 
+
 class ScenePlay extends React.Component<PropsTypes, StateTypes> {
-    divElement: any;
-    myShow: any;
-    divElement = 0;
-    myShow = false;
-    divElementUser: any;
+    personTime: any; // 人物渐变时间
+    bgTime: any; // 场景渐变时间
+    speedInterval: any; // 字体播放速度
+    usedBg: any; // 保存上一个图素
+    usedPerson: any;
+    usedDialog: any;
+    usedName: any; // 保留计时器
+    timeOutIndex: any; // 保留计时器
+    usedBg = "";
+    usedPerson = "";
+    usedDialog = "";
+    usedName = "";
+    personTime = 500;
+    bgTime = 1200;
+    timeOutIndex = 0;
+    speedInterval = 50;
+
     constructor(props: PropsTypes) {
         super(props);
         this.nextDialog = this.nextDialog.bind(this);
+        this.clickScene = this.clickScene.bind(this);
+        this.renderPerson = this.renderPerson.bind(this);
+        this.renderBackGround = this.renderBackGround.bind(this);
+        this.renderDialog = this.renderDialog.bind(this);
+        this.finishCalback = this.finishCalback.bind(this);
         this.state = {
             process: 0,
             finishDialog: false,
             finishDialogNow: false,
-            usedBg: '',
+            canRenderBg: "hide",
+            canRenderPerson: "hide",
+            canRenderDialog: "wait",
         };
     }
-    render() {
 
+    componentWillMount() {
+        // console.log(this.props);
+        this.init(this.props);
+    }
+
+    componentWillReceiveProps(prop) {
+        // console.log(prop);
+        this.init(prop);
+    }
+
+    init(prop) {
+        if (!prop.currentSceneData) {
+            // console.log('no init');
+            prop = this.props;
+        }
+        console.log('no init');
+        // this.setState({
+        //     canRenderBg: "wait",
+        //     canRenderPerson: "wait",
+        //     canRenderDialog: "wait",
+        // });
+        // checkBg
+        if ( this.usedBg === prop.currentSceneData[prop.currentDialogIndex].bgImg ) {
+            // this.setState({
+            //     canRenderBg: "done"
+            // });
+        } else {
+            switch (this.usedBg) {
+                case "":
+                    console.log('show')
+                    // show
+                    this.usedBg = prop.currentSceneData[prop.currentDialogIndex].bgImg;
+                    this.setState({
+                        canRenderBg: "show"
+                    });
+                    this.whenAnimation(this.bgTime + 100, "canRenderBg", "show");
+                    break;
+                default:
+                    console.log('hide');
+                    // hide
+                    this.setState({
+                        canRenderBg: "hide"
+                    });
+                    this.whenAnimation(this.bgTime + 100, "canRenderBg", "hide");
+            }
+            return;
+        }
+        // checkPerson
+        if ( this.usedPerson === prop.currentSceneData[prop.currentDialogIndex].headImg) {
+            // this.setState({
+            //     canRenderPerson: "done"
+            // });
+
+        } else {
+            //如果为空 显示 新头像.
+            if ( this.usedPerson === "" ) {
+                this.usedPerson = prop.currentSceneData[prop.currentDialogIndex].headImg;
+                this.setState({
+                    canRenderPerson: "show"
+                });
+                this.whenAnimation(this.personTime + 100, "canRenderPerson", "show");
+            } else {
+                // 如果之后为空 隐藏头像.
+                if ( prop.currentSceneData[prop.currentDialogIndex].headImg === "" ) {
+                    this.setState({
+                        canRenderPerson: "hide"
+                    });
+                    this.whenAnimation(this.personTime + 100, "canRenderPerson", "hide");
+                } else {
+                    //如果不为空 1隐藏旧头像 2显示新头像.
+                    this.setState({
+                        canRenderPerson: "hide"
+                    });
+                    this.whenAnimation(this.personTime + 100, "canRenderPerson", "hide");
+                }
+            }
+            return;
+        }
+        //checkDialog
+        this.usedDialog = prop.currentSceneData[prop.currentDialogIndex].dialog;
+        this.usedName = prop.currentSceneData[prop.currentDialogIndex].name;
+        this.setState({
+            canRenderDialog: "show",
+            finishDialogNow: false,
+            finishDialog: false,
+        });
+    }
+
+    render() {
+        console.log(this.props)
+        console.log("render")
         return (
            <div>
                {/*菜单元素*/}
                {/*<div>123</div>*/}
                {/*舞台可点击元素*/}
-               <div className = {className.container} onClick={this.nextDialog}>
+               <div className = {className.container} onClick={this.clickScene}>
                    {/*BackGround*/}
                    {this.renderBackGround()}
                    {/*Person*/}
-                   <Person headImg = {this.props.currentStage[this.state.process].headImg}></Person>
+                   {this.renderPerson()}
+
                    {/*Dialiog*/}
-                   {this.addName()}
+                   {this.renderDialog()}
                </div>
 
                {/*NameTag*/}
@@ -60,54 +177,116 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         );
     }
 
-    renderBackGround() {
-        console.log('renderBackGround~!!!!!!!!!!!!!!!!!');
-        //如果当前为空
-        let showType = '';
-        let showStyle = {
+
+
+    whenAnimation(time, typeName, showType) {
+        window.clearTimeout(this.timeOutIndex);
+        this.timeOutIndex = window.setTimeout(this.afterAnimate.bind(this, typeName, showType),time);
+    }
+
+    afterAnimate(typeName, showType) {
+        console.log("finish Animate");
+
+        // this.setState({
+        //     [type]: 'hide'
+        // });
+        switch (typeName) {
+            case "canRenderBg":
+                if (showType === 'hide') {
+                    this.usedBg = '';
+                }
+
+                // this.setState({
+                //     [type]: 'done'
+                // });
+                break;
+            case "canRenderPerson":
+                if (showType === 'hide') {
+                    this.usedPerson = '';
+                }
+                break;
 
         }
-        console.log(this.divElement)
-        this.divElement = this.divElement + 1;
-        this.myShow = !(this.myShow);
-        // return <BackGround showStyle = {showStyle} bgImg = {this.props.currentStage[this.state.process].bgImg}/>
-        if (!this.myShow) {
-            showType = "show";
-            showStyle = {
-                // width: '10px'
-                opacity: '1',
-                transition: "2s opacity",
-            }
-            console.log('transition');
-            return <BackGround showStyle = {showStyle} bgImg = {this.props.currentStage[this.state.process].bgImg}/>
-        } else {
-            showStyle = {
-                // width: '10px'
-                opacity: '0',
-                transition: "2s opacity",
-            }
-            showType = "hide";
-            return <BackGround showStyle = {showStyle} bgImg = {this.props.currentStage[this.state.process].bgImg}/>
+        this.init(this.props);
+    }
+
+
+    renderBackGround() {
+        if (this.state.canRenderBg === 'wait') {
+            return;
         }
+        console.log('render Bg');
+        // 如果当前为空
+        let showStyle = {};
+        switch(this.state.canRenderBg) {
+            case "show":
+                showStyle = {
+                    opacity: '1',
+                    transition: `${this.bgTime / 1000}s opacity`,
+                }
+                // this.whenAnimation(200, "canRenderBg");
+                break;
+            case "done":
+                showStyle = {
+                    opacity: '0.6',
+                    transition: "2s opacity",
+                }
+                break;
+            case "hide":
+                showStyle = {
+                    opacity: '0',
+                    transition: `${this.bgTime / 1000}s opacity`,
+                }
+                break;
+        }
+        return <BackGround showStyle = {showStyle} bgImg = {this.usedBg}/>
 
     }
 
-    addName() {
+    renderPerson() {
+        if (this.state.canRenderPerson === 'wait') {
+            return;
+        }
+        // 如果当前为空
+        let showStyle = {};
+        switch(this.state.canRenderPerson) {
+            case "show":
+                showStyle = {
+                    opacity: '1',
+                    transition: `${this.personTime / 1000}s opacity`,
+                }
+                // this.whenAnimation(200, "canRenderBg");
+                break;
+            case "hide":
+                showStyle = {
+                    opacity: '0',
+                    transition: `${this.personTime / 1000}s opacity`,
+                }
+                break;
+        }
+        return <Person showStyle = {showStyle} headImg = {this.usedPerson}/>
+    }
+
+    renderDialog() {
+        if (this.state.canRenderDialog === 'wait' || this.usedDialog === '') {
+            return;
+        }
         let style = {
             position: 'absolute',
             bottom: '0',
         };
         let arr = [];
-        if (this.props.currentStage[this.state.process].name) {
-            arr.push(<DialogName boxImg = {`${require("@/assets/image/Game/dialogName_1.jpg")}`}>{this.props.currentStage[this.state.process].name}</DialogName>);
+        if (this.props.currentSceneData[this.props.currentDialogIndex].name) {
+            arr.push(<DialogName key = 1 boxImg = {`${require("@/assets/image/Game/dialogName_1.jpg")}`}>{this.usedName}</DialogName>);
         }
         arr.push(<Dialog
-            speedInterval = {10}
+            key = 2
+            speedInterval = {this.speedInterval}
             finishDialog = {this.state.finishDialog}
             finishCalback = {this.finishCalback}
             finishDialogNow = {this.state.finishDialogNow}
             boxImg = {`${require("@/assets/image/Game/dialogBox_1.jpg")}`}>
-            {this.props.currentStage[this.state.process].dialog}</Dialog>)
+            {this.usedDialog ? this.usedDialog : '123'}</Dialog>)
         return (<div style = {style}>
             {arr}
         </div>);
@@ -115,14 +294,17 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
 
     //完成对话后的回调
     finishCalback() {
+        console.log('finishCalback');
         this.setState({
             finishDialog: true
         });
     }
 
     clickScene() {
+        console.log('clickScene');
         //如果对话已经完成
-        if (this.state.finishDialog) {
+        // 或为了fix对话消失,无法继续的bug
+        if (this.state.finishDialog || this.usedDialog === '') {
             this.nextDialog();
         } else {
             // let result = this.state.finishDialogNow;
@@ -133,17 +315,18 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
 
 
     nextDialog() {
-        console.log(this.state);
-        if ( this.state.process === this.props.currentStage.length - 1) {
-            return;
-        }
-        this.state.process = this.state.process + 1;
+        // console.log(this.state);
+        // if ( this.state.process === this.props.currentStage.length - 1) {
+        //     return;
+        // }
+        // this.state.process = this.state.process + 1;
+        // 获取最新的对话
+
         // 设置对话
-        this.setState({
-            finishDialogNow: false,
-            finishDialog: false,
-            process: this.state.process,
-        });
+        // this.setState({
+        //     process: this.state.process,
+        // });
+        this.props.cbfNextDialog();
     }
 }
 export default ScenePlay;

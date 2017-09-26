@@ -14,7 +14,7 @@ export default class BackGround extends React.Component<BackGroundPropsTypes> {
         super();
     }
     render() {
-        console.log(this.props.showStyle);
+        // console.log(this.props.showStyle);
         return(
             <div style = {this.props.showStyle} className={(className as any).container}>
                 <img src={this.props.bgImg}/>

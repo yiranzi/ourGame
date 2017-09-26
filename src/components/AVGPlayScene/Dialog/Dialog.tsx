@@ -22,6 +22,7 @@ export default class Person extends React.Component<DialogPropsTypes> {
         super();
         this.initDialog = this.initDialog.bind(this);
         this.finishDialogNow = this.finishDialogNow.bind(this);
+        this.nextWordShow = this.nextWordShow.bind(this);
         this.state = {
             currentLength: 0,
             maxLength: 0,
@@ -32,17 +33,20 @@ export default class Person extends React.Component<DialogPropsTypes> {
     }
 
     componentWillMount() {
-        if ( this.props.finishDialogNow ) {
-            this.finishDialogNow();
-        } else {
-            //初始化
-            this.initDialog(this.props);
-        }
+        this.init(this.props);
     }
 
     componentWillReceiveProps(prop) {
-        //终止
-        if ( this.props.finishDialogNow ) {
+        this.init(prop);
+    }
+
+    init(prop) {
+        // 如果已经完成 直接返回
+        if (prop.finishDialog) {
+            return;
+        }
+        // 如果需要立刻完成
+        if ( prop.finishDialogNow ) {
             this.finishDialogNow();
         } else {
             //初始化
@@ -51,6 +55,10 @@ export default class Person extends React.Component<DialogPropsTypes> {
     }
 
     initDialog(prop) {
+        // 如果已经完成 或者 正在运行. 返回
+        if(prop.finishDialog) {
+            return
+        }
         //保存
         let array = prop.children.split("");
         //设置长度.
@@ -61,17 +69,30 @@ export default class Person extends React.Component<DialogPropsTypes> {
             dialogArray: array,
         });
         //设置timer.
-        this.state.timervalId = window.setInterval(this.finishDialogNow, this.props.speedInterval);
+        window.clearInterval(this.state.timervalId);
+        this.state.timervalId = window.setInterval(this.nextWordShow, this.props.speedInterval);
     }
 
-    finishDialogNow () {
-        console.log("finishDialogNow");
+    // 下个字
+    nextWordShow () {
+        console.log("nextWordShow");
         if ( this.state.currentLength < this.state.maxLength - 1) {
             this.state.currentLength = this.state.currentLength + 1;
             this.setState({currentLength: this.state.currentLength});
         } else {
             window.clearInterval(this.state.timervalId);
+            this.props.finishCalback();
         }
+    }
+
+    // 立刻完成
+    finishDialogNow () {
+        this.setState({
+            currentLength: this.state.maxLength
+        });
+        console.log("finishDialogNow");
+        window.clearInterval(this.state.timervalId);
+        this.props.finishCalback();
     }
     render() {
         let styleBox = {
@@ -89,7 +110,7 @@ export default class Person extends React.Component<DialogPropsTypes> {
     }
 
     transString() {
-        console.log('transString')
+        // console.log('transString')
         let array = this.state.dialogArray.slice(0,this.state.currentLength + 1);
         this.state.dialogView = array.join("");
         return(this.state.dialogView);

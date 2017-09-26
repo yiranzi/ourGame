@@ -15,7 +15,7 @@ export default class Person extends React.Component<PersonPropsTypes> {
     }
     render() {
         return(
-            <div className={(className as any).container}>
+            <div style = {this.props.showStyle} className={(className as any).container}>
                 <img src={this.props.headImg}/>
             </div>
         );
