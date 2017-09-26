@@ -23,6 +23,10 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         headImg: "",
         bgImg: "",
         event: "",
+        quiz: {
+            answerList: [],
+            answerResult: [],
+        }
     }
 
     //角色信息
@@ -59,13 +63,14 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         this.pushData = this.pushData.bind(this);
 
         this.cbfNextDialog = this.cbfNextDialog.bind(this);
+        this.cbfPostAnswer = this.cbfPostAnswer.bind(this);
         this.getResultFromString = this.getResultFromString.bind(this);
         this.changeData = this.changeData.bind(this);
         this.changeScene = this.changeScene.bind(this);
         this.state = {
             currentSceneData: [],
             currentDialogIndex: 0,
-        }
+        };
     }
 
     componentWillMount() {
@@ -112,9 +117,15 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     }
 
     // 用户提交答案.
-    cbfPostAnswer() {
+    cbfPostAnswer(index) {
         //
         console.log('cbfPostAnswer');
+        console.log(index);
+        this.currentBranch = 1;
+        this.setState({
+            currentDialogIndex: 0,
+        });
+        this.nextBranch();
     }
 
     // 切换场景
@@ -146,9 +157,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         });
         // 1 获取当前场景
         let scene = stageData[this.currentScene];
-
         this.nextBranch();
-
     }
 
     // 切换分支
@@ -190,9 +199,18 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 }
             }
 
+            // 选择题
+            this.currentDialogSetting.quiz = {};
+            if (dialogInfo.quiz) {
+                this.changeData("quiz", dialogInfo.quiz);
+            }
+
+            // 对话
             if (dialogInfo.dialog) {
                 this.pushData(dialogInfo.dialog.name, dialogInfo.dialog.content, dialogInfo.dialog.head);
             }
+
+
             // else if (dialogInfo.event) {
             //
             //     // 这个event(切换场景) 会在下一次生效(因为背景变化 会自动渲染)

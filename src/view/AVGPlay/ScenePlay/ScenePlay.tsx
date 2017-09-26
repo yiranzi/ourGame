@@ -8,18 +8,22 @@ import DialogName from "@/components/AVGPlayScene/DialogName/DialogName";
 import * as className from "./style/style.less";
 
 interface PropsTypes {
-    currentStage: [
+    currentSceneData: [
             {
                 name: String,
                 dialog: String,
                 headImg: String,
                 bgImg: String,
-                event: String,// 这边用不到.
+                event: String,// 这边用不到
+                quiz: {
+                    answerList: Array,
+                    answerList: Array,
+                }
             }
         ];
     cbfNextDialog: Function;
+    cbfPostAnswer: Function;
     currentDialogIndex: Number;
-    currentSceneData: Array;
 }
 
 interface StateTypes {
@@ -27,6 +31,8 @@ interface StateTypes {
     canRenderBg: String,
     canRenderPerson: String,
     canRenderDialog: String,
+    usedPersonTest: String,
+    canRenderQuiz: String,
 }
 
 
@@ -55,7 +61,9 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         this.renderPerson = this.renderPerson.bind(this);
         this.renderBackGround = this.renderBackGround.bind(this);
         this.renderDialog = this.renderDialog.bind(this);
+        this.renderQuiz = this.renderQuiz.bind(this);
         this.finishCalback = this.finishCalback.bind(this);
+        this.finishQuiz = this.finishQuiz.bind(this);
         this.state = {
             process: 0,
             finishDialog: false,
@@ -63,6 +71,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             canRenderBg: "hide",
             canRenderPerson: "hide",
             canRenderDialog: "wait",
+            canRenderQuiz: "hide",
         };
     }
 
@@ -77,16 +86,13 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     }
 
     init(prop) {
+        console.log('before render');
+
         if (!prop.currentSceneData) {
             // console.log('no init');
             prop = this.props;
         }
-        console.log('no init');
-        // this.setState({
-        //     canRenderBg: "wait",
-        //     canRenderPerson: "wait",
-        //     canRenderDialog: "wait",
-        // });
+
         // checkBg
         if ( this.usedBg === prop.currentSceneData[prop.currentDialogIndex].bgImg ) {
             // this.setState({
@@ -124,6 +130,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             if ( this.usedPerson === "" ) {
                 this.usedPerson = prop.currentSceneData[prop.currentDialogIndex].headImg;
                 this.setState({
+                    // usedPersonTest: this.usedPerson,
                     canRenderPerson: "show"
                 });
                 this.whenAnimation(this.personTime + 100, "canRenderPerson", "show");
@@ -144,19 +151,42 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             }
             return;
         }
-        //checkDialog
-        this.usedDialog = prop.currentSceneData[prop.currentDialogIndex].dialog;
-        this.usedName = prop.currentSceneData[prop.currentDialogIndex].name;
+        // checkDialog
+        if ( this.usedDialog === prop.currentSceneData[prop.currentDialogIndex].dialog) {
+
+        } else {
+            this.usedDialog = prop.currentSceneData[prop.currentDialogIndex].dialog;
+            this.usedName = prop.currentSceneData[prop.currentDialogIndex].name;
+            this.setState({
+                canRenderDialog: "show",
+                finishDialogNow: false,
+                finishDialog: false,
+            });
+        }
+        // 如果对话已经完成 看看是否有选择题
+        if ( this.state.finishDialog && prop.currentSceneData[prop.currentDialogIndex].quiz.answerList) {
+            this.setState({
+                // usedPersonTest: this.usedPerson,
+                canRenderQuiz: "show"
+            });
+        }
+
+    }
+
+    // 点击选项后的回调
+    finishQuiz(index) {
+        console.log(index);
         this.setState({
-            canRenderDialog: "show",
-            finishDialogNow: false,
-            finishDialog: false,
+            // usedPersonTest: this.usedPerson,
+            canRenderQuiz: "hide"
         });
+        this.props.cbfPostAnswer(index);
     }
 
     render() {
-        console.log(this.props)
         console.log("render")
+        console.log(this.props.currentSceneData[this.props.currentDialogIndex].headImg)
+
         return (
            <div>
                {/*菜单元素*/}
@@ -170,6 +200,9 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
 
                    {/*Dialiog*/}
                    {this.renderDialog()}
+
+                   {/*Quiz*/}
+                   {this.renderQuiz()}
                </div>
 
                {/*NameTag*/}
@@ -177,6 +210,12 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         );
     }
 
+    renderQuiz() {
+        if (this.state.canRenderQuiz === "hide") {
+            return;
+        }
+        return(<div onClick = {this.finishQuiz.bind(this, 100)}>{this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerResult[0]}</div>);
+    }
 
 
     whenAnimation(time, typeName, showType) {
@@ -244,6 +283,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     }
 
     renderPerson() {
+        console.log('renderPerson')
         if (this.state.canRenderPerson === 'wait') {
             return;
         }
@@ -295,9 +335,11 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     //完成对话后的回调
     finishCalback() {
         console.log('finishCalback');
+        this.state.finishDialog = true;
         this.setState({
             finishDialog: true
         });
+        this.init(this.props);
     }
 
     clickScene() {

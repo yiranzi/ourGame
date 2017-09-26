@@ -145,7 +145,7 @@ var stageData = [
                     name: "",
                     content:  "十八年来，周莹走南闯北，颠沛流离，幸喜天资聪颖，对数字过目不忘，也练就一身的求生本领。",
                     head: "",
-                }
+                },
             },
             // 对话3
             {
@@ -153,6 +153,10 @@ var stageData = [
                     name: "",
                     content: "此番与养父来到泾阳，她能否改变命运呢？",
                     head: "",
+                },
+                quiz: {
+                    answerList: ['1你是谁','2请问你是谁'],
+                    answerResult: ["addMQ#10","goScene#2"],
                 }
             },
             // 谢幕的dialog
@@ -168,19 +172,27 @@ var stageData = [
             // {
             //     event: ["goScene#2"]
             // }
+        ],
+        [
+            // 对话1
+            {
+                dialog: {
+                    name: "",
+                    content: "隐藏剧情哦",
+                    head: "",
+                }
+            },
+            // 谢幕的dialog
+            {
+                dialog: {
+                    name: "",
+                    content: "",
+                    head: "",
+                },
+                event: ["nextScene"]
+            },
         ]
     ],
-
-    /*
-    *    PushData(-1, '周老四（养父）与周莹街头卖艺。',-1);
-     PushData(1, '好好好~');
-     PushData(0, '');
-     PushData(2, '');
-     PushData(0, '');
-     PushData(-1, '',2);
-     PushData(1, '好好好~');
-     PushData(2, '在下这套功夫，乃是传自少林，创自武当，曾经打败两江无敌手，也在武林大会上技压群雄……');
-     */
 
     // 场景2
     [
