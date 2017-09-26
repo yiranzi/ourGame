@@ -154,10 +154,15 @@ var stageData = [
                     content: "此番与养父来到泾阳，她能否改变命运呢？",
                     head: "",
                 },
-                quiz: {
-                    answerList: ['1你是谁','2请问你是谁'],
-                    answerResult: [["addMQ#10"],["goDialog#1"]],
-                }
+            },
+            // 谢幕的dialog
+            {
+                dialog: {
+                    name: "",
+                    content: "",
+                    head: "",
+                },
+                event: ["nextScene"]
             },
             // 谢幕的dialog
             // {
@@ -172,25 +177,6 @@ var stageData = [
             // {
             //     event: ["goScene#2"]
             // }
-        ],
-        [
-            // 对话1
-            {
-                dialog: {
-                    name: "",
-                    content: "隐藏剧情哦",
-                    head: "",
-                }
-            },
-            // 谢幕的dialog
-            {
-                dialog: {
-                    name: "",
-                    content: "",
-                    head: "",
-                },
-                event: ["nextScene"]
-            },
         ]
     ],
 
@@ -349,8 +335,13 @@ var stageData = [
                     name: "2",
                     content: "（为难状）爹，别……",
                     head: "2",
+                },
+                quiz: {
+                    answerList: ['1你是谁','2请问你是谁'],
+                    answerResult: [["addMQ#10"],["goDialog#1"]],
                 }
             },
+
 
             // 判断题
             // {
@@ -361,15 +352,17 @@ var stageData = [
             // },
 
         ],
-
         // 分剧情2
         [
             // 对话1
-            "",
-            // 对话2
-            "",
-            // 对话3
-            "",
+            {
+                dialog: {
+                    name: "",
+                    content: "隐藏剧情哦",
+                    head: "",
+                }
+            },
+
         ],
 
         // 分剧情3
