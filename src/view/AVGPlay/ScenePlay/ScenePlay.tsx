@@ -223,7 +223,9 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             arr.push(<QuizBar key = i index = {i} cbfClick = {this.finishQuiz.bind(this, i)} content = {answerList[i]}></QuizBar>)
         }
         return(<div className = {className.quiz}>
-            {arr}
+            <div className = {className.inner}>
+                {arr}
+            </div>
         </div>)
     }
 
@@ -352,6 +354,10 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     }
 
     clickScene() {
+        //关闭选择
+        if(this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerList) {
+            return;
+        }
         console.log('clickScene');
         //如果对话已经完成
         // 或为了fix对话消失,无法继续的bug

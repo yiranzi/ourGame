@@ -129,7 +129,7 @@ function make() {
 
 var stageData = [
     // 测试场景
-    /*
+    // /*
     [
         // 分剧情1
         [
@@ -176,7 +176,7 @@ var stageData = [
             },
         ]
     ],
-    */
+    // */
 
     // 场景1
     [
