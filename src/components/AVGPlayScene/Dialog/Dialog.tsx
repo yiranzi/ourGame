@@ -96,9 +96,7 @@ export default class Person extends React.Component<DialogPropsTypes> {
     }
     render() {
         let styleBox = {
-            justifyContent: "flex-start",
-            marginLeft: "6rem",
-            maxWidth: "20rem",
+
 
         };
         return(

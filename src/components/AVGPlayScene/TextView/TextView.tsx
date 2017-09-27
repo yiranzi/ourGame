@@ -15,8 +15,8 @@ export default class Person extends React.Component<TextViewPropsTypes> {
     }
     render() {
         return(
-            <div className={className.container} style={this.props.styleBox}>
-                {this.props.children}
+            <div className={className.textViewBox} style={this.props.styleBox}>
+                <p className={className.textContent}>{this.props.children}</p>
             </div>
         );
     }
