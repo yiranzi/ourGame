@@ -32,30 +32,72 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     //角色信息
     roleInfo = [
         {
+            // 0
             name: '周老四',
-            head: `${require("@/assets/image/Game/Stage1/boy_1.png")}`,
+            head: `${require("@/assets/image/Game/Stage1/b3.jpg")}`,
         },
         {
-            name: '围观群众',
+            name: '围观群众',// 1
             head: `${require("@/assets/image/Game/Stage1/people_1.png")}`,
         },
         {
-            name: '周莹',
-            head: `${require("@/assets/image/Game/Stage1/girl_2.png")}`,
+            name: '周莹',// 2
+            head: `${require("@/assets/image/Game/Stage1/g1.png")}`,
         },
         {
-            name: '虬髯大汉',
-            head: `${require("@/assets/image/Game/Stage1/people_2.png")}`,
+            name: '虬髯大汉',// 3
+            head: `${require("@/assets/image/Game/Stage1/b4.jpg")}`,
         },
+        {
+            name: '沈星',// 4
+            head: `${require("@/assets/image/Game/Stage1/b1.png")}`,
+        },
+        {
+            name: '吴聘',// 5
+            head: `${require("@/assets/image/Game/Stage1/b2.png")}`,
+        },
+        {
+            name: '小贩1',// 6
+            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
+        },
+        {
+            name: '小贩2',// 7
+            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
+        },
+        {
+            name: '小贩3',// 8
+            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
+        },
+        {
+            // 9
+            name: '碰瓷的人',
+            head: `${require("@/assets/image/Game/Stage1/b5.jpg")}`,
+        },
+        {
+            // 10
+            name: '杜明礼',
+            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
+        },
+
+
+
     ]
 
     // 按照幕一个个的配置(这样的配置场景不好变换.需要修改)
 
     bgImg = [
-        `${require("@/assets/image/Game/gameover_1.jpg")}`,// 失败
-        `${require("@/assets/image/Game/win_1.png")}`,// 胜利
-        `${require("@/assets/image/Game/Stage1/bg_1.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`
+        `${require("@/assets/image/Game/Stage1/0.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/1.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/2.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/3.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/4.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/5.png")}`,
+        `${require("@/assets/image/Game/Stage1/6.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/7.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/8.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/9.jpg")}`,
+        `${require("@/assets/image/Game/Stage1/gameover_1.jpg")}`,// 失败
+        `${require("@/assets/image/Game/Stage1/win_1.png")}`,// 胜利
     ]
 
     constructor(props: PropsTypes) {
@@ -247,9 +289,9 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         // this.currentDialogSetting.event = this.currentDialogSetting.event + result;
         console.log(result);
         switch (resultString) {
-            case "addLoveNpc1":
+            case "addB1":
                 break;
-            case "addLoveNpc2":
+            case "addB2":
                 break;
             case "addMQ":
                 console.log(`add mq${resultValue}`);
@@ -304,10 +346,10 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 this.changeData("bgImg", "");
                 break;
             case "gameOver":
-                this.changeData("bgImg", this.bgImg[0]);
+                this.changeData("bgImg", this.bgImg[11]);
                 break;
             case "stageOver":
-                this.changeData("bgImg", this.bgImg[1]);
+                this.changeData("bgImg", this.bgImg[12]);
                 break;
             default:
                 console.log('error@!!!');

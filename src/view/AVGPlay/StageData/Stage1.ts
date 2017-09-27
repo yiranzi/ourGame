@@ -1,89 +1,27 @@
-//角色列表
-const nameList = [
-    '小明','小兰'
-]
-
-//立绘列表
-const headList = [
-    '123','456'
-]
-
-const roleInfo = [
-    {
-        name: '周老四',
-        head: `${require("@/assets/image/Game/Stage1/boy_1.png")}`,
-    },
-    {
-        name: '围观群众',
-        head: `${require("@/assets/image/Game/Stage1/people_1.png")}`,
-    },
-    {
-        name: '周莹',
-        head: `${require("@/assets/image/Game/Stage1/girl_2.png")}`,
-    },
-    {
-        name: '虬髯大汉',
-        head: `${require("@/assets/image/Game/Stage1/people_2.png")}`,
-    },
-
-
-]
-
-const bgImg = [
-
-    `${require("@/assets/image/Game/Stage1/bg_1.jpg")}`,
-    `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`,
-]
-
-
-
-// 最终导出的数据
-var stageData = [];
-// 当前的场景
-var currentScene = -1;
-// 当前的分剧情
-var currentBranch = -1;
-// 当前的对话
-var currentDialog = -1;
-
-/**
- * Created bcurrenty ichangtou on 2017/5/13.1
- */
-
-
-
-
-
-//  场景转换?
-function changeScene () {
-    // 幕隐藏
-
-    // 下一幕?
-    currentScene++;
-
-    //开始播放
-    sceneStart()
-}
-
-
-
-
-
-
-function nextDialog () {
-
-}
-
-
-
-// 获取当前场景
-function getScene(index) {
-    return sceneData[index];
-}
-
-/*
-head -2读取
- */
+// const roleInfo = [
+//     {
+//         name: '周老四',
+//         head: `${require("@/assets/image/Game/Stage1/boy_1.png")}`,
+//     },
+//     {
+//         name: '围观群众',
+//         head: `${require("@/assets/image/Game/Stage1/people_1.png")}`,
+//     },
+//     {
+//         name: '周莹',
+//         head: `${require("@/assets/image/Game/Stage1/girl_2.png")}`,
+//     },
+//     {
+//         name: '虬髯大汉',
+//         head: `${require("@/assets/image/Game/Stage1/people_2.png")}`,
+//     },
+// ]
+//
+// const bgImg = [
+//
+//     `${require("@/assets/image/Game/Stage1/bg_1.jpg")}`,
+//     `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`,
+// ]
 
 function make() {
     // pushdata
@@ -129,7 +67,7 @@ function make() {
 
 var stageData = [
     // 测试场景
-    // /*
+    /*
     [
         // 分剧情1
         [
@@ -142,20 +80,30 @@ var stageData = [
                 },
                 event: ["startScene#1"]
             },
-            // 对话2
+            // 选择题
             {
                 dialog: {
-                    name: "1",
-                    content:  "我就看好你",
-                    head: "1",
+                    name: "",
+                    content: "（在街上闲逛）",
+                    head: "2",
                 },
-     quiz: {
-     answerList: ['养父是老江湖了，让他来吧！','养父毕竟年老，自己来'],
-     answerResult: [
-     ["goDialog#2","addMQ#10"],
-     ["goDialog#1"]
-     ],
-     }
+                quiz: {
+                    answerList: ['买一小块甑糕','大吃一顿','这钱来得不易，还是不买吧……'],
+                    answerResult: [
+                        [""],
+                        ["addMQ#-10"],
+                        ["addMQ#10"],
+                    ],
+                }
+            },
+            // 场景旁白
+            {
+                dialog: {
+                    name: "",
+                    content: "远处传来喧闹声——",
+                    head: "",
+                },
+
             },
             // 谢幕的dialog
             {
@@ -176,7 +124,7 @@ var stageData = [
             },
         ]
     ],
-    // */
+    */
 
     // 场景1
     [
@@ -232,6 +180,8 @@ var stageData = [
         ]
     ],
 
+
+
     // 场景2
     [
         // 分剧情1
@@ -243,7 +193,7 @@ var stageData = [
                     content: "周老四（养父）与周莹街头卖艺。",
                     head: "",
                 },
-                event: ["startScene#2"]
+                event: ["startScene#1"]
             },
             // 对话1
             {
@@ -528,6 +478,342 @@ var stageData = [
                 dialog: {
                     name: "",
                     // content: "",
+                    content: "",
+                    head: "",
+                },
+                event: ["nextScene","addMQ#10"]
+            },
+        ],
+
+
+    ],
+
+    // 场景3
+    [
+        // 剧情1
+        [
+            // 入场
+            {
+                dialog: {
+                    name: "",
+                    content: "一番表演下来，养父给了你500文，让你买甑糕。",
+                    head: "",
+                },
+                event: ["startScene#2"]
+            },
+            // 对话
+            {
+                dialog: {
+                    name: "6",
+                    content: "姑娘，买个煎饼吧！",
+                    head: "",
+                }
+            },
+            // 对话
+            {
+                dialog: {
+                    name: "7",
+                    content: "姑娘，来一块甑糕吧！",
+                    head: "",
+                }
+            },
+            // 对话
+            {
+                dialog: {
+                    name: "8",
+                    content: "姑娘，吃碗面吧！",
+                    head: "",
+                }
+            },
+            // 选择题
+            {
+                dialog: {
+                    name: "",
+                    content: "（在街上闲逛）",
+                    head: "2",
+                },
+                quiz: {
+                    answerList: ['买一小块甑糕','大吃一顿','这钱来得不易，还是不买吧……'],
+                    answerResult: [
+                        [""],
+                        ["addMQ#-10"],
+                        ["addMQ#10"],
+                    ],
+                }
+            },
+            // 场景旁白
+            {
+                dialog: {
+                    name: "",
+                    content: "远处传来喧闹声——",
+                    head: "",
+                },
+
+            },
+            // 对话 碰瓷
+            {
+                dialog: {
+                    name: "9",
+                    content: "哎哟！你撞了我，怎么不给银子？",
+                    head: "",
+                },
+
+            },
+            // 场景旁白
+            {
+                dialog: {
+                    name: "",
+                    content: "一位年轻貌美的公子从轿子出来",
+                    head: "",
+                },
+
+            },
+            // 场景旁白
+            {
+                dialog: {
+                    name: "",
+                    content: "吴聘，泾阳第一大户——吴家东院少东家。",
+                    head: "",
+                },
+
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "（弯腰）你没事吧？要不，我带你去看看大夫？",
+                    head: "5",
+                },
+            },
+            // 对话 碰瓷
+            {
+                dialog: {
+                    name: "9",
+                    content: "不用不用，你给我钱就行了！",
+                    head: "",
+                },
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "（犹豫状）还是去看看大夫吧！",
+                    head: "5",
+                },
+            },
+            // 对话 碰瓷
+            {
+                dialog: {
+                    name: "9",
+                    content: "（哭嚎）你这人，撞了人，怎么不给钱啊！我的腿都断了！",
+                    head: "",
+                },
+            },
+            // 对话 群众
+            {
+                dialog: {
+                    name: "1",
+                    content: "啧啧啧……",
+                    head: "1",
+                }
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "这……（为难状）",
+                    head: "5",
+                },
+            },
+            // 选择题
+            {
+                dialog: {
+                    name: "",
+                    content: "此时你",
+                    head: "2",
+                },
+                quiz: {
+                    answerList: ['眼不见为净，算了。','肥羊，要宰！'],
+                    answerResult: [
+                        [""],
+                        ["addB1#10"],
+                    ],
+                }
+            },
+            // 对话 杜明礼
+            {
+                dialog: {
+                    name: "10",
+                    content: "（上前一步）我看看，你哪受伤了？（狠掐一下碰瓷的人的腿）",
+                    head: "10",
+                },
+            },
+            // 对话 碰瓷
+            {
+                dialog: {
+                    name: "9",
+                    content: "（跳起来）哎哟，疼死我了！",
+                    head: "",
+                },
+            },
+            // 对话 杜明礼
+            {
+                dialog: {
+                    name: "10",
+                    content: "不是腿断了吗？",
+                    head: "10",
+                },
+            },
+            // 对话 碰瓷
+            {
+                dialog: {
+                    name: "9",
+                    content: "（装不下去，灰溜溜地跑了）",
+                    head: "",
+                },
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "多谢壮士仗义相助。",
+                    head: "5",
+                },
+            },
+            // 对话 杜明礼
+            {
+                dialog: {
+                    name: "10",
+                    content: "不客气，举手之劳而已。",
+                    head: "10",
+                },
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "还请问壮士尊姓大名。",
+                    head: "5",
+                },
+            },
+            // 对话 杜明礼
+            {
+                dialog: {
+                    name: "10",
+                    content: "哦，区区小事，何足挂齿，贱名而已，不值一提（走了）。",
+                    head: "10",
+                },
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "（真乃狭义之士啊！）",
+                    head: "5",
+                },
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "（灰头土脸状）哥哥！有没有看到我哥哥？",
+                    head: "2",
+                }
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "你哥哥？你哥哥是谁？",
+                    head: "5",
+                },
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "刚才那个人是我哥哥，他、他跟你要钱了吗？",
+                    head: "2",
+                }
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "（尴尬）额……没有……",
+                    head: "5",
+                },
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "对不起！对不起！我哥哥已经很久没做这种事了！都是因为……我爹去世了，娘眼睛瞎了，弟弟又快饿死了，妹妹前年已经卖给别人了，我们一家人……实在是走投无路了！我哥哥拿了你多少钱，我这里有一块家传玉佩，抵给你！",
+                    head: "2",
+                }
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "不不不，你哥哥并没有拿我的钱，他已经走了。",
+                    head: "5",
+                },
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "哦……那，您买我这块玉佩吗？十两……不，五两就好！",
+                    head: "2",
+                }
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "（心怀不忍）玉佩你拿回去吧，这是你家传的，你收好。这是五两银子，你拿去给你家人买些吃的。",
+                    head: "5",
+                },
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "（哭）呜~公子你人真好！",
+                    head: "2",
+                }
+            },
+            // 对话 吴聘
+            {
+                dialog: {
+                    name: "5",
+                    content: "行了，赶紧回去吧！",
+                    head: "5",
+                },
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "谢谢公子！谢谢公子！（目送吴聘远去）",
+                    head: "2",
+                }
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "嘿嘿嘿！",
+                    head: "2",
+                },
+                event: ["addMQ#10"]
+            },
+            // 谢幕的dialog 测试
+            {
+                dialog: {
+                    name: "",
+                    // content: "",
                     content: "因为你的机智 你们很快就靠卖艺家财万贯",
                     head: "",
                 },
@@ -538,103 +824,13 @@ var stageData = [
                 dialog: {
                     name: "",
                     // content: "",
-                    content: "达成结局【娱乐圈明星】",
+                    content: "达成结局【机制的周莹】",
                     head: "",
                 },
                 event: ["stageOver"]
             },
-        ],
-
+        ]
     ],
 ]
 
-// saveProcess
-
-function getResultFromString(result) {
-    let resultString = result.split(",")[0];
-    let resultValue = result.split(",")[1];
-    switch (resultString) {
-        case "addLoveNpc1":
-            break;
-        case "addLoveNpc2":
-            break;
-        case "addMQ":
-            break;
-        case "goScene":
-            break;
-        case "leaveScene":
-            break;
-        case "startScene":
-            break;
-        case "goOver":
-            break;
-        case "goDialog":
-            break;
-    }
-}
-
-function over() {
-
-}
-
-
-function PushData(nameIndex, dialog, head) {
-
-    //读取预设的
-    let localCurrentDialog = JSON.parse(JSON.stringify(currentDialogSetting));
-    //写入新的
-    if (nameIndex === -1) {
-        localCurrentDialog.name = '';
-    } else {
-        localCurrentDialog.name = roleInfo[nameIndex].name;
-    }
-
-    if (dialog === -1) {
-        localCurrentDialog.dialog = '';
-    } else {
-        localCurrentDialog.dialog = dialog;
-    }
-
-    if (head) {
-        if ( head === -1) {
-            //隐藏头像
-            localCurrentDialog.headImg = ''
-            console.log('隐藏头像');
-        } else {
-            localCurrentDialog.headImg = roleInfo[head].head;
-            console.log('错位头像');
-        }
-    } else {
-        localCurrentDialog.headImg = roleInfo[nameIndex].head;
-    }
-    //写入预设的
-    // dialogSetting(localCurrentDialog);
-    pushStageData(localCurrentDialog);
-}
-
-function dialogSetting(localCurrentDialog) {
-    let value;
-    for( let key in currentDialogSetting) {
-        value = currentDialogSetting[key];
-        localCurrentDialog[key] = value;
-    }
-}
-
-function pushStageData(localCurrentDialog) {
-    stageData.push(localCurrentDialog);
-}
-
-function ChangeData(key, value) {
-    currentDialogSetting[key] = value;
-}
-
 export {stageData}
-
-// export default MakeDataByGameId;
-
-// export function init;
-
-// export {
-//     MakeDataByGameId,
-//     stageData,
-// };
