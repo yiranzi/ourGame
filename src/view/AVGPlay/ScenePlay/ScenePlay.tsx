@@ -218,14 +218,13 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             return;
         }
         let arr = []
-        let answerList = this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerResult;
+        let answerList = this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerList;
         for (let i = 0; i < answerList.length; i++) {
             arr.push(<QuizBar key = i index = {i} cbfClick = {this.finishQuiz.bind(this, i)} content = {answerList[i]}></QuizBar>)
         }
         return(<div className = {className.quiz}>
             {arr}
         </div>)
-        return(<div onClick = {this.finishQuiz.bind(this, 100)}>{this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerResult[0]}</div>);
     }
 
 
@@ -294,7 +293,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     }
 
     renderPerson() {
-        console.log('renderPerson')
+        console.log('renderPerson');
         if (this.state.canRenderPerson === 'wait') {
             return;
         }
@@ -305,14 +304,14 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                 showStyle = {
                     opacity: '1',
                     transition: `${this.personTime / 1000}s opacity`,
-                }
+                };
                 // this.whenAnimation(200, "canRenderBg");
                 break;
             case "hide":
                 showStyle = {
                     opacity: '0',
                     transition: `${this.personTime / 1000}s opacity`,
-                }
+                };
                 break;
         }
         return <Person showStyle = {showStyle} headImg = {this.usedPerson}/>

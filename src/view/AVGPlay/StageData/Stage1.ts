@@ -149,6 +149,13 @@ var stageData = [
                     content:  "我就看好你",
                     head: "1",
                 },
+     quiz: {
+     answerList: ['养父是老江湖了，让他来吧！','养父毕竟年老，自己来'],
+     answerResult: [
+     ["goDialog#2","addMQ#10"],
+     ["goDialog#1"]
+     ],
+     }
             },
             // 谢幕的dialog
             {
@@ -178,9 +185,9 @@ var stageData = [
             // 对话1
             {
                 dialog: {
-                    name: "1",
+                    name: "",
                     content: "光绪年间，陕西有一女子，姓周名莹，无父无母，自幼跟随养父走江湖卖艺，或曰行骗，以求果腹。",
-                    head: "1",
+                    head: "",
                 }
             },
             // 对话2
@@ -382,7 +389,7 @@ var stageData = [
                     head: "2",
                 },
                 quiz: {
-                    answerList: ['养父是老江湖了，让他来吧！','养父毕竟年老，自己来'],
+                    answerList: ['养父是老江湖了，让他来吧！(选这个)','养父毕竟年老，自己来'],
                     answerResult: [
                         ["goDialog#2","addMQ#10"],
                         ["goDialog#1"]

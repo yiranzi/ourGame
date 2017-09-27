@@ -52,8 +52,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     // 按照幕一个个的配置(这样的配置场景不好变换.需要修改)
 
     bgImg = [
-        '1',// 失败
-        '2',// 胜利
+        `${require("@/assets/image/Game/gameover_1.jpg")}`,// 失败
+        `${require("@/assets/image/Game/win_1.png")}`,// 胜利
         `${require("@/assets/image/Game/Stage1/bg_1.jpg")}`,
         `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`
     ]

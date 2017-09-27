@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import * as className from "./style/style.less";
-
+import TextView from "@/components/AVGPlayScene/TextView/TextView";
 interface DialogPropsTypes {
     content: string; // 背景图片
 }
@@ -19,15 +19,15 @@ export default class Person extends React.Component<DialogPropsTypes> {
     }
 
     render() {
+        let styleInner = {
+            fontSize: '0.5rem';
+        };
         let styleBox = {
-            justifyContent: "flex-start",
-            marginLeft: "6rem",
-            maxWidth: "20rem",
-
         };
         return(
-            <div onClick = {this.cbfClick} className={(className as any).container}>
-                <p>{this.props.content}</p>
+            <div onClick = {this.cbfClick} className={(className as any).quizBar}>
+                <img className={(className as any).bg} src={require("@/assets/image/Game/dialogBox.jpg")}/>
+                <TextView styleBox = {styleBox} styleInner = {styleInner}>{this.props.content}</TextView>
             </div>
         );
     }
