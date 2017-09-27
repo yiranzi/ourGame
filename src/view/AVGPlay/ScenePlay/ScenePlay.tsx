@@ -323,8 +323,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             return;
         }
         let style = {
-            position: 'absolute',
-            bottom: '0',
+
         };
         let arr = [];
         if (this.props.currentSceneData[this.props.currentDialogIndex].name) {
@@ -338,7 +337,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             finishDialogNow = {this.state.finishDialogNow}
             boxImg = {`${require("@/assets/image/Game/dialogBox_1.jpg")}`}>
             {this.usedDialog ? this.usedDialog : '123'}</Dialog>)
-        return (<div style = {style}>
+        return (<div className={className.dialog}>
             {arr}
         </div>);
     }

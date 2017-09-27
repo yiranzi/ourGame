@@ -17,15 +17,15 @@ export default class Person extends React.Component<DialogNamePropsTypes> {
         super();
     }
     render() {
+        let styleInner = {
+            fontSize: '0.5rem';
+        };
         let styleBox = {
-            // position: 'absolute';
-            // height: '100%';
-            // width: "100%";
         };
         return(
-            <div className={(className as any).container}>
-                <img src={this.props.boxImg}/>
-                <TextView styleBox = {styleBox}>{this.props.children}</TextView>
+            <div className={(className as any).nameBox}>
+                <img className={(className as any).bg} src={this.props.boxImg}/>
+                <TextView styleBox = {styleBox} styleInner = {styleInner}>{this.props.children}</TextView>
             </div>
         );
     }

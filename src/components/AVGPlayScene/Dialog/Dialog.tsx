@@ -95,14 +95,19 @@ export default class Person extends React.Component<DialogPropsTypes> {
         this.props.finishCalback();
     }
     render() {
+        let styleInner = {
+            fontSize: '0.5rem';
+            marginLeft: '2rem';
+            maxWidth: '14rem';
+        };
         let styleBox = {
-
-
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
         };
         return(
             <div className={(className as any).container}>
                 <img src={this.props.boxImg}/>
-                <TextView styleBox = {styleBox}>{this.transString()}</TextView>
+                <TextView styleBox = {styleBox} styleInner = {styleInner}>{this.transString()}</TextView>
             </div>
         );
     }
