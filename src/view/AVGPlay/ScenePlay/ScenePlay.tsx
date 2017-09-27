@@ -217,7 +217,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         if (this.state.canRenderQuiz === "hide") {
             return;
         }
-        let arr = []
+        let arr = [];
         let answerList = this.props.currentSceneData[this.props.currentDialogIndex].quiz.answerList;
         for (let i = 0; i < answerList.length; i++) {
             arr.push(<QuizBar key = i index = {i} cbfClick = {this.finishQuiz.bind(this, i)} content = {answerList[i]}></QuizBar>)

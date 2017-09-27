@@ -23,10 +23,11 @@ export default class Person extends React.Component<DialogPropsTypes> {
             fontSize: '0.5rem';
         };
         let styleBox = {
+            alignItems: 'flex-end'
         };
         return(
             <div onClick = {this.cbfClick} className={(className as any).quizBar}>
-                <img className={(className as any).bg} src={require("@/assets/image/Game/dialogBox.jpg")}/>
+                <img className={(className as any).bg} src={require("@/assets/image/Game/answerBox.png")}/>
                 <TextView styleBox = {styleBox} styleInner = {styleInner}>{this.props.content}</TextView>
             </div>
         );
