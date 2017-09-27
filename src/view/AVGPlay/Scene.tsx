@@ -76,6 +76,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         this.init();
     }
 
+
     render() {
         return (
             <div>
@@ -87,32 +88,45 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         );
     }
 
+    // 1event在填充时被解析,放入event中.用户点击下一段 根据事先保存在event中的东西 进行(下一段,结束,等操作)
+    // 2用户选择完问题 传过来选择的index.选择题解析对应的题目的奖励列表.来执行对应的逻辑
+
     // 用户点击下一段.
     cbfNextDialog() {
         // 先读取当前这段的事件(已经dialog的这段,而不是下一段dialog(应为不一定有下一段))
-        let event = this.state.currentSceneData[this.state.currentDialogIndex].event;
-        switch (event) {
-            case "nextDialog":
-                console.log("nextDialog");
-                let next = this.state.currentDialogIndex + 1;
-                this.setState({
-                    currentDialogIndex: next,
-                });
-                break;
-            // 下个场景
-            case "nextScene":
-                //
-                this.changeScene();
-                break;
+        let eventArray = this.state.currentSceneData[this.state.currentDialogIndex].event;
+        let event;
+        // for (let i = 0; i < eventArray.length; i++) {
+            // event = eventArray[i]
+            event = eventArray;
+
+            switch (event) {
+                case "nextDialog":
+                    console.log("nextDialog");
+                    let next = this.state.currentDialogIndex + 1;
+                    this.setState({
+                        currentDialogIndex: next,
+                    });
+                    break;
+                // 下个场景
+                case "nextScene":
+                    //
+                    this.changeScene();
+                    break;
                 // 死亡
-            case "gameOver":
-                break;
+                case "gameOver":
+                    console.log('game over');
+                    this.sceneStart();
+                    break;
                 // 完成
-            case "stageOver":
-                break;
-            default:
-                console.log(event);
-        }
+                case "stageOver":
+                    console.log('finish game');
+                    break;
+                default:
+                    console.log(event);
+            }
+        // }
+
     }
 
     // 用户提交答案.
@@ -246,16 +260,17 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     getResultFromString(result) {
         let resultString = result.split("#")[0];
         let resultValue = result.split("#")[1];
+        this.currentDialogSetting.event = this.currentDialogSetting.event + result;
         switch (resultString) {
             case "addLoveNpc1":
                 break;
             case "addLoveNpc2":
                 break;
             case "addMQ":
+                console.log(`add mq${resultValue}`);
                 break;
             case "nextScene":
                 this.changeData("bgImg", '');
-                this.currentDialogSetting.event = 'nextScene';
                 break;
             case "startScene":
                 this.changeData("bgImg", this.bgImg[this.currentScene]);
@@ -263,7 +278,9 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
             case "leaveScene":
                 this.changeData("bgImg", "");
                 break;
-            case "goOver":
+            case "gameOver":
+                break;
+            case "stageOver":
                 break;
             case "goDialog":
                 console.log(resultValue);

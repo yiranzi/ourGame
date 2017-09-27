@@ -162,6 +162,7 @@ var stageData = [
                     content: "",
                     head: "",
                 },
+                // event: ["nextScene","addMQ#10"]
                 event: ["nextScene"]
             },
             // 谢幕的dialog
@@ -337,8 +338,11 @@ var stageData = [
                     head: "2",
                 },
                 quiz: {
-                    answerList: ['1你是谁','2请问你是谁'],
-                    answerResult: [["addMQ#10"],["goDialog#1"]],
+                    answerList: ['养父是老江湖了，让他来吧！','养父毕竟年老，自己来'],
+                    answerResult: [
+                        ["goDialog#2","addMQ#10"],
+                        ["goDialog#1"]
+                    ],
                 }
             },
 
@@ -354,20 +358,129 @@ var stageData = [
         ],
         // 分剧情2
         [
-            // 对话1
+            // 对话 女儿
+            {
+                dialog: {
+                    name: "2",
+                    content: "爹，让我来，你的功夫我也学过！",
+                    head: "2",
+                },
+            },
+            // 对话 周老汉
+            {
+                dialog: {
+                    name: "0",
+                    content: "这位爷，那您说怎么样才叫功夫？",
+                    head: "0",
+                }
+            },
+            // 对话 女儿
+            {
+                dialog: {
+                    name: "2",
+                    content: "是啊，爹爹年迈，怎能让您以身试险？不如我来吧！",
+                    head: "2",
+                },
+            },
+            // 对话 观众
+            {
+                dialog: {
+                    name: "1",
+                    content: "好啊！来呀！",
+                    head: "1",
+                }
+            },
+            // 对话 大汉
+            {
+                dialog: {
+                    name: "3",
+                    content: "喝——",
+                    head: "3",
+                }
+            },
+            // 对话 旁白
+            {
+                dialog: {
+                    name: "3",
+                    content: "你屏住呼吸，怎奈修炼不到家，人一刀下去，你只觉腹部一痛，继而两眼一黑，你死了。",
+                    head: "3",
+                }
+            },
+            // 谢幕的dialog
             {
                 dialog: {
                     name: "",
-                    content: "隐藏剧情哦",
+                    content: "达成结局【红颜薄命】",
                     head: "",
-                }
+                },
+                event: ["gameOver"]
             },
-
+            // 谢幕的dialog
+            // {
+            //     dialog: {
+            //         name: "",
+            //         content: "",
+            //         head: "",
+            //     },
+            //     event: ["nextScene"]
+            // },
+            // event
+            // {
+            //     event: ["goScene#2"]
+            // }
         ],
 
         // 分剧情3
         [
-
+            // 对话 周老汉
+            {
+                dialog: {
+                    name: "",
+                    content: "你不用担心，我周老四今天，非要让大家伙看看，我的独门绝技！（对着虬髯大汉）这位好汉，来吧！",
+                    head: "0",
+                }
+            },
+            // 对话 大汉
+            {
+                dialog: {
+                    name: "",
+                    content: "虬髯大汉对周老四砍了一刀，周老四瞬间倒地。",
+                    head: "3",
+                }
+            },
+            // 对话 女儿
+            {
+                dialog: {
+                    name: "2",
+                    content: "爹啊！呜呜呜……爹啊！(苦)",
+                    head: "2",
+                }
+            },
+            // 对话 观众
+            {
+                dialog: {
+                    name: "1",
+                    content: "（太可怜了！哎呀……（纷纷给钱）",
+                    head: "1",
+                }
+            },
+            // 对话 女儿
+            {
+                dialog: {
+                    name: "2",
+                    content: "(偷笑）嘿嘿嘿~",
+                    head: "2",
+                }
+            },
+            // 谢幕的dialog
+            {
+                dialog: {
+                    name: "",
+                    content: "",
+                    head: "",
+                },
+                event: ["nextScene","addMQ#10"]
+            },
         ],
 
     ],

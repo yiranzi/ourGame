@@ -186,9 +186,8 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     }
 
     render() {
-        console.log("render")
-        console.log(this.props.currentSceneData[this.props.currentDialogIndex].headImg)
-
+        console.log(this.props);
+        console.log("render");
         return (
            <div>
                {/*菜单元素*/}
