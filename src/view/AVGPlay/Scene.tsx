@@ -91,6 +91,9 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     // 1event在填充时被解析,放入event中.用户点击下一段 根据事先保存在event中的东西 进行(下一段,结束,等操作)
     // 2用户选择完问题 传过来选择的index.选择题解析对应的题目的奖励列表.来执行对应的逻辑
 
+    //只有背景改变 需要提前处理.
+    //这里面有异步 先执行舞台 用户点击舞台结果后. 会对当前舞台事件进行结算 并且执行结算后的舞台.
+
     // 用户点击下一段.
     cbfNextDialog() {
         // 先读取当前这段的事件(已经dialog的这段,而不是下一段dialog(应为不一定有下一段))
