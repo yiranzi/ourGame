@@ -189,7 +189,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         console.log(this.props);
         console.log("render");
         return (
-           <div>
+           <div style = {{width: '100%', height: '100%'}}>
                {/*菜单元素*/}
                {/*<div>123</div>*/}
                {/*舞台可点击元素*/}

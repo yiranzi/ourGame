@@ -85,7 +85,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
 
     render() {
         return (
-            <div>
+            <div style = {{width: '100%', height: '100%'}}>
                 <ScenePlay cbfNextDialog = {this.cbfNextDialog}
                            cbfPostAnswer = {this.cbfPostAnswer}
                            currentDialogIndex = {this.state.currentDialogIndex}
