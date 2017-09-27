@@ -30,8 +30,9 @@ const roleInfo = [
 ]
 
 const bgImg = [
+
     `${require("@/assets/image/Game/Stage1/bg_1.jpg")}`,
-    `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`
+    `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`,
 ]
 
 
@@ -127,6 +128,49 @@ function make() {
 }
 
 var stageData = [
+    // 测试场景
+    /*
+    [
+        // 分剧情1
+        [
+            // 对话1
+            {
+                dialog: {
+                    name: "",
+                    content: "000",
+                    head: "",
+                },
+                event: ["startScene#1"]
+            },
+            // 对话2
+            {
+                dialog: {
+                    name: "1",
+                    content:  "我就看好你",
+                    head: "1",
+                },
+            },
+            // 谢幕的dialog
+            {
+                dialog: {
+                    name: "",
+                    content: "而后生下了一个孩子，成为姨娘",
+                    head: "",
+                },
+            },
+            // 谢幕的dialog
+            {
+                dialog: {
+                    name: "",
+                    content: "达成结局【终身为妾】",
+                    head: "",
+                },
+                event: ["stageOver"]
+            },
+        ]
+    ],
+    */
+
     // 场景1
     [
         // 分剧情1
@@ -162,8 +206,8 @@ var stageData = [
                     content: "",
                     head: "",
                 },
-                // event: ["nextScene","addMQ#10"]
-                event: ["nextScene"]
+                event: ["nextScene","addMQ#10"]
+                // event: ["nextScene"]
             },
             // 谢幕的dialog
             // {
@@ -192,7 +236,7 @@ var stageData = [
                     content: "周老四（养父）与周莹街头卖艺。",
                     head: "",
                 },
-                event: ["startScene"]
+                event: ["startScene#2"]
             },
             // 对话1
             {
@@ -401,9 +445,9 @@ var stageData = [
             // 对话 旁白
             {
                 dialog: {
-                    name: "3",
+                    name: "",
                     content: "你屏住呼吸，怎奈修炼不到家，人一刀下去，你只觉腹部一痛，继而两眼一黑，你死了。",
-                    head: "3",
+                    head: "",
                 }
             },
             // 谢幕的dialog
@@ -472,14 +516,25 @@ var stageData = [
                     head: "2",
                 }
             },
-            // 谢幕的dialog
+            // 谢幕的dialog 测试
             {
                 dialog: {
                     name: "",
-                    content: "",
+                    // content: "",
+                    content: "因为你的机智 你们很快就靠卖艺家财万贯",
                     head: "",
                 },
-                event: ["nextScene","addMQ#10"]
+                // event: ["nextScene","addMQ#10"]
+            },
+            // 谢幕的dialog 测试
+            {
+                dialog: {
+                    name: "",
+                    // content: "",
+                    content: "达成结局【娱乐圈明星】",
+                    head: "",
+                },
+                event: ["stageOver"]
             },
         ],
 

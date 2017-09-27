@@ -28,6 +28,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         }
     }
 
+    // 角色信息和背景信息等常量 应该放到配置文件中
     //角色信息
     roleInfo = [
         {
@@ -48,7 +49,11 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         },
     ]
 
+    // 按照幕一个个的配置(这样的配置场景不好变换.需要修改)
+
     bgImg = [
+        '1',// 失败
+        '2',// 胜利
         `${require("@/assets/image/Game/Stage1/bg_1.jpg")}`,
         `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`
     ]
@@ -63,7 +68,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
 
         this.cbfNextDialog = this.cbfNextDialog.bind(this);
         this.cbfPostAnswer = this.cbfPostAnswer.bind(this);
-        this.getResultFromString = this.getResultFromString.bind(this);
+        this.getResultWhenRunning = this.getResultWhenRunning.bind(this);
+        this.getResultBeforeRun = this.getResultBeforeRun.bind(this);
         this.changeData = this.changeData.bind(this);
         this.changeScene = this.changeScene.bind(this);
         this.state = {
@@ -91,45 +97,18 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     // 1event在填充时被解析,放入event中.用户点击下一段 根据事先保存在event中的东西 进行(下一段,结束,等操作)
     // 2用户选择完问题 传过来选择的index.选择题解析对应的题目的奖励列表.来执行对应的逻辑
 
-    //只有背景改变 需要提前处理.
-    //这里面有异步 先执行舞台 用户点击舞台结果后. 会对当前舞台事件进行结算 并且执行结算后的舞台.
+    // 只有背景改变 需要提前处理.
+    // 这里面有异步 先执行舞台 用户点击舞台结果后. 会对当前舞台事件进行结算 并且执行结算后的舞台.
 
     // 用户点击下一段.
     cbfNextDialog() {
         // 先读取当前这段的事件(已经dialog的这段,而不是下一段dialog(应为不一定有下一段))
         let eventArray = this.state.currentSceneData[this.state.currentDialogIndex].event;
         let event;
-        // for (let i = 0; i < eventArray.length; i++) {
-            // event = eventArray[i]
-            event = eventArray;
-
-            switch (event) {
-                case "nextDialog":
-                    console.log("nextDialog");
-                    let next = this.state.currentDialogIndex + 1;
-                    this.setState({
-                        currentDialogIndex: next,
-                    });
-                    break;
-                // 下个场景
-                case "nextScene":
-                    //
-                    this.changeScene();
-                    break;
-                // 死亡
-                case "gameOver":
-                    console.log('game over');
-                    this.sceneStart();
-                    break;
-                // 完成
-                case "stageOver":
-                    console.log('finish game');
-                    break;
-                default:
-                    console.log(event);
-            }
-        // }
-
+        for (let i = 0; i < eventArray.length; i++) {
+            event = eventArray[i];
+            this.getResultWhenRunning(event);
+        }
     }
 
     // 用户提交答案.
@@ -147,8 +126,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         // 4 获取用户选择的东西
         let chooseQuiz = dialog.quiz.answerResult[index];
         // 5 解析
-        for (let i= 0; i < chooseQuiz.length; i++) {
-            this.getResultFromString(chooseQuiz[i]);
+        for (let i = 0; i < chooseQuiz.length; i++) {
+            this.getResultWhenRunning(chooseQuiz[i]);
         }
         // 6 进行点击下一步
         let currentDialogIndex = this.state.currentDialogIndex + 1;
@@ -215,18 +194,20 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
             // 读取
             dialogInfo = dialogArray[i];
             // 事件重置
-            this.currentDialogSetting.event = "nextDialog";
+            this.currentDialogSetting.event = ["nextDialog"];
             // 如果有事件.先保存下来
             if (dialogInfo.event) {
+                // 异步的写入 触发的时候 读取(如果是选择题...现在是读的数据.其实也可以让所有事件都去读数据
+                this.currentDialogSetting.event = dialogInfo.event;
                 // 同步的
                 if (dialogInfo.dialog) {
                     // 遍历
                     for (let i = 0; i < dialogInfo.event.length; i++) {
-                        this.getResultFromString(dialogInfo.event[i]);
+                        //试图解析那些背景相关的变更
+                        this.getResultBeforeRun(dialogInfo.event[i]);
                     }
                 } else {
-                    // 异步的(暂时没有 虽然是用户触发的 但是触发结果已经确定.可以同步写进去)
-                    this.currentDialogSetting.event = dialogInfo.event;
+
                 }
             }
 
@@ -259,11 +240,12 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         // 3 更新进度.
     }
 
-    // 解析event(改变属性/设置event)
-    getResultFromString(result) {
+    // 运行中确定的事件
+    getResultWhenRunning(result) {
         let resultString = result.split("#")[0];
         let resultValue = result.split("#")[1];
-        this.currentDialogSetting.event = this.currentDialogSetting.event + result;
+        // this.currentDialogSetting.event = this.currentDialogSetting.event + result;
+        console.log(result);
         switch (resultString) {
             case "addLoveNpc1":
                 break;
@@ -271,19 +253,30 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 break;
             case "addMQ":
                 console.log(`add mq${resultValue}`);
+                // alert(`add mq${resultValue}`)
                 break;
-            case "nextScene":
-                this.changeData("bgImg", '');
+            case "nextDialog":
+                // 下段对话
+                let next = this.state.currentDialogIndex + 1;
+                this.setState({
+                    currentDialogIndex: next,
+                });
                 break;
             case "startScene":
-                this.changeData("bgImg", this.bgImg[this.currentScene]);
+                // 开始场景
+                this.setState({
+                    currentDialogIndex: this.state.currentDialogIndex + 1,
+                });
                 break;
-            case "leaveScene":
-                this.changeData("bgImg", "");
+            case "nextScene":
+                // 下个场景
+                this.changeScene();
                 break;
             case "gameOver":
+                this.sceneStart();
                 break;
             case "stageOver":
+                alert('你通关了');
                 break;
             case "goDialog":
                 console.log(resultValue);
@@ -291,6 +284,34 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 break;
             default:
                 console.log('error@!!!')
+                console.log(result)
+        }
+    }
+
+    // 解析event(改变属性/设置event)
+    getResultBeforeRun(result) {
+        let resultString = result.split("#")[0];
+        let resultValue = result.split("#")[1];
+        // this.currentDialogSetting.event = this.currentDialogSetting.event + result;
+        switch (resultString) {
+            case "nextScene":
+                this.changeData("bgImg", '');
+                break;
+            case "startScene":
+                this.changeData("bgImg", this.bgImg[resultValue]);
+                break;
+            case "leaveScene":
+                this.changeData("bgImg", "");
+                break;
+            case "gameOver":
+                this.changeData("bgImg", this.bgImg[0]);
+                break;
+            case "stageOver":
+                this.changeData("bgImg", this.bgImg[1]);
+                break;
+            default:
+                console.log('error@!!!');
+                console.log(result)
         }
     }
 
