@@ -399,7 +399,7 @@ var stageData = [
             {
                 dialog: {
                     name: "0",
-                    content: "这位爷，那您说怎么样才叫功夫？",
+                    content: "（惊讶状）闺女，你真要自己上？",
                     head: "0",
                 }
             },
