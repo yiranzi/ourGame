@@ -78,24 +78,24 @@ var stageData = [
                     content: "000",
                     head: "",
                 },
-                event: ["startScene#1"]
+                event: ["startScene#0"]
             },
             // 选择题
-            {
-                dialog: {
-                    name: "",
-                    content: "（在街上闲逛）",
-                    head: "2",
-                },
-                quiz: {
-                    answerList: ['买一小块甑糕','大吃一顿','这钱来得不易，还是不买吧……'],
-                    answerResult: [
-                        [""],
-                        ["addMQ#-10"],
-                        ["addMQ#10"],
-                    ],
-                }
-            },
+            // {
+            //     dialog: {
+            //         name: "",
+            //         content: "（在街上闲逛）",
+            //         head: "2",
+            //     },
+            //     quiz: {
+            //         answerList: ['买一小块甑糕','大吃一顿','这钱来得不易，还是不买吧……'],
+            //         answerResult: [
+            //             [""],
+            //             ["addMQ#-10"],
+            //             ["addMQ#10"],
+            //         ],
+            //     }
+            // },
             // 场景旁白
             {
                 dialog: {
@@ -108,16 +108,28 @@ var stageData = [
             // 谢幕的dialog
             {
                 dialog: {
-                    name: "",
+                    name: "2",
                     content: "而后生下了一个孩子，成为姨娘",
-                    head: "",
+                    head: "2",
                 },
+                event: ["addMQ#10","nextDialog"]
             },
-            // 谢幕的dialog
+// 谢幕的dialog 测试
             {
                 dialog: {
                     name: "",
-                    content: "达成结局【终身为妾】",
+                    // content: "",
+                    content: "因为你的机智 你们很快就靠卖艺家财万贯",
+                    head: "",
+                },
+                // event: ["nextScene","addMQ#10"]
+            },
+            // 谢幕的dialog 测试
+            {
+                dialog: {
+                    name: "",
+                    // content: "",
+                    content: "达成结局【机制的周莹】",
                     head: "",
                 },
                 event: ["stageOver"]
@@ -207,7 +219,15 @@ var stageData = [
             {
                 dialog: {
                     name: "0",
-                    content:  "泾阳的父老乡亲们，我父女二人初来乍到，有道是：脚踏贵地，眼望生人；长城高万丈，全靠朋友帮，有钱的捧个钱场，没钱的请您回家取钱也捧个钱场，在下有礼了！（作揖）",
+                    content:  "泾阳的父老乡亲们，我父女二人初来乍到，有道是：脚踏贵地，眼望生人；长城高万丈，全靠朋友帮!",
+                    head: "0",
+                }
+            },
+            // 对话2
+            {
+                dialog: {
+                    name: "0",
+                    content:  "有钱的捧个钱场，没钱的请您回家取钱也捧个钱场，在下有礼了！（作揖）",
                     head: "0",
                 }
             },
@@ -224,6 +244,14 @@ var stageData = [
                 dialog: {
                     name: "0",
                     content: "哎！看来，泾阳的父老乡亲们，是见多识广啊！我今天周老四要是不露点绝活，怕是扯不开这场子！那周老四要拿出看家本事了！（脱衣服，发功）闺女，来！",
+                    head: "0",
+                }
+            },
+            // 对话4
+            {
+                dialog: {
+                    name: "0",
+                    content: "那周老四要拿出看家本事了！（脱衣服，发功）闺女，来！",
                     head: "0",
                 }
             },
@@ -555,7 +583,7 @@ var stageData = [
                 dialog: {
                     name: "9",
                     content: "哎哟！你撞了我，怎么不给银子？",
-                    head: "",
+                    head: "9",
                 },
 
             },
@@ -590,7 +618,7 @@ var stageData = [
                 dialog: {
                     name: "9",
                     content: "不用不用，你给我钱就行了！",
-                    head: "",
+                    head: "9",
                 },
             },
             // 对话 吴聘
@@ -606,7 +634,7 @@ var stageData = [
                 dialog: {
                     name: "9",
                     content: "（哭嚎）你这人，撞了人，怎么不给钱啊！我的腿都断了！",
-                    head: "",
+                    head: "9",
                 },
             },
             // 对话 群众
@@ -653,7 +681,7 @@ var stageData = [
                 dialog: {
                     name: "9",
                     content: "（跳起来）哎哟，疼死我了！",
-                    head: "",
+                    head: "9",
                 },
             },
             // 对话 杜明礼
@@ -669,7 +697,7 @@ var stageData = [
                 dialog: {
                     name: "9",
                     content: "（装不下去，灰溜溜地跑了）",
-                    head: "",
+                    head: "9",
                 },
             },
             // 对话 吴聘
@@ -748,7 +776,15 @@ var stageData = [
             {
                 dialog: {
                     name: "2",
-                    content: "对不起！对不起！我哥哥已经很久没做这种事了！都是因为……我爹去世了，娘眼睛瞎了，弟弟又快饿死了，妹妹前年已经卖给别人了，我们一家人……实在是走投无路了！我哥哥拿了你多少钱，我这里有一块家传玉佩，抵给你！",
+                    content: "对不起！对不起！我哥哥已经很久没做这种事了！都是因为……我爹去世了，娘眼睛瞎了，弟弟又快饿死了，妹妹前年已经卖给别人了!",
+                    head: "2",
+                }
+            },
+            // 对话 周莹
+            {
+                dialog: {
+                    name: "2",
+                    content: "我们一家人……实在是走投无路了！我哥哥拿了你多少钱，我这里有一块家传玉佩，抵给你！",
                     head: "2",
                 }
             },
@@ -807,7 +843,7 @@ var stageData = [
                     content: "嘿嘿嘿！",
                     head: "2",
                 },
-                event: ["addMQ#10"]
+                event: ["addMQ#10","nextDialog"]
             },
             // 谢幕的dialog 测试
             {

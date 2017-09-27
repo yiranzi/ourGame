@@ -34,7 +34,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         {
             // 0
             name: '周老四',
-            head: `${require("@/assets/image/Game/Stage1/b3.jpg")}`,
+            head: `${require("@/assets/image/Game/Stage1/b3.png")}`,
         },
         {
             name: '围观群众',// 1
@@ -46,7 +46,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         },
         {
             name: '虬髯大汉',// 3
-            head: `${require("@/assets/image/Game/Stage1/b4.jpg")}`,
+            head: `${require("@/assets/image/Game/Stage1/b4.png")}`,
         },
         {
             name: '沈星',// 4
@@ -71,7 +71,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         {
             // 9
             name: '碰瓷的人',
-            head: `${require("@/assets/image/Game/Stage1/b5.jpg")}`,
+            head: `${require("@/assets/image/Game/Stage1/b5.png")}`,
         },
         {
             // 10
@@ -346,10 +346,10 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 this.changeData("bgImg", "");
                 break;
             case "gameOver":
-                this.changeData("bgImg", this.bgImg[11]);
+                this.changeData("bgImg", this.bgImg[10]);
                 break;
             case "stageOver":
-                this.changeData("bgImg", this.bgImg[12]);
+                this.changeData("bgImg", this.bgImg[11]);
                 break;
             default:
                 console.log('error@!!!');

@@ -328,7 +328,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         };
         let arr = [];
         if (this.props.currentSceneData[this.props.currentDialogIndex].name) {
-            arr.push(<DialogName key = 1 boxImg = {`${require("@/assets/image/Game/dialogName_1.jpg")}`}>{this.usedName}</DialogName>);
+            arr.push(<DialogName key = 1 boxImg = {`${require("@/assets/image/Game/dialogName_2.png")}`}>{this.usedName}</DialogName>);
         }
         arr.push(<Dialog
             key = 2
@@ -336,7 +336,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
             finishDialog = {this.state.finishDialog}
             finishCalback = {this.finishCalback}
             finishDialogNow = {this.state.finishDialogNow}
-            boxImg = {`${require("@/assets/image/Game/dialogBox_1.jpg")}`}>
+            boxImg = {`${require("@/assets/image/Game/dialogBox_1.png")}`}>
             {this.usedDialog ? this.usedDialog : '123'}</Dialog>)
         return (<div className={className.dialog}>
             {arr}

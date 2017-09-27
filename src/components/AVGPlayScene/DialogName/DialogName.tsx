@@ -18,9 +18,11 @@ export default class Person extends React.Component<DialogNamePropsTypes> {
     }
     render() {
         let styleInner = {
-            fontSize: '0.5rem';
+            fontSize: '0.8rem',
+            marginTop:'30px',
         };
         let styleBox = {
+
         };
         return(
             <div className={(className as any).nameBox}>
