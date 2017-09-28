@@ -20,10 +20,13 @@ export default class Person extends React.Component<DialogPropsTypes> {
 
     render() {
         let styleInner = {
-            fontSize: '0.5rem';
+            fontSize: '1rem',
+            marginLeft: '20px',
         };
         let styleBox = {
-            alignItems: 'flex-end'
+            alignItems: 'flex-start',
+            marginTop: "36px",
+
         };
         return(
             <div onClick = {this.cbfClick} className={(className as any).quizBar}>

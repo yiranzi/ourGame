@@ -107,10 +107,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         this.setState({
             currentDialogIndex: currentDialogIndex,
         });
-        // 7更新branch 8完成渲染
-        this.setState({
-            currentSceneData : this.nextBranch(),
-        })
+
     }
 
     // 切换场景
@@ -127,7 +124,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
 
     // 初始化
     init() {
-        this.currentScene = 2;
+        // 设置入场关
+        this.currentScene = 4;
         this.currentScene++; // 在外部添加这个.
         this.sceneStart();
     }
@@ -243,11 +241,18 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 this.sceneStart();
                 break;
             case "stageOver":
-                alert('你通关了');
+                // alert('你通关了');
+                break;
+            case "stageOver":
+                alert('全剧终');
                 break;
             case "goDialog":
                 console.log(resultValue);
                 this.currentBranch = resultValue;
+                // 7更新branch 8完成渲染
+                this.setState({
+                    currentSceneData : this.nextBranch(),
+                })
                 break;
             default:
                 console.log('error@!!!')

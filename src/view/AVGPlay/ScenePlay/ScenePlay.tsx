@@ -51,7 +51,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     usedDialog = "";
     usedName = "";
     personTime = 200;
-    bgTime = 1200;
+    bgTime = 800;
     timeOutIndex = 0;
     speedInterval = 50;
 
@@ -158,7 +158,10 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         }
         // checkDialog
         if ( this.usedDialog === prop.currentSceneData[prop.currentDialogIndex].dialog) {
-
+            // 两个连续空白句子
+            if ( this.usedDialog === '') {
+                this.nextDialog();
+            }
         } else {
             this.usedDialog = prop.currentSceneData[prop.currentDialogIndex].dialog;
             this.usedName = prop.currentSceneData[prop.currentDialogIndex].name;
