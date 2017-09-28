@@ -1,6 +1,6 @@
 import * as React from "react";
 import ScenePlay from "@/view/AVGPlay/ScenePlay/ScenePlay";
-import {stageData} from "@/view/AVGPlay/StageData/Stage1";
+import {stageData, roleInfo, bgImg} from "@/view/AVGPlay/StageData/Stage1";
 
 interface PropsTypes {
 
@@ -28,78 +28,6 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         }
     }
 
-    // 角色信息和背景信息等常量 应该放到配置文件中
-    //角色信息
-    roleInfo = [
-        {
-            // 0
-            name: '周老四',
-            head: `${require("@/assets/image/Game/Stage1/b3.png")}`,
-        },
-        {
-            name: '围观群众',// 1
-            head: `${require("@/assets/image/Game/Stage1/people_1.png")}`,
-        },
-        {
-            name: '周莹',// 2
-            head: `${require("@/assets/image/Game/Stage1/g1.png")}`,
-        },
-        {
-            name: '虬髯大汉',// 3
-            head: `${require("@/assets/image/Game/Stage1/b4.png")}`,
-        },
-        {
-            name: '沈星',// 4
-            head: `${require("@/assets/image/Game/Stage1/b1.png")}`,
-        },
-        {
-            name: '吴聘',// 5
-            head: `${require("@/assets/image/Game/Stage1/b2.png")}`,
-        },
-        {
-            name: '小贩1',// 6
-            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
-        },
-        {
-            name: '小贩2',// 7
-            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
-        },
-        {
-            name: '小贩3',// 8
-            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
-        },
-        {
-            // 9
-            name: '碰瓷的人',
-            head: `${require("@/assets/image/Game/Stage1/b5.png")}`,
-        },
-        {
-            // 10
-            name: '杜明礼',
-            head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
-        },
-
-
-
-    ]
-
-    // 按照幕一个个的配置(这样的配置场景不好变换.需要修改)
-
-    bgImg = [
-        `${require("@/assets/image/Game/Stage1/0.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/1.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/2.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/3.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/4.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/5.png")}`,
-        `${require("@/assets/image/Game/Stage1/6.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/7.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/8.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/9.jpg")}`,
-        `${require("@/assets/image/Game/Stage1/gameover_1.jpg")}`,// 失败
-        `${require("@/assets/image/Game/Stage1/win_1.png")}`,// 胜利
-    ]
-
     constructor(props: PropsTypes) {
         super(props);
         this.init = this.init.bind(this);
@@ -121,6 +49,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     }
 
     componentWillMount() {
+        console.log(roleInfo);
+        console.log(bgImg);
         this.init();
     }
 
@@ -160,13 +90,14 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         console.log(index);
 
         // 1 获取当前场景
-        let scene = stageData[this.currentScene];
+        // let scene = stageData[this.currentScene];
         // 2 确定分支
-        let branch = scene[this.currentBranch];
+        // let branch = scene[this.currentBranch];
         // 3 获取当前的剧情
-        let dialog = branch[this.state.currentDialogIndex];
+        // let dialog = branch[this.state.currentDialogIndex];
+        let currentDialog = this.state.currentSceneData[this.state.currentDialogIndex];
         // 4 获取用户选择的东西
-        let chooseQuiz = dialog.quiz.answerResult[index];
+        let chooseQuiz = currentDialog.quiz.answerResult[index];
         // 5 解析
         for (let i = 0; i < chooseQuiz.length; i++) {
             this.getResultWhenRunning(chooseQuiz[i]);
@@ -176,8 +107,10 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         this.setState({
             currentDialogIndex: currentDialogIndex,
         });
-        // 7更新branch
-        this.nextBranch();
+        // 7更新branch 8完成渲染
+        this.setState({
+            currentSceneData : this.nextBranch(),
+        })
     }
 
     // 切换场景
@@ -194,22 +127,25 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
 
     // 初始化
     init() {
-        this.currentScene = -1;
+        this.currentScene = 2;
         this.currentScene++; // 在外部添加这个.
         this.sceneStart();
     }
 
     // 玩家进入当下场景
     sceneStart() {
+        console.log('sceneStart')
         // 0 重置
         this.state.currentSceneData = [];
         this.currentBranch = 0;
-        this.setState({
-            currentDialogIndex: 0,
-        });
+
         // 1 获取当前场景
         let scene = stageData[this.currentScene];
-        this.nextBranch();
+        let newArray = this.nextBranch();
+        this.setState({
+            currentDialogIndex: 0,
+            currentSceneData :newArray,
+        })
     }
 
     // 切换分支
@@ -219,7 +155,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         // 2 确定分支
         let branch = scene[this.currentBranch];
         // 3 添加上去
-        this.pushBranch(branch);
+        return this.pushBranch(branch);
     }
 
     // 根据玩家的分支选择 生成内容 并录入
@@ -227,7 +163,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         console.log(dialogArray);
 
         let dialogInfo;
-
+        let localCurrentSceneData = JSON.parse(JSON.stringify(this.state.currentSceneData));
         // 1 解析.
 
         // 2 保存.(可能?)
@@ -259,27 +195,14 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 this.changeData("quiz", dialogInfo.quiz);
             }
 
+
             // 对话
             if (dialogInfo.dialog) {
-                this.pushData(dialogInfo.dialog.name, dialogInfo.dialog.content, dialogInfo.dialog.head);
+                localCurrentSceneData = this.pushData(dialogInfo.dialog.name, dialogInfo.dialog.content, dialogInfo.dialog.head, localCurrentSceneData);
             }
-
-
-            // else if (dialogInfo.event) {
-            //
-            //     // 这个event(切换场景) 会在下一次生效(因为背景变化 会自动渲染)
-            //     this.getResultFromString(dialogInfo.event);
-            // } else if (dialogInfo.quiz) {
-            //
-            // }
-
-
-        }
-        if (dialogArray.dialog) {
-
         }
 
-        // 3 更新进度.
+        return localCurrentSceneData;
     }
 
     // 运行中确定的事件
@@ -315,6 +238,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 this.changeScene();
                 break;
             case "gameOver":
+                break;
+            case "restart":
                 this.sceneStart();
                 break;
             case "stageOver":
@@ -340,16 +265,16 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 this.changeData("bgImg", '');
                 break;
             case "startScene":
-                this.changeData("bgImg", this.bgImg[resultValue]);
+                this.changeData("bgImg", bgImg[resultValue]);
                 break;
             case "leaveScene":
                 this.changeData("bgImg", "");
                 break;
             case "gameOver":
-                this.changeData("bgImg", this.bgImg[10]);
+                this.changeData("bgImg", bgImg[10]);
                 break;
             case "stageOver":
-                this.changeData("bgImg", this.bgImg[11]);
+                this.changeData("bgImg", bgImg[11]);
                 break;
             default:
                 console.log('error@!!!');
@@ -358,20 +283,17 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     }
 
     // 推入单个dialog数据
-    pushData(nameIndex, dialog, head) {
-        //读取预设的
+    pushData(nameIndex, dialog, head, localCurrentSceneData) {
+
+        // 读取预设的Objcet
         let localCurrentDialog = JSON.parse(JSON.stringify(this.currentDialogSetting));
+
+
         //写入新的
         if (nameIndex === "") {
             localCurrentDialog.name = '';
         } else {
-            localCurrentDialog.name = this.roleInfo[nameIndex].name;
-        }
-
-        if (dialog === "") {
-            localCurrentDialog.dialog = '';
-        } else {
-            localCurrentDialog.dialog = dialog;
+            localCurrentDialog.name = roleInfo[nameIndex].name;
         }
 
         if (head === "") {
@@ -379,12 +301,25 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
             localCurrentDialog.headImg = '';
             console.log('隐藏头像');
         } else {
-            localCurrentDialog.headImg = this.roleInfo[head].head;
+            localCurrentDialog.headImg = roleInfo[head].head;
             console.log('错位头像');
         }
 
-        // 写入
-        this.state.currentSceneData.push(localCurrentDialog);
+        let array = dialog.split('#');
+        if(array.length > 0) {
+            for(let i = 0; i < array.length; i++) {
+                let moreTalk = JSON.parse(JSON.stringify(localCurrentDialog));
+                moreTalk.dialog = array[i];
+                // 写入
+                localCurrentSceneData.push(moreTalk);
+            }
+        } else {
+            localCurrentDialog.dialog = dialog;
+            // 写入
+            localCurrentSceneData.push(localCurrentDialog);
+        }
+        return localCurrentSceneData
+
     }
 
 

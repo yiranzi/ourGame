@@ -1,71 +1,79 @@
-// const roleInfo = [
-//     {
-//         name: '周老四',
-//         head: `${require("@/assets/image/Game/Stage1/boy_1.png")}`,
-//     },
-//     {
-//         name: '围观群众',
-//         head: `${require("@/assets/image/Game/Stage1/people_1.png")}`,
-//     },
-//     {
-//         name: '周莹',
-//         head: `${require("@/assets/image/Game/Stage1/girl_2.png")}`,
-//     },
-//     {
-//         name: '虬髯大汉',
-//         head: `${require("@/assets/image/Game/Stage1/people_2.png")}`,
-//     },
-// ]
-//
-// const bgImg = [
-//
-//     `${require("@/assets/image/Game/Stage1/bg_1.jpg")}`,
-//     `${require("@/assets/image/Game/Stage1/bg_2.jpg")}`,
-// ]
+// 角色信息和背景信息等常量 应该放到配置文件中
+//角色信息
+const roleInfo = [
+    {
+        // 0
+        name: '周老四',
+        head: `${require("@/assets/image/Game/Stage1/b3.png")}`,
+    },
+    {
+        name: '围观群众',// 1
+        head: `${require("@/assets/image/Game/Stage1/people_1.png")}`,
+    },
+    {
+        name: '周莹',// 2
+        head: `${require("@/assets/image/Game/Stage1/g1.png")}`,
+    },
+    {
+        name: '虬髯大汉',// 3
+        head: `${require("@/assets/image/Game/Stage1/b4.png")}`,
+    },
+    {
+        name: '沈星',// 4
+        head: `${require("@/assets/image/Game/Stage1/b1.png")}`,
+    },
+    {
+        name: '吴聘',// 5
+        head: `${require("@/assets/image/Game/Stage1/b2.png")}`,
+    },
+    {
+        name: '小贩1',// 6
+        head: ``,
+    },
+    {
+        name: '小贩2',// 7
+        head: ``,
+    },
+    {
+        name: '小贩3',// 8
+        head: ``,
+    },
+    {
+        // 9
+        name: '碰瓷的人',
+        head: `${require("@/assets/image/Game/Stage1/b5.png")}`,
+    },
+    {
+        // 10
+        name: '杜明礼',
+        head: `${require("@/assets/image/Game/Stage1/b6.png")}`,
+    },
+    {name: '丫鬟1',head:''},//11
+    {name: '丫鬟2',head:''},//12
 
-function make() {
-    // pushdata
-    // role     人物编号(修改名称)
-    // dialog   旁白内容
-    // head 头像显示 -1不显示 -2 读取默认的 number 正常编号,读取头像编号
 
-    // 序幕
 
-    PushData(-1, '光绪年间，陕西有一女子，姓周名莹，无父无母，自幼跟随养父走江湖卖艺，或曰行骗，以求果腹。',-1);
-    PushData(-1, '十八年来，周莹走南闯北，颠沛流离，幸喜天资聪颖，对数字过目不忘，也练就一身的求生本领。',-1);
-    PushData(-1, '此番与养父来到泾阳，她能否改变命运呢？',-1);
+]
 
-    // 市井
-    ChangeData("bgImg", bgImg[0]);
+// 按照幕一个个的配置(这样的配置场景不好变换.需要修改)
 
-    let a = {
-        dialog: {
+const bgImg = [
+    `${require("@/assets/image/Game/Stage1/0.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/1.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/2.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/3.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/4.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/5.png")}`,
+    `${require("@/assets/image/Game/Stage1/6.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/7.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/8.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/9.jpg")}`,
+    `${require("@/assets/image/Game/Stage1/gameover_1.jpg")}`,// 失败
+    `${require("@/assets/image/Game/Stage1/win_1.png")}`,// 胜利
+]
 
-        },
-        quiz: {
-            answerList: ['1你是谁','2请问你是谁'],
-            answerResult: ["addMQ#10","goScene#2"],
-        }
-    }
+const stageData = [
 
-    PushData(-1, '周老四（养父）与周莹街头卖艺。',-1);
-    PushData(1, '好好好~');
-    PushData(0, '泾阳的父老乡亲们，我父女二人初来乍到，有道是：脚踏贵地，眼望生人；长城高万丈，全靠朋友帮，有钱的捧个钱场，没钱的请您回家取钱也捧个钱场，在下有礼了！（作揖）');
-    PushData(2, '（只收到几个铜钱）爹……');
-    PushData(0, '哎！看来，泾阳的父老乡亲们，是见多识广啊！我今天周老四要是不露点绝活，怕是扯不开这场子！那周老四要拿出看家本事了！（脱衣服，发功）闺女，来！');
-    PushData(-1, '周莹拿刀砍了养父几下。',2);
-    PushData(1, '好好好~');
-    PushData(2, '在下这套功夫，乃是传自少林，创自武当，曾经打败两江无敌手，也在武林大会上技压群雄……');
-    PushData(-1, 'over',-1);
-    //谢幕
-    ChangeData("bgImg", '');
-    PushData(-1, '',-1);
-    //第二幕
-    ChangeData("bgImg", bgImg[1]);
-    PushData(-1, '第二幕开始',-1);
-}
-
-var stageData = [
     // 测试场景
     /*
     [
@@ -138,7 +146,7 @@ var stageData = [
     ],
     */
 
-    // 场景1
+    // 场景0 //剧情介绍
     [
         // 分剧情1
         [
@@ -194,7 +202,7 @@ var stageData = [
 
 
 
-    // 场景2
+    // 场景1 //卖艺
     [
         // 分剧情1
         [
@@ -442,21 +450,17 @@ var stageData = [
                     content: "达成结局【红颜薄命】",
                     head: "",
                 },
-                event: ["gameOver"]
+                event: ["gameOver","nextDialog"]
             },
             // 谢幕的dialog
-            // {
-            //     dialog: {
-            //         name: "",
-            //         content: "",
-            //         head: "",
-            //     },
-            //     event: ["nextScene"]
-            // },
-            // event
-            // {
-            //     event: ["goScene#2"]
-            // }
+            {
+                dialog: {
+                    name: "",
+                    content: "",
+                    head: "",
+                },
+                event: ["restart"]
+            },
         ],
 
         // 分剧情3
@@ -481,7 +485,7 @@ var stageData = [
             {
                 dialog: {
                     name: "2",
-                    content: "爹啊！呜呜呜……爹啊！(苦)",
+                    content: "爹啊！呜呜呜……爹啊！(哭泣)",
                     head: "2",
                 }
             },
@@ -516,7 +520,7 @@ var stageData = [
 
     ],
 
-    // 场景3
+    // 场景2  //碰瓷
     [
         // 剧情1
         [
@@ -664,7 +668,7 @@ var stageData = [
                     answerList: ['眼不见为净，算了。','肥羊，要宰！'],
                     answerResult: [
                         [""],
-                        ["addB1#10"],
+                        ["addB2#10"],
                     ],
                 }
             },
@@ -849,24 +853,159 @@ var stageData = [
             {
                 dialog: {
                     name: "",
-                    // content: "",
-                    content: "因为你的机智 你们很快就靠卖艺家财万贯",
+                    content: "",
                     head: "",
                 },
                 // event: ["nextScene","addMQ#10"]
             },
-            // 谢幕的dialog 测试
-            {
-                dialog: {
-                    name: "",
-                    // content: "",
-                    content: "达成结局【机制的周莹】",
-                    head: "",
-                },
-                event: ["stageOver"]
-            },
+
         ]
     ],
+
+    // 场景3 //客栈
+    [
+        // 剧情0
+        [
+            {dialog: {content:"你独自一人在客栈中",name:"",head:""},
+                event: ["startScene#3"]},//旁白
+            {dialog: {content:"（进屋）哎哟~累死我啦！",name:"0",head:"0"}},//老汉
+            {dialog: {content:"（鄙视状）爹，你又去赌了？",name:"2",head:"2"}},//周莹
+            {dialog: {content:"哎呀，手气不好……",name:"0",head:"0"}},//老汉
+            {dialog: {content:"全输光了？",name:"2",head:"2"}},//周莹
+            {dialog: {content:"嘿嘿，我给你挑了个好人家！",name:"0",head:"0"}},//老汉
+            {dialog: {content:"（无奈状）爹，你又把我卖了？",name:"2",head:"2"}},//周莹
+            {dialog: {content:"这次是个大户人家，沈家你听过没有？这可是泾阳城，数一数二的豪门大户啊！#你，在那人家呆几天，然后找个时机，偷偷跑出来，咱爷俩继续去逍遥快活去！",name:"0",head:"0"}},//老汉
+            // {dialog: {content:"",name:"0",head:"0"}},//老汉
+            {dialog: {content:"此时你",name:"",head:""},
+                quiz: {
+                    answerList: ['不去！凭什么每次都把我卖掉还钱！','答应。'],
+                    answerResult: [
+                        ["goDialog#1"],
+                        ["goDialog#2"],
+                    ],
+                }},
+        ],
+        // 剧情1
+        [
+            // {dialog: {content:"你表面上答应，半夜偷偷逃跑，从此一个人闯荡江湖。",name:"",head:""}},//旁白
+            {dialog: {content:"你表面上答应，半夜偷偷逃跑，从此一个人闯荡江湖。达成结局【颠沛流离】",name:"",head:""},
+                event: ["gameOver","nextDialog"]},//死亡界面
+            {dialog: {content:"",name:"",head:""},
+                event: ["restart"]},//复活
+        ],
+        // 剧情1
+        [
+            {dialog: {content:"",name:"",head:""},// 谢幕
+                event: ["nextScene"]},
+        ],
+    ],
+
+    // 场景4 二少爷房间
+    [
+        // 剧情0
+        [
+            {dialog: {content:"你被卖到了沈府，分配到二少爷房里当丫头。",name:"",head:""}},//旁白,
+            {dialog: {content:"二少爷房间",name:"",head:""},
+                event: ["startScene#4"]},//旁白
+            {dialog: {content:"你是新来的啊？",name:"11",head:"11"}},//丫鬟1
+            {dialog: {content:"听说，二少爷在外面花了一千两银子，被老爷打了，屁股开花，这会儿脾气正冲呢！",name:"11",head:"12"}},//丫鬟2
+            {dialog: {content:"晚上你来给二少爷守夜吧！",name:"11",head:"11"}},//丫鬟1
+            {dialog: {content:"此时你",name:"",head:""},//选择题
+                quiz: {
+                    answerList: ['直接答应。','可以是可以……'],
+                    answerResult: [
+                        ["goDialog#1"],
+                        ["goDialog#2"],
+                    ],
+                }},
+        ],
+        // 剧情1
+        [
+            {dialog: {content:"",name:"",head:""},// 谢幕
+                event: ["nextScene"]},
+        ],
+        // 剧情2
+        [
+            {dialog: {content:"可以是可以，不过……",name:"2",head:"2"}},//周莹
+            {dialog: {content:"不过怎样？",name:"11",head:"11"}},//丫鬟1
+            {dialog: {content:"不过啊，我要跟王妈妈说，你们借机偷懒，不给二少爷守夜，让他自己痛个半死，还欺负我这个新人。",name:"2",head:"2"}},//周莹
+            {dialog: {content:"你！你这个新来的……别嚣张！",name:"11",head:"11"}},//丫鬟1
+            {dialog: {content:"那你想怎样？",name:"11",head:"12"}},//丫鬟2
+            {dialog: {content:"总得给我点封口费啊~~~",name:"2",head:"2"}},//周莹
+            {dialog: {content:"……",name:"11",head:"11"}},//丫鬟1
+            {dialog: {content:"……",name:"11",head:"12"}},//丫鬟2
+            {dialog: {content:"好吧……这钱你拿去。",name:"11",head:"11"}},//丫鬟1
+            {dialog: {content:"嘿嘿~",name:"2",head:"2"},// 周莹
+            event:['addMQ#10','nextDialog']},
+            {dialog: {content:"",name:"",head:""},// 谢幕
+                event: ["nextScene"]},
+        ],
+    ],
+
+    // 场景5 二少爷房间 黑夜
+    [
+        // 剧情0
+        [
+            {dialog: {content:"到了晚上",name:"",head:""},
+                event: ["startScene#5"]},//旁白
+            {dialog: {content:"哎哟！哎哟疼死我了！疼死我了！唔……（哼哼唧唧）",name:"4",head:"4"}},//沈星移
+            {dialog: {content:"（恼怒被吵醒，从大厅床榻上起来，打了个哈欠）",name:"2",head:"2"}},//周莹
+            {dialog: {content:"此时你",name:"",head:""},//选择题
+                quiz: {
+                    answerList: ['继续睡，不理他……','吵什么吵，我砍死你！'],
+                    answerResult: [
+                        ["goDialog#1"],
+                        ["goDialog#2"],
+                    ],
+                }},
+        ],
+        // 剧情1
+        [
+            {dialog: {content:"你继续睡，没有理二少爷。后来，二少爷伤好了，因为你没有照顾他，他对你很生气，让管家把你赶出沈府。",name:"",head:""}},//旁白
+            {dialog: {content:"你找到养父周老四，重新过上了江湖卖艺的生活。达成结局【颠沛流离】",name:"",head:""},
+                event: ["gameOver","nextDialog"]},//死亡界面
+            {dialog: {content:"",name:"",head:""},
+                event: ["restart"]},//复活
+        ],
+        // 剧情2
+        [
+            {dialog: {content:"（你不情愿地起来，大吼道）吵什么吵？再吵，我砍死你！",name:"2",head:"2"}},//周莹
+            {dialog: {content:"你、你个丫头，好大的胆子！",name:"4",head:"4"}},//沈星移
+            {dialog: {content:"（出门）",name:"2",head:"2"}},//周莹
+            {dialog: {content:"你去哪？你出去干什么去？少爷我在屋里！",name:"4",head:"4"}},//沈星移
+            {dialog: {content:"磨刀！(院子里，你找些草药)",name:"2",head:"2"}},//周莹
+            {dialog: {content:"（幸灾乐祸的样子）疼？",name:"2",head:"2"}},//周莹
+            {dialog: {content:"哎哎哎……你要干什么？！",name:"4",head:"4"}},//沈星移
+            {dialog: {content:"哼！（给沈星移敷药）",name:"2",head:"2"}},//周莹
+            {dialog: {content:"……唔，挺清凉的……",name:"4",head:"4"}},//沈星移
+            {dialog: {content:"舒服吧！",name:"2",head:"2"}},//周莹
+            {dialog: {content:"……还不错，你这丫头，倒是有些能耐……",name:"4",head:"4"},
+                event: ["addB1","nextDialog"]},//沈星移
+            {dialog: {content:"",name:"",head:""},// 谢幕
+                event: ["nextScene"]},
+        ],
+    ],
+
+    // // 谢幕的dialog 测试
+    // {
+    //     dialog: {
+    //         name: "",
+    //         // content: "",
+    //         content: "因为你的机智 你们很快就靠卖艺家财万贯",
+    //         head: "",
+    //     },
+    //     // event: ["nextScene","addMQ#10"]
+    // },
+    // // 谢幕的dialog 测试
+    // {
+    //     dialog: {
+    //         name: "",
+    //         // content: "",
+    //         content: "达成结局【机制的周莹】",
+    //         head: "",
+    //     },
+    //     event: ["stageOver"]
+    // },
 ]
 
-export {stageData}
+export {stageData, roleInfo, bgImg}

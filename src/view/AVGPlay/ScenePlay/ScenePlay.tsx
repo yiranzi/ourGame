@@ -50,7 +50,7 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
     usedPerson = "";
     usedDialog = "";
     usedName = "";
-    personTime = 500;
+    personTime = 200;
     bgTime = 1200;
     timeOutIndex = 0;
     speedInterval = 50;
@@ -92,6 +92,10 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
         if (!prop.currentSceneData) {
             // console.log('no init');
             prop = this.props;
+        }
+
+        if (prop.currentSceneData.length === 0) {
+            return;
         }
 
         // checkBg
@@ -163,6 +167,9 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                 finishDialogNow: false,
                 finishDialog: false,
             });
+            if (this.usedDialog === '') {
+               this.nextDialog();
+            }
             return;
         }
         // 如果对话已经完成 看看是否有选择题

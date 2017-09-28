@@ -73,44 +73,7 @@ gulp.task('compress', function (cb) {
         cb
     );
 });
-// gulp.task('build-manifest', function(){
-//     var files = fs.readdirSync('prod/')
-//     var manifest = []
-//     files.map(file => {
-//         if (file.indexOf('bundle') !== -1 || file.indexOf('vendors-dll') !== -1) {
-//             manifest.push({
-//                 name: file,
-//                 res: 'https://h5test.ichangtou.com/minic/vinda/' + file,
-//                 type: file.split('.')[file.split('.').length - 1]
-//             })
-//         }
-//     })
-//     fs.writeFileSync('prod/manifest.js', JSON.stringify(manifest))
-// })
-// gulp.task('uploadFiles', function(){
-//     var ftps = new FTPS({
-//         host: '121.40.131.112',
-//         port: '22000',
-//         username: 'root',
-//         password: '5u$L!U3*9l8JD%.h'
-//     })
-//     ftps.cd('/home/wwwroot/ichangtou/webapps/h5game/')
-//     .raw('rm -r ./zhanheng_b')
-//     .mv('./zhanheng', './zhanheng_b')
-//     .raw('mkdir')
-//     .mirror({
-//         remoteDir: './zhanheng',
-//         loacalDir: './prod',
-//         parallel: true,
-//         upload: true
-//     }).exec(function (err, res) {
-//         if (err) {
-//             console.log('shit')
-//         } else {
-//             console.log('yeah')
-//         }
-//     })
-// })
+
 gulp.task('build:prod', ['html', 'style', 'compress'], function () {
 });
 
