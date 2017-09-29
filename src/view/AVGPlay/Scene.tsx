@@ -14,6 +14,7 @@ interface StateTypes {
 class Scene extends React.Component<PropsTypes, StateTypes> {
     currentScene = 0;
     currentBranch = 0;
+    alive = true;
 
     // 预设的 每次推入拷贝一个
     currentDialogSetting = {
@@ -74,6 +75,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
 
     // 用户点击下一段.
     cbfNextDialog() {
+        dplus.track('点击对话',{'章节': this.currentScene,'小节编号': this.currentBranch,'对话编号':this.state.currentDialogIndex,'存活': this.alive})
+
         // 先读取当前这段的事件(已经dialog的这段,而不是下一段dialog(应为不一定有下一段))
         let eventArray = this.state.currentSceneData[this.state.currentDialogIndex].event;
         let event;
@@ -89,12 +92,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         console.log('cbfPostAnswer');
         console.log(index);
 
-        // 1 获取当前场景
-        // let scene = stageData[this.currentScene];
-        // 2 确定分支
-        // let branch = scene[this.currentBranch];
-        // 3 获取当前的剧情
-        // let dialog = branch[this.state.currentDialogIndex];
+
         let currentDialog = this.state.currentSceneData[this.state.currentDialogIndex];
         // 4 获取用户选择的东西
         let chooseQuiz = currentDialog.quiz.answerResult[index];
@@ -118,15 +116,19 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         } else {
             this.currentScene++;
         }
+        dplus.track('开始场景',{'章节': this.currentScene});
         this.sceneStart();
     }
 
 
     // 初始化
     init() {
+        //进入游戏
+
         // 设置入场关
-        this.currentScene = 4;
+        this.currentScene = -1;
         this.currentScene++; // 在外部添加这个.
+        dplus.track('开始场景',{'章节': this.currentScene});
         this.sceneStart();
     }
 
@@ -233,17 +235,24 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 break;
             case "nextScene":
                 // 下个场景
+                // 完成场景上报
+                dplus.track('完成场景',{'章节': this.currentScene,'存活': this.alive});
+                this.alive = true;
                 this.changeScene();
                 break;
             case "gameOver":
+                this.alive = false;
+                dplus.track('选错了结束',{'章节': this.currentScene,'小节编号': this.currentBranch,'对话编号':this.state.currentDialogIndex,'存活': this.alive})
                 break;
             case "restart":
                 this.sceneStart();
                 break;
             case "stageOver":
+                dplus.track('达成结局',{'章节': this.currentScene,'小节编号': this.currentBranch,'对话编号':this.state.currentDialogIndex})
                 // alert('你通关了');
                 break;
             case "stageOver":
+                dplus.track('全剧终');
                 alert('全剧终');
                 break;
             case "goDialog":

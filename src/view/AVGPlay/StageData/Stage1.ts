@@ -1253,7 +1253,7 @@ const stageData = [
     [
         // 剧情0
         [
-            {dialog: {content:"吴聘醒了。对你百般呵护。#你渐渐地喜欢上了吴聘，新婚燕尔，如胶似漆。吴聘还带你去街上。",name:"",head:""},
+                {dialog: {content:"吴聘醒了。对你百般呵护。#你渐渐地喜欢上了吴聘，新婚燕尔，如胶似漆。吴聘还带你去街上。",name:"",head:""},
                 event: ["startScene#9"]},//旁白},
             {dialog: {content:"姑娘……",name:"23",head:""}},// 洋人
             {dialog: {content:"我？",name:"2",head:"2"}},// 周莹
