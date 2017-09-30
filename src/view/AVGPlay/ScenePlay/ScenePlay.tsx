@@ -5,6 +5,7 @@ import Person from "@/components/AVGPlayScene/Person/Person";
 import Dialog from "@/components/AVGPlayScene/Dialog/Dialog";
 import DialogName from "@/components/AVGPlayScene/DialogName/DialogName";
 import QuizBar from "@/components/AVGPlayScene/QuizBar/QuizBar";
+import UserAttribute from "@/components/AVGPlayScene/UserAttribute/UserAttribute";
 
 import * as className from "./style/style.less";
 
@@ -25,6 +26,11 @@ interface PropsTypes {
     cbfNextDialog: Function;
     cbfPostAnswer: Function;
     currentDialogIndex: Number;
+    userAttribute: {
+        MQ: Number,
+        b1Love: Number,
+        b2Love: Number,
+    };
 }
 
 interface StateTypes {
@@ -212,7 +218,8 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                    {/*Dialiog*/}
                    {this.renderDialog()}
 
-
+                    {/*attribute*/}
+                   {this.renderAttribute()}
                </div>
                {/*弹出框*/}
                {/*Quiz*/}
@@ -221,6 +228,10 @@ class ScenePlay extends React.Component<PropsTypes, StateTypes> {
                {/*NameTag*/}
            </div>
         );
+    }
+
+    renderAttribute() {
+        return(<UserAttribute userAttribute = {this.props.userAttribute}></UserAttribute>)
     }
 
     renderQuiz() {

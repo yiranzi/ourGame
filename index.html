@@ -60,8 +60,8 @@ window._WXGLOBAL_ = (function () {
     Object.freeze(__API_URL_GROUP__);
     var __JSAPILIST__ = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo'];
 
-    var __SHARE_DESC__ = '带你赚钱带你飞';
-    var __SHARE_TITLE__ = '五本书带你进入理财大门';
+    var __SHARE_DESC__ = '你是周莹，试试你的结局是';
+    var __SHARE_TITLE__ = '那年花开的真正结局竟然是...';
 
     //支付AppID
     var _TEST_PAID_APPID = 'wx7cf8dd5d80048e42';
@@ -205,7 +205,8 @@ WXSDK._getCurrHtmlUrl = function () {
 WXSDK.shareConfig = function () {
     var USER_INFO = JSON.parse(sessionStorage.getItem('wx-user-info'));
 
-    var imgUrl = USER_INFO.headImage,
+//    var imgUrl = USER_INFO.headImage,
+    var imgUrl = '',
 
         link = WXSDK._getShareUrl(),
 
@@ -216,6 +217,9 @@ WXSDK.shareConfig = function () {
     if (!imgUrl) {
         imgUrl = 'http://h5test.ichangtou.com.cn/minic/shareLogo.png';
     }
+
+    // 直接替换icon
+    imgUrl = 'http://h5test.ichangtou.com.cn/vindaGame/icon2.png';
     var timelineOpt = {
             title: title,
             desc: desc,
@@ -273,10 +277,11 @@ WXSDK.shareConfig = function () {
     wx.onMenuShareAppMessage(messageOpt);
     wx.onMenuShareQQ(QQOpt);
     wx.onMenuShareWeibo(weiboOpt);
-
 };
 
-WXSDK._onShareSuccess = function () {};
+WXSDK._onShareSuccess = function () {
+    dplus.track('分享成功');
+};
 
 WXSDK._onShareFailure = function () {
     console.log('分享失败')
@@ -284,7 +289,7 @@ WXSDK._onShareFailure = function () {
 
 WXSDK._getShareUrl = function () {
     var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
-    return WXSDK._getHtmlUrl() + "?share=" + userInfo.userId + "#" + WXSDK._getPoundSignUrl();
+    return WXSDK._getHtmlUrl() + "?share=" + '000' + "#" + WXSDK._getPoundSignUrl();
 };
 
 WXSDK.wechatPay = function (body) {
@@ -503,6 +508,7 @@ Object.freeze(WXSDK);
 
 window.onload = function () {
     WXSDK.InitWxApi()
+//    WXSDK.shareConfig();
 }
 </script>
 </head>

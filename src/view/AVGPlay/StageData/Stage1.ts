@@ -67,6 +67,52 @@ const roleInfo = [
 
 ]
 
+function STAGE_INIT() {
+    //根据url,time来设置加载
+    // let info = {};
+    // for( let i = 0; i < bgImg.length; i++) {
+    //     preFetch(bgImg[i]);
+    // }
+    callMe(0);
+    callHead(0);
+    console.log('123')
+}
+
+function callMe (i) {
+    let url = bgImg[i];
+    console.log('start done' + url);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.send();
+    xhr.onload = ()=> {
+        if(i < bgImg.length) {
+            i++;
+            callMe(i)
+        } else {
+            return
+        }
+    };
+}
+
+function callHead (i) {
+    while(roleInfo[i].head === "") {
+        i++
+    }
+    let url = roleInfo[i].head;
+    console.log('start done' + url);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.send();
+    xhr.onload = ()=> {
+        if(i < bgImg.length) {
+            i++;
+            callHead(i)
+        } else {
+            return
+        }
+    };
+}
+
 // 按照幕一个个的配置(这样的配置场景不好变换.需要修改)
 
 const bgImg = [
@@ -100,63 +146,45 @@ const stageData = [
                     content: "000",
                     head: "",
                 },
-                event: ["startScene#0"]
+                event: ["startScene#0","addMQ#10"]
+            },
+            // 对话1
+            {
+                dialog: {
+                    name: "",
+                    content: "原来，神奇药水是吴聘的脑残粉托洋人穿越过去给你送的解药,你们过上了幸福的生活。达成结局【吴聘结局】",
+                    head: "",
+                },
+                event: ["startScene#0","addMQ#10"]
             },
             // 选择题
             {
                 dialog: {
                     name: "2",
-                    content: "（在街上闲逛）",
+                    content: "通关啦!你可真厉害呀,作为奖励,周莹我分享两个小经验给你吧!",
                     head: "2",
                 },
                 quiz: {
-                    answerList: ['买一小块甑糕','大吃一顿','这钱来得不易，还是不买吧……'],
+                    answerList: ['告诉我发家致富的秘诀是','告诉我左右逢源的秘诀是'],
                     answerResult: [
-                        [""],
-                        ["addMQ#-10"],
+                        ["goChannel#https://h5.ichangtou.com/minic/index21Intro.html?newChannel=avg1"],
+                        ["goDialog#1"],
                         ["addMQ#10"],
                     ],
                 }
             },
-            // 场景旁白
-            {
-                dialog: {
-                    name: "",
-                    content: "远处传来喧闹声——",
-                    head: "",
-                },
-
-            },
-            // 谢幕的dialog
+        ],
+        [
+            // 对话1
             {
                 dialog: {
                     name: "2",
-                    content: "而后生下了一个孩子，成为姨娘",
+                    content: "就是我很愿意分享!分享这个游戏给身边热爱追剧的人吧!",
                     head: "2",
                 },
-                event: ["addMQ#10","nextDialog"]
+                event: ["finalWin"]
             },
-// 谢幕的dialog 测试
-            {
-                dialog: {
-                    name: "",
-                    // content: "",
-                    content: "因为你的机智 你们很快就靠卖艺家财万贯",
-                    head: "",
-                },
-                // event: ["nextScene","addMQ#10"]
-            },
-            // 谢幕的dialog 测试
-            {
-                dialog: {
-                    name: "",
-                    // content: "",
-                    content: "达成结局【机制的周莹】",
-                    head: "",
-                },
-                event: ["stageOver"]
-            },
-        ]
+        ],
     ],
     */
 
@@ -1296,12 +1324,32 @@ const stageData = [
         [
             {dialog: {content:"吴聘又醒了!",name:"",head:"5"}},// 旁白
             {dialog: {content:"",name:"",head:""}},// 旁白
-            {dialog: {content:"原来，神奇药水是吴聘的脑残粉托洋人穿越过去给你送的解药,你们过上了幸福的生活。达成结局【吴聘结局】",name:"",head:""},//
-                event: ["finalWin"]},//胜利界面
+            {dialog: {content:"原来，神奇药水是吴聘的脑残粉托洋人穿越过去给你送的解药,你们过上了幸福的生活。达成结局【吴聘结局】",name:"",head:""}},//
+            {dialog: {content:"通关啦!你可真厉害呀,作为奖励,周莹我分享两个小经验给你吧!",name:"",head:"2"},//选择题
+                quiz: {
+                    answerList: ['告诉我发家致富的秘诀是','告诉我左右逢源的秘诀是'],
+                    answerResult: [
+                        ["goChannel#https://h5.ichangtou.com/minic/index21Intro.html?newChannel=avg1"],
+                        ["goDialog#3"],
+                    ],
+                }},
             // {dialog: {content:"#从此，你和吴聘过上了幸福的生活。达成结局【吴聘结局】",name:"",head:""},
             //     event: ["stageOver"]},//胜利界面},//
         ],
+        [
+            // 对话1
+            {
+                dialog: {
+                    name: "2",
+                    content: "就是我很愿意分享!分享这个游戏给身边热爱追剧的人吧!",
+                    head: "2",
+                },
+                event: ["finalWin"]
+            },
+        ],
     ],
+
+
 
     // // 谢幕的dialog 测试
     // {
@@ -1325,4 +1373,4 @@ const stageData = [
     // },
 ]
 
-export {stageData, roleInfo, bgImg}
+export {stageData, roleInfo, bgImg, STAGE_INIT}

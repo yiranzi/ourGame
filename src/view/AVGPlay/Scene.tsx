@@ -1,6 +1,7 @@
 import * as React from "react";
 import ScenePlay from "@/view/AVGPlay/ScenePlay/ScenePlay";
-import {stageData, roleInfo, bgImg} from "@/view/AVGPlay/StageData/Stage1";
+import {stageData, roleInfo, bgImg, STAGE_INIT} from "@/view/AVGPlay/StageData/Stage1";
+import {userProcess, userAttribute, USER_DATA_INIT, USER_DATA_SAVE} from "@/view/AVGPlay/UserData/UserData";
 
 interface PropsTypes {
 
@@ -9,6 +10,11 @@ interface PropsTypes {
 interface StateTypes {
     currentSceneData: Array,
     currentDialogIndex: Number,
+    userData: {
+        MQ: Number,
+        b1Love: Number,
+        b2Love: Number,
+    }
 }
 
 class Scene extends React.Component<PropsTypes, StateTypes> {
@@ -43,6 +49,7 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         this.getResultBeforeRun = this.getResultBeforeRun.bind(this);
         this.changeData = this.changeData.bind(this);
         this.changeScene = this.changeScene.bind(this);
+        this.addValue = this.addValue.bind(this);
         this.state = {
             currentSceneData: [],
             currentDialogIndex: 0,
@@ -62,7 +69,11 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 <ScenePlay cbfNextDialog = {this.cbfNextDialog}
                            cbfPostAnswer = {this.cbfPostAnswer}
                            currentDialogIndex = {this.state.currentDialogIndex}
-                           currentSceneData = {this.state.currentSceneData}></ScenePlay>
+                           currentSceneData = {this.state.currentSceneData}
+                           userAttribute = {this.state.userData}
+                >
+
+                </ScenePlay>
             </div>
         );
     }
@@ -101,10 +112,10 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
             this.getResultWhenRunning(chooseQuiz[i]);
         }
         // 6 进行点击下一步
-        let currentDialogIndex = this.state.currentDialogIndex + 1;
-        this.setState({
-            currentDialogIndex: currentDialogIndex,
-        });
+        // let currentDialogIndex = this.state.currentDialogIndex + 1;
+        // this.setState({
+        //     currentDialogIndex: currentDialogIndex,
+        // });
 
     }
 
@@ -121,26 +132,49 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
     }
 
 
-    // 初始化
+    // 初始化 读取游戏或者说
     init() {
+        USER_DATA_INIT();
+        this.setState({
+            userData :userAttribute
+        });
+        window.setTimeout(()=>{
+            STAGE_INIT();
+        },0)
+
         //进入游戏
+        let location = window.location.href;
+        if(location.includes('share')) {
+            dplus.track('进入游戏',{'来源': '下线'});
+        } else {
+            dplus.track('进入游戏',{'来源': '上线'});
+        }
 
         // 设置入场关
-        this.currentScene = -1;
-        this.currentScene++; // 在外部添加这个.
+        this.currentScene = userProcess.scene;
         dplus.track('开始场景',{'章节': this.currentScene});
-        this.sceneStart();
+
+
+        // 0 重置
+        this.currentBranch = userProcess.branch;
+
+        let newArray = this.nextBranch();
+        this.setState({
+            currentDialogIndex: userProcess.dialog,
+            currentSceneData :newArray,
+        })
+    }
+
+    loadGame() {
+
     }
 
     // 玩家进入当下场景
     sceneStart() {
         console.log('sceneStart')
         // 0 重置
-        this.state.currentSceneData = [];
         this.currentBranch = 0;
 
-        // 1 获取当前场景
-        let scene = stageData[this.currentScene];
         let newArray = this.nextBranch();
         this.setState({
             currentDialogIndex: 0,
@@ -163,7 +197,8 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         console.log(dialogArray);
 
         let dialogInfo;
-        let localCurrentSceneData = JSON.parse(JSON.stringify(this.state.currentSceneData));
+        // let localCurrentSceneData = JSON.parse(JSON.stringify(this.state.currentSceneData));
+        let localCurrentSceneData = [];
         // 1 解析.
 
         // 2 保存.(可能?)
@@ -205,20 +240,30 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
         return localCurrentSceneData;
     }
 
+    addValue(key,resultValue) {
+        console.log('addMQ')
+        let userData = JSON.parse(JSON.stringify(this.state.userData));
+        userData[key] =  userData[key] + resultValue;
+        this.setState({
+            userData: userData
+        })
+    }
+
     // 运行中确定的事件
     getResultWhenRunning(result) {
         let resultString = result.split("#")[0];
-        let resultValue = result.split("#")[1];
+        let resultValue = parseInt(result.split("#")[1]);
         // this.currentDialogSetting.event = this.currentDialogSetting.event + result;
         console.log(result);
         switch (resultString) {
             case "addB1":
+                this.addValue('b1Love', resultValue);
                 break;
             case "addB2":
+                this.addValue('b2Love', resultValue);
                 break;
             case "addMQ":
-                console.log(`add mq${resultValue}`);
-                // alert(`add mq${resultValue}`)
+                this.addValue('MQ', resultValue);
                 break;
             case "nextDialog":
                 // 下段对话
@@ -252,16 +297,19 @@ class Scene extends React.Component<PropsTypes, StateTypes> {
                 // alert('你通关了');
                 break;
             case "stageOver":
-                dplus.track('全剧终');
-                alert('全剧终');
                 break;
             case "goDialog":
                 console.log(resultValue);
                 this.currentBranch = resultValue;
                 // 7更新branch 8完成渲染
                 this.setState({
+                    currentDialogIndex: 0,
                     currentSceneData : this.nextBranch(),
-                })
+                });
+                break;
+            case "goChannel":
+                dplus.track("下线跳转");
+                location.href = resultValue;
                 break;
             default:
                 console.log('error@!!!')
